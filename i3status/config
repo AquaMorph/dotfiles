@@ -9,18 +9,15 @@ general {
   	color_bad = "#E91E63"
 }
 
-order += "ipv6"
 order += "disk /"
 order += "run_watch DHCP"
-order += "wireless wlan0"
+order += "wireless wlp3s0"
 order += "ethernet eth0"
 order += "battery 0"
-order += "cpu_temperature 0"
-order += "load"
 order += "tztime date"
 order += "tztime local"
 
-wireless wlan0 {
+wireless wlp3s0 {
         format_up = "W: (%quality at %essid, %bitrate) %ip"
         format_down = "W: down"
 }
@@ -43,14 +40,6 @@ battery 0 {
         low_threshold = 10
 }
 
-run_watch DHCP {
-        pidfile = "/var/run/dhclient*.pid"
-}
-
-run_watch VPNC {
-        # file containing the PID of a vpnc process
-        pidfile = "/var/run/vpnc/pid"
-}
 
 tztime date {
        format = "%m/%d"
@@ -64,10 +53,6 @@ load {
         format = "%5min"
 }
 
-cpu_temperature 0 {
-        format = "T: %degrees °C"
-        path = "/sys/devices/platform/coretemp.0/temp1_input"
-}
 
 disk "/" {
         format = "%free"
