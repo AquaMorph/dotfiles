@@ -12,15 +12,13 @@ general {
 order += "ipv6"
 order += "disk /"
 order += "run_watch DHCP"
-order += "run_watch VPNC"
-order += "path_exists VPN"
 order += "wireless wlan0"
 order += "ethernet eth0"
 order += "battery 0"
 order += "cpu_temperature 0"
 order += "load"
+order += "tztime date"
 order += "tztime local"
-#order += "tztime berlin"
 
 wireless wlan0 {
         format_up = "W: (%quality at %essid, %bitrate) %ip"
@@ -40,6 +38,7 @@ battery 0 {
         status_bat = "🔋 BAT"
         status_unk = "? UNK"
         status_full = "☻ FULL"
+	last_full_capacity = true
         path = "/sys/class/power_supply/BAT%d/uevent"
         low_threshold = 10
 }
@@ -53,13 +52,12 @@ run_watch VPNC {
         pidfile = "/var/run/vpnc/pid"
 }
 
-path_exists VPN {
-        # path exists when a VPN tunnel launched by nmcli/nm-applet is active
-        path = "/proc/sys/net/ipv4/conf/tun0"
+tztime date {
+       format = "%m/%d"
 }
 
 tztime local {
-        format = "%m-%d %H:%M:%S"
+        format = "%I:%M:%S"
 }
 
 load {
