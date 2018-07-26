@@ -22,13 +22,11 @@ font pango:NimbusSans Bold 10
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
-exec --no-startup-id xmodmap -e 'keycode 134 = Super_R' && xset -r 134
-
 # start a terminal
 bindsym $mod+Return exec gnome-terminal
 
 # kill focused window
-bindsym $mod+Shift+q kill
+bindsym $mod+q kill
 
 # start dmenu (a program launcher)
 bindsym $mod+d exec --no-startup-id dmenu_run -i -nb '#000000' -nf '#03A9F4' -sb '#E91E63' -sf '#FFCDD2' -fn 'NimbusSans:bold:pixelsize=16'
