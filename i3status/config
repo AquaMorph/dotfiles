@@ -9,27 +9,28 @@ general {
   	color_bad = "#E91E63"
 }
 
-order += "disk /"
+order += "disk /home"
 order += "run_watch DHCP"
 order += "wireless wlp3s0"
 order += "ethernet eth0"
 order += "volume master"
-order += "battery 0"
+order += "brightness"
+order += "battery all"
 order += "tztime date"
 order += "tztime local"
 
 wireless wlp3s0 {
-        format_up = "W: (%quality at %essid, %bitrate) %ip"
-        format_down = "W: down"
+        format_up = "%essid: %ip, %quality, %bitrate"
+        format_down = ""
 }
 
 ethernet eth0 {
         # if you use %speed, i3status requires the cap_net_admin capability
         format_up = "E: %ip (%speed)"
-        format_down = "E: down"
+        format_down = ""
 }
 
-battery 0 {
+battery all {
         format = "%status%percentage %remaining"
         format_down = "No battery"
         status_chr = "⚡"
@@ -42,7 +43,6 @@ battery 0 {
         low_threshold = 20
 }
 
-
 tztime date {
        format = "%m/%d"
 }
@@ -51,12 +51,7 @@ tztime local {
         format = "%I:%M:%S"
 }
 
-load {
-        format = "%5min"
-}
-
-
-disk "/" {
+disk "/home" {
         format = "%free"
 }
 
