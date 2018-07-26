@@ -29,15 +29,16 @@ ethernet eth0 {
 }
 
 battery 0 {
-        format = "%status %percentage %remaining %emptytime"
+        format = "%status%percentage %remaining"
         format_down = "No battery"
-        status_chr = "⚡ CHR"
-        status_bat = "🔋 BAT"
-        status_unk = "? UNK"
-        status_full = "☻ FULL"
+        status_chr = "⚡"
+        status_bat = "🔋"
+        status_unk = "?"
+        status_full = "☻"
+	hide_seconds = true
 	last_full_capacity = true
         path = "/sys/class/power_supply/BAT%d/uevent"
-        low_threshold = 10
+        low_threshold = 20
 }
 
 
