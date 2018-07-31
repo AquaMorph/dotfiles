@@ -194,7 +194,11 @@ bindsym XF86AudioRaiseVolume exec amixer set Master 3%+ #increase sound volume
 bindsym XF86AudioLowerVolume exec amixer set Master 3%- #decrease sound volume
 bindsym XF86AudioMute exec amixer set Master toggle # mute sound
 
-bindsym $mod+Shift+h exec dbus-send --type=method_call --dest=org.gnome.ScreenSaver /org/gnome/ScreenSaver org.gnome.ScreenSaver.Lock
+
+# lockscreen
+bindsym $mod+Shift+h exec sh ~/.config/i3/lock.sh
+#bindsym $mod+Shift+h exec i3lock -c 000000
+#bindsym $mod+Shift+h exec dbus-send --type=method_call --dest=org.gnome.ScreenSaver /org/gnome/ScreenSaver org.gnome.ScreenSaver.Lock
 
 # class                 border  backgr. text    indicator child_border
 client.focused          #0288D1 #0288D1 #B3E5FC #000000   #000000
@@ -209,3 +213,5 @@ client.background       #ffffff
 for_window [class="^.*"] border pixel 1
 new_window 1pixel
 #new_window normal 0 px
+
+bindsym $mod+Shift+s exec scrot -b -d 5 '%Y:%m:%d:%H:%M:%S.png' -e 'mv $f ~/Desktop/'
