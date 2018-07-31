@@ -194,8 +194,10 @@ bindsym XF86AudioRaiseVolume exec amixer set Master 3%+ #increase sound volume
 bindsym XF86AudioLowerVolume exec amixer set Master 3%- #decrease sound volume
 bindsym XF86AudioMute exec amixer set Master toggle # mute sound
 
+bindsym $mod+Shift+h exec dbus-send --type=method_call --dest=org.gnome.ScreenSaver /org/gnome/ScreenSaver org.gnome.ScreenSaver.Lock
+
 # class                 border  backgr. text    indicator child_border
-client.focused          #0288D1 #0288D1 #B3E5FC #C2185B   #000000
+client.focused          #0288D1 #0288D1 #B3E5FC #000000   #000000
 client.focused_inactive #212121 #212121 #ffffff #000000   #000000
 client.unfocused        #333333 #212121 #9E9E9E #292d2e   #222222
 client.urgent           #2f343a #900000 #ffffff #900000   #900000
