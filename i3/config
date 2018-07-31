@@ -199,9 +199,9 @@ bindsym $mod+Shift+h exec dbus-send --type=method_call --dest=org.gnome.ScreenSa
 # class                 border  backgr. text    indicator child_border
 client.focused          #0288D1 #0288D1 #B3E5FC #000000   #000000
 client.focused_inactive #212121 #212121 #ffffff #000000   #000000
-client.unfocused        #333333 #212121 #9E9E9E #292d2e   #222222
-client.urgent           #2f343a #900000 #ffffff #900000   #900000
-client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
+client.unfocused        #212121 #212121 #212121 #212121   #212121
+client.urgent           #212121 #900000 #ffffff #900000   #900000
+client.placeholder      #000000 #000000 #ffffff #000000   #0c0c0c
 
 client.background       #ffffff
 
