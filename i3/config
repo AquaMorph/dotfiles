@@ -196,7 +196,7 @@ bindsym XF86AudioMute exec amixer set Master toggle # mute sound
 
 # Turn off trackpad
 bindsym $mod+Shift+u exec sh ~/.config/i3/trackpad-toggle.sh
-exec ~/.config/i3/trackpad-toggle.sh &
+exec --no-startup-id ~/.config/i3/trackpad-toggle.sh &
 
 # lockscreen
 bindsym $mod+Shift+h exec sh ~/.config/i3/lock.sh
