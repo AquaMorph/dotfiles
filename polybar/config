@@ -99,6 +99,21 @@ time-alt = %I:%M:%S
 label = %date% %time%
 format-underline = ${colors.blue}
 
+[module/battery]
+type = internal/battery
+full-at = 99
+time-format = %H:%M
+; $ ls -1 /sys/class/power_supply/
+battery = BAT0
+adapter = ADP1
+poll-interval = 1
+
+format-charging = <label-charging>
+format-charging-underline = ${colors.blue}
+
+format-discharging = <label-discharging>
+format-discharging-underline = ${colors.blue-light}
+
 [settings]
 screenchange-reload = true
 ;compositing-background = xor
