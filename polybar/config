@@ -110,9 +110,11 @@ poll-interval = 1
 
 format-charging = <label-charging>
 format-charging-underline = ${colors.blue}
+label-charging = %percentage%% (%time%)
 
 format-discharging = <label-discharging>
 format-discharging-underline = ${colors.blue-light}
+label-discharging = %percentage%% (%time%)
 
 [settings]
 screenchange-reload = true
