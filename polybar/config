@@ -34,7 +34,7 @@ font-2 = siji:pixelsize=10;1+e
 
 modules-left = i3
 modules-center = xwindow
-modules-right = volume battery date
+modules-right = backlight volume battery date
 
 tray-position = right
 tray-padding = 2
@@ -127,6 +127,16 @@ format-volume-underline = ${colors.blue}
 format-muted-prefix = " "
 label-muted = VOL %percentage%%
 format-muted-underline = ${colors.pink}
+
+[module/backlight]
+type = internal/backlight
+; Use the following command to list available cards:
+; $ ls -1 /sys/class/backlight/
+card = intel_backlight
+
+format = <label>
+label = BL %percentage%%
+format-underline = ${colors.blue}
 
 [settings]
 screenchange-reload = true
