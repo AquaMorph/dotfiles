@@ -9,23 +9,24 @@ alert = #E91E63
 
 [bar/aqua]
 width = 100%
-height = 24
-radius = 0.0
+height = 22
+radius = 0.0                                                                    
+~                          
 fixed-center = true
 
 background = ${colors.black}
 foreground = ${colors.blue}
 
 line-size = 3
-line-color = #f00
+line-color = ${colors.pink}
 
 border-size = 0
 border-color = #000000
 
 padding-left = 0
-padding-right = 2
+padding-right = 1
 
-module-margin-left = 1
+module-margin-left = 0
 module-margin-right = 2
 
 font-0 = NimbusSans:bold:fixed:pixelsize=14;1
@@ -34,7 +35,7 @@ font-2 = siji:pixelsize=10;1+e
 
 modules-left = i3
 modules-center = xwindow
-modules-right = backlight volume battery date
+modules-right = backlight volume network battery date
 
 tray-position = right
 tray-padding = 2
@@ -92,11 +93,10 @@ label-urgent-padding = ${module/bspwm.label-urgent-padding}
 [module/date]
 type = internal/date
 interval = 1.0
-date = 
-date-alt = %m-%d-%Y 
 time = %I:%M
-time-alt = %I:%M:%S
-label = %date% %time%
+time-alt = %m-%d-%Y %I:%M:%S
+label = %time%
+label-alt = 
 format-underline = ${colors.blue}
 
 [module/battery]
@@ -137,6 +137,40 @@ card = intel_backlight
 format = <label>
 label = BL %percentage%%
 format-underline = ${colors.blue}
+
+[module/temperature]
+type = internal/temperature
+
+; Seconds to sleep between updates
+; Default: 1
+interval = 0.5
+
+; Thermal zone to use
+; To list all the zone types, run 
+; $ for i in /sys/class/thermal/thermal_zone*; do echo "$i: $(<$i/type)"; done
+; Default: 0
+thermal-zone = 0
+
+; Full path of temperature sysfs path
+; Use `sensors` to find preferred temperature source, then run
+; $ for i in /sys/class/hwmon/hwmon*/temp*_input; do echo "$(<$(dirname $i)/name): $(cat ${i%_*}_label 2>/dev/null || echo $(basename ${i%_*})) $(readlink -f $i)"; done
+; to find path to desired file
+; Default reverts to thermal zone setting
+hwmon-path = /sys/devices/platform/coretemp.0/hwmon/hwmon2/temp1_input
+
+; Threshold temperature to display warning label (in degrees celsius)
+; Default: 80
+warn-temperature = 60
+
+[module/network]
+type = internal/network
+interface = wlp3s0
+interval = 5.0
+unknown-as-up = true
+label-connected = %essid% %signal%%
+label-connected-underline = ${colors.blue}
+label-disconnected = No Wifi :(
+label-disconnected-underline = ${colors.pink}
 
 [settings]
 screenchange-reload = true
