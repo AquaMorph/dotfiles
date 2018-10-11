@@ -178,10 +178,19 @@ bindsym XF86AudioMute exec amixer set Master toggle # mute sound
 
 # Turn off trackpad
 bindsym $mod+Shift+u exec sh ~/.config/i3/trackpad-toggle.sh
-exec --no-startup-id ~/.config/i3/trackpad-toggle.sh &
+exec --no-startup-id ~/.config/i3/trackpad-toggle.sh
 
 # Start bar
-exec --no-startup-id polybar -r aqua
+exec --no-startup-id polybar aqua
+
+# Wifi bar
+#exec --no-startup-id nm-applet &
+
+# Desktop wallpaper
+exec --no-startup-id feh --bg-scale ~/Pictures/wallpaper/tysiwugztgyjajrvznfy.jpg 
+
+#
+bindsym XF86Launch1 exec xset -display :0.0 dpms force off 
 
 # lockscreen
 bindsym $mod+Shift+h exec sh ~/.config/i3/lock.sh
@@ -201,3 +210,9 @@ new_window 1pixel
 #new_window normal 0 px
 
 bindsym $mod+Shift+s exec scrot -b -d 5 '%Y:%m:%d:%H:%M:%S.png' -e 'mv $f ~/Desktop/'
+
+# Start up programs
+for_window [class="Firefox"] move to workspace $ws1
+for_window [title="emacs@*"] move to workspace $ws2
+
+exec --no-startup-id "firefox"

@@ -35,7 +35,7 @@ font-2 = siji:pixelsize=10;1+e
 
 modules-left = i3
 modules-center = xwindow
-modules-right = backlight volume network battery date
+modules-right = stocks backlight volume network battery date
 
 tray-position = right
 tray-padding = 2
@@ -172,6 +172,13 @@ label-connected-underline = ${colors.blue}
 label-disconnected = No Wifi :(
 label-disconnected-underline = ${colors.pink}
 
+[module/stocks]
+type = custom/script
+exec = python ~/git/Stock/stocks.py
+format-underline = ${colors.blue}
+interval = 60
+
+
 [settings]
 screenchange-reload = true
 ;compositing-background = xor
@@ -182,3 +189,4 @@ screenchange-reload = true
 [global/wm]
 margin-top = 0
 margin-bottom = 0
+
