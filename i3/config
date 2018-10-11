@@ -214,5 +214,7 @@ bindsym $mod+Shift+s exec scrot -b -d 5 '%Y:%m:%d:%H:%M:%S.png' -e 'mv $f ~/Desk
 # Start up programs
 for_window [class="Firefox"] move to workspace $ws1
 for_window [title="emacs@*"] move to workspace $ws2
+for_window [class="jetbrains-studio"] move to workspace $ws3
+for_window [title="Google Play Music Desktop Player"] move to workspace $ws10
 
 exec --no-startup-id "firefox"
