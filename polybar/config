@@ -172,11 +172,11 @@ label-connected-underline = ${colors.blue}
 label-disconnected = No Wifi :(
 label-disconnected-underline = ${colors.pink}
 
-[module/stocks]
-type = custom/script
-exec = python ~/git/Stock/stocks.py
-format-underline = ${colors.blue}
-interval = 60
+;[module/stocks]
+;type = custom/script
+;exec = python ~/git/Stock/stocks.py
+;format-underline = ${colors.blue}
+;interval = 60
 
 
 [settings]
