@@ -1,0 +1,24 @@
+# Character Movement
+bind G4 KEY_W
+bind G10 KEY_A
+bind G11 KEY_S
+bind G12 KEY_D
+bind G22 KEY_SPACE
+bind G20 KEY_RIGHTCTRL
+bind G15 KEY_RIGHTCTRL
+
+# Reload
+bind G6 KEY_R
+
+# Abilities
+bind STICK_UP KEY_LEFTSHIFT
+bind STICK_DOWN KEY_E
+bind DOWN KEY_Q
+
+# Display
+bind LEFT KEY_TAB
+
+bing G18 KEY_C
+bind G13 KEY_X
+
+rgb 250 156 29
