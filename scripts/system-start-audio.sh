@@ -16,4 +16,4 @@ do
 done
 
 # Start up music player
-sleep 20 && i3-msg 'workspace 10; exec google-play-music-desktop-player'
+sleep .1 && i3-msg 'workspace 10; exec google-play-music-desktop-player'
