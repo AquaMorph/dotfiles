@@ -1,3 +1,10 @@
+stickzone del STICK_PAGEUP
+stickzone del STICK_PAGEDOWN
+stickzone bounds STICK_LEFT 0.0 0.3 0.2 0.7
+stickzone bounds STICK_RIGHT 0.8 0.3 1.0 0.7
+stickzone bounds STICK_UP 0.3 0.0 0.7 0.2
+stickzone bounds STICK_DOWN 0.3 0.8 0.7 1.0
+
 # Character Movement
 bind G4 KEY_W
 bind G10 KEY_A
@@ -18,7 +25,7 @@ bind DOWN KEY_Q
 # Display
 bind LEFT KEY_TAB
 
-bing G18 KEY_C
+bind G18 KEY_C
 bind G13 KEY_X
 
 rgb 250 156 29
