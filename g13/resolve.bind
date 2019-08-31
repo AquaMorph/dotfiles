@@ -1,9 +1,19 @@
+# Set Pink Backlight
 rgb 220 48 104
+
+# Setup distinct/non-overlapping 4-Way zones
+stickzone del STICK_PAGEUP
+stickzone del STICK_PAGEDOWN
+stickzone bounds STICK_LEFT 0.0 0.3 0.2 0.7
+stickzone bounds STICK_RIGHT 0.8 0.3 1.0 0.7
+stickzone bounds STICK_UP 0.3 0.0 0.7 0.2
+stickzone bounds STICK_DOWN 0.3 0.8 0.7 1.0
 
 # Undo and Redo
 bind STICK_LEFT KEY_RIGHTCTRL+KEY_Z
 bind STICK_RIGHT KEY_LEFTCTRL+KEY_LEFTSHIFT+KEY_Z
 
+# Play
 bind G22 KEY_SPACE
 
 # Playback keys
@@ -29,8 +39,18 @@ bind L2 KEY_LEFTCTRL+KEY_LEFTSHIFT+KEY_L
 bind LEFT KEY_A
 bind DOWN KEY_B
 
+# Delete
 bind STICK_UP KEY_DELETE
 bind STICK_DOWN KEY_BACKSPACE
 
 # Change timeline zoom
 bind G21 KEY_LEFTALT
+
+# Switch workspaces
+bind M1 KEY_LEFTSHIFT+KEY_2
+bind M2 KEY_LEFTSHIFT+KEY_3
+bind M3 KEY_LEFTSHIFT+KEY_4
+bind MR KEY_LEFTSHIFT+KEY_6
+
+# Save
+bind BD KEY_LEFTCTRL+KEY_S
