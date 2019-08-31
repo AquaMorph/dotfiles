@@ -6,7 +6,7 @@ pulseaudio -k
 # Start up jack
 cadence-session-start --system-start &
 wait %1
-ladish_control sload Working7-29-19
+ladish_control sload studio
 
 # Dumb hack to make audio setup right
 for i in {1..8}
