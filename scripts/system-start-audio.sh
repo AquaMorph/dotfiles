@@ -22,4 +22,4 @@ alsa_out -d hw:1 &
 
 # Start up programs that use audio
 sleep .1 && i3-msg 'workspace 10; exec google-play-music-desktop-player'
-sleep .1 && i3-msg 'workspace 3; exec firefox'
+sleep .1 && i3-msg 'workspace 5; exec firefox'
