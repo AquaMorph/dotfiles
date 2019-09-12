@@ -10,7 +10,8 @@ alert = #E91E63
 [bar/aqua]
 width = 100%
 height = 22
-radius = 0.0                                                                    
+radius = 0.0
+monitor = ${env:MONITOR:DVI-D-0}
                           
 fixed-center = true
 
