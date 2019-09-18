@@ -12,10 +12,16 @@ compinit
 # Text Editor
 alias emacs='emacs -nw'
 alias e='emacs -nw'
+
+# Other
 alias i='sudo dnf install'
 alias d='sudo dnf'
-alias c='git commit -m '
+
+# Git
+alias c='git commit -m'
+alias a='git add'
+alias s='git status'
 alias g='git'
-alias gp='git pull'
+alias gp='git push'
 
 export TERM=xterm
