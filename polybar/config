@@ -16,6 +16,8 @@ fixed-center = true
 background = ${colors.black}
 foreground = ${colors.blue}
 
+monitor = ${env:MONITOR:fallback-value}
+
 line-size = 3
 line-color = ${colors.pink}
 
