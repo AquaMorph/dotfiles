@@ -18,4 +18,4 @@ alias c='git commit -m '
 alias g='git'
 alias gp='git pull'
 
-export TERM=linux
+export TERM=xterm
