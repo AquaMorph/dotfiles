@@ -22,6 +22,7 @@ alias c='git commit -m'
 alias a='git add'
 alias s='git status'
 alias g='git'
+alias p='git pull'
 alias gp='git push'
 
 export TERM=xterm
