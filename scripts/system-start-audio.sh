@@ -16,9 +16,7 @@ do
     pulseaudio -D
 done
 
-# Start up eurorack interface
-alsa_in -d hw:1 &
-alsa_out -d hw:1 &
+sh ~/.config/scripts/start-es-8.sh 
 
 # Start up programs that use audio
 sleep .1 && i3-msg 'workspace 10; exec google-play-music-desktop-player'
