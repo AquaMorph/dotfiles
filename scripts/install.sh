@@ -4,11 +4,12 @@ dotdir=~/dotfiles
 
 # src dest sudo
 files=($dotdir/.zshrc ~/ 'n' \
-       ${dotdir}/alacritty/alacritty.yml ~/.config/alacritty/ 'n')
+       ${dotdir}/alacritty/alacritty.yml ~/.config/alacritty/ 'n'
+       ${dotdir}/g13 ~/.config/ 'n')
 
 echo Setting up dotfiles...
 
-# 
+# Loop through config files
 for (( i=0; i<${#files[@]} ; i+=3 )) ; do
     # Check if sudo is needed
     pre=''
@@ -19,11 +20,12 @@ for (( i=0; i<${#files[@]} ; i+=3 )) ; do
     destPath=${files[i+1]}$(basename "${files[i]}")
 
     # Check if file already exists
-    if [ -f $destPath ]; then
+    if [ -e $destPath ]; then
 	# Check if path is not a sybolic link
 	if ! [ -L $destPath ]; then
 	    echo Backing up $destPath
 	    $pre mv $destPath ${destPath}.bak
+	# File already set up
 	else
 	    echo The file $destPath is already set up
 	    continue
