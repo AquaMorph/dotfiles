@@ -4,8 +4,15 @@ dotdir=~/dotfiles
 
 #      src                                dest                   sudo
 files=($dotdir/.zshrc                     ~/                     'n'
-       $dotdir/alacritty/alacritty.yml    ~/.config/alacritty/   'n'
+       $dotdir/alacritty                  ~/.config/             'n'
        $dotdir/g13                        ~/.config/             'n'
+       $dotdir/gtk-3.0/settings.ini       ~/.config/gtk-3.0/     'n'
+       $dotdir/gtk-4.0/settings.ini       ~/.config/gtk-4.0/     'n'
+       $dotdir/i3                         ~/.config/             'n'
+       $dotdir/i3status                   ~/.config/             'n'
+       $dotdir/kitty                      ~/.config/             'n'
+       $dotdir/polybar                    ~/.config/             'n'
+       $dotdir/rofi                       ~/.config/             'n'
        $dotdir/scripts                    ~/.config/             'n')
 
 # arg parser
