@@ -8,6 +8,15 @@ files=($dotdir/.zshrc                     ~/                     'n'
        $dotdir/g13                        ~/.config/             'n'
        $dotdir/scripts                    ~/.config/             'n')
 
+# arg parser
+for arg in "$@"
+do
+    # Skip commands that need root access
+    if [[ $arg == *"-nr"* ]]; then
+	noRoot=true
+    fi
+done
+
 echo Setting up dotfiles...
 
 # Loop through config files
@@ -15,6 +24,10 @@ for (( i=0; i<${#files[@]} ; i+=3 )) ; do
     # Check if sudo is needed
     pre=''
     if [[ ${files[i+2]} == *'y'* ]]; then
+	if [ $noRoot ]; then
+	    echo Skipping ${files[i]} because root is required
+	    continue
+	fi
     	pre='sudo'
     fi
 
