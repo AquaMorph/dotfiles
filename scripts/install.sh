@@ -2,10 +2,11 @@
 
 dotdir=~/dotfiles
 
-# src dest sudo
-files=($dotdir/.zshrc ~/ 'n' \
-       ${dotdir}/alacritty/alacritty.yml ~/.config/alacritty/ 'n'
-       ${dotdir}/g13 ~/.config/ 'n')
+#      src                                dest                   sudo
+files=($dotdir/.zshrc                     ~/                     'n'
+       $dotdir/alacritty/alacritty.yml    ~/.config/alacritty/   'n'
+       $dotdir/g13                        ~/.config/             'n'
+       $dotdir/scripts                    ~/.config/             'n')
 
 echo Setting up dotfiles...
 
@@ -30,8 +31,9 @@ for (( i=0; i<${#files[@]} ; i+=3 )) ; do
 	    echo The file $destPath is already set up
 	    continue
 	fi
+    # Create missing directories
     else
-	echo $pre mkdir -p "$(dirname "$destPath")"
+	$pre mkdir -p "$(dirname "$destPath")"
     fi
     echo Creating symbolic link from ${files[i]} to ${files[i+1]}
     $pre ln -sf ${files[i]} ${files[i+1]}
