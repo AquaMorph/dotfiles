@@ -76,5 +76,18 @@ function dotfiles {
     done
 }
 
+# Check dotfiles for updates
+function update {
+    echo Checking for dotfile updates
+    startTime=$(date +%s -r $dotdir)
+    cd $dotdir && git pull
+    endTime=$(date +%s -r $dotdir)
+    if (( "$startTime" < "$endTime" )); then
+	sh $dotdir/scripts/install.sh
+	exit
+    fi
+}
+
+update
 dotfiles
 emacs
