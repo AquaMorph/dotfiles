@@ -1,7 +1,7 @@
 configuration {
 /*	modi: "window,run,ssh";*/
-/*	width: 50;*/
-/*	lines: 15;*/
+	width: 30;
+	lines: 10;
 /*	columns: 1;*/
 	font: "sf mono medium 16";
 /*	bw: 1;*/
@@ -11,7 +11,7 @@ configuration {
 /*	xoffset: 0;*/
 /*	fixed-num-lines: true;*/
 /*	show-icons: false;*/
-/*	terminal: "rofi-sensible-terminal";*/
+	terminal: "alacritty";
 /*	ssh-client: "ssh";*/
 /*	ssh-command: "{terminal} -e {ssh-client} {host} [-p {port}]";*/
 /*	run-command: "{cmd}";*/
@@ -63,10 +63,10 @@ configuration {
 /*	matching-negate-char: '-' /* unsupported */;*/
 /*	cache-dir: ;*/
 /*	pid: "/run/user/1000/rofi.pid";*/
-/*	display-window: ;*/
+	display-window: "window: ";
 /*	display-windowcd: ;*/
-/*	display-run: ;*/
-/*	display-ssh: ;*/
+	display-run: "run: ";
+	display-ssh: "ssh: ";
 /*	display-drun: ;*/
 /*	display-combi: ;*/
 /*	display-keys: ;*/
