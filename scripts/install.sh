@@ -1,5 +1,8 @@
 #! /bin/bash
 
+# Load user settings from config file.
+. ~/.config/settings.conf
+
 dotdir=~/dotfiles
 
 #      src                                dest                   sudo
@@ -89,6 +92,21 @@ function update {
     fi
 }
 
+# Set up settings config file
+function setup {
+    if [ -e $dotdir/settings.conf ]; then 
+	echo Settings file already created
+    else
+	echo Setting up settings config...
+
+	# Computer shortname
+	echo What is the computer shortname?
+	read computer
+	echo computer=$computer >> $dotdir/settings.conf
+    fi
+}
+
+setup
 update
 dotfiles
 emacs
