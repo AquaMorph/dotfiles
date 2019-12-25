@@ -3,7 +3,8 @@
 dotdir=~/dotfiles
 
 #      src                                dest                   sudo
-files=($dotdir/.zshrc                     ~/                     'n'
+files=($dotdir/.zprofile                  ~/                     'n'
+       $dotdir/.zshrc                     ~/                     'n'
        $dotdir/alacritty                  ~/.config/             'n'
        $dotdir/g13                        ~/.config/             'n'
        $dotdir/gtk-3.0/settings.ini       ~/.config/gtk-3.0/     'n'
