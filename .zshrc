@@ -16,7 +16,7 @@ alias e='emacs -nw'
 # Other
 alias i='sudo dnf install'
 alias d='sudo dnf'
-
+alias dot='cd ~/dotfiles'
 # Git
 alias c='git commit -m'
 alias a='git add'
