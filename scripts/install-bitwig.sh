@@ -30,3 +30,4 @@ package=$(sudo alien -r $(basename $url) | awk '{print $1;}')
 
 # Installing package
 sudo rpm -Uvh --nodeps --force $package
+sudo ln -s /usr/lib64/libbz2.so.1.0** /usr/lib64/libbz2.so.1.0
