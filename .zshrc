@@ -20,6 +20,8 @@ alias dot='cd ~/dotfiles'
 # Git
 alias c='git commit -m'
 alias a='git add'
+alias ga='git add -A'
+alias gu='git add -u'
 alias s='git status'
 alias g='git'
 alias p='git pull'
