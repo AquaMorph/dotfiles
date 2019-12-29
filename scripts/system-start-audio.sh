@@ -1,21 +1,31 @@
 #! /bin/bash
 
 # Kill Pulse
-pulseaudio -k
+function killPulse() {
+    pulseaudio -k
+    killall pulseaudio
+}
+
+# Dumb hack to make audio setup right
+function pulseHack() {
+    for i in {1..8}
+    do
+	killPulse
+	sleep 0.1
+	pulseaudio -D
+    done
+}
+
+# Close any active audio
+killPulse
 
 # Start up jack
 cadence-session-start --system-start &
 wait %1
 ladish_control sload studio
+pulseHack
 
-# Dumb hack to make audio setup right
-for i in {1..8}
-do
-    pulseaudio -k
-    sleep 0.1
-    pulseaudio -D
-done
-
+# Eurorack audio interface
 sh ~/.config/scripts/start-es-8.sh 
 
 # Start up programs that use audio
