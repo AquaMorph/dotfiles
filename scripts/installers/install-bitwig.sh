@@ -2,10 +2,8 @@
 
 # Automatic install script for Bitwig Studio
 
-# Program version number comparison
-function versionGreater() {
-    test "$(printf '%s\n' "$@" | sort -V | head -n 1)" != "$1";
-}
+# Import library
+source ./install-lib.sh
 
 bitwig=$(dnf list | grep bitwig-studio)
 bitwigVersion=$(echo $bitwig | awk '{print $2;}')

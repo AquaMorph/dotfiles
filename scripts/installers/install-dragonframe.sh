@@ -2,10 +2,8 @@
 
 # Automatic install script for Dragonframe
 
-# Program version number comparison
-function versionGreater() {
-    test "$(printf '%s\n' "$@" | sort -V | head -n 1)" != "$1";
-}
+# Import library
+source ./install-lib.sh
 
 dragonframe=$(dnf list | grep dragonframe)
 dragonframeVersion=$(echo $dragonframe | awk '{print $2;}')
