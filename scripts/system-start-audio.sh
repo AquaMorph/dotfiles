@@ -6,16 +6,6 @@ function killPulse() {
     killall pulseaudio
 }
 
-# Dumb hack to make audio setup right
-function pulseHack() {
-    for i in {1..8}
-    do
-	killPulse
-	sleep 0.1
-	pulseaudio -D
-    done
-}
-
 # arg parser
 for arg in "$@"
 do
@@ -32,7 +22,6 @@ killPulse
 cadence-session-start --system-start &
 wait %1
 ladish_control sload studio
-pulseHack
 
 # Eurorack audio interface
 sh ~/.config/scripts/start-es-8.sh 
