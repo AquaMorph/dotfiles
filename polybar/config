@@ -5,16 +5,17 @@ blue-light = #B3E5FC
 pink = #E91E63
 pink-light = #FFCDD2
 alert = #E91E63
+white = #FFFFFF
 
 [bar/aqua]
 width = 100%
-height = 22
+height = 26
 radius = 0.0
                           
 fixed-center = true
 
-background = ${colors.black}
-foreground = ${colors.blue}
+background = ${colors.blue}
+foreground = ${colors.white}
 
 monitor = ${env:MONITOR:fallback-value}
 
@@ -30,7 +31,7 @@ padding-right = 1
 module-margin-left = 0
 module-margin-right = 2
 
-font-0 = SF Pro Display:semibold:fixed:pixelsize=16;1
+font-0 = SF Pro Display:semibold:fixed:pixelsize=17;1
 font-1 = unifont:fontformat=truetype:size=8:antialias=false;0
 font-2 = siji:pixelsize=10;1+e
 
@@ -43,13 +44,13 @@ tray-padding = 2
 
 [module/xwindow]
 type = internal/xwindow
-label = %title:0:60:...%
+label = %title:0:80:...%
 
 [module/bspwm]
 type = internal/bspwm
 
 label-focused = %index%
-label-focused-background = ${colors.black}
+label-focused-background = ${colors.blue}
 label-focused-underline= ${colors.pink}
 label-focused-padding = 2
 
