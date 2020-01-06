@@ -22,8 +22,12 @@ killPulse
 cadence-session-start --system-start &
 wait %1
 ladish_control sload studio
-killPulse
-pulseaudio -D
+
+# Make start up reliable
+for i in {1..8}; do
+    killPulse
+    pulseaudio -D
+done
 
 # Eurorack audio interface
 sh ~/.config/scripts/start-es-8.sh 
