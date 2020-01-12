@@ -3,7 +3,7 @@
 # Automatic install script for Dragonframe
 
 # Import library
-source ./install-lib.sh
+source $(dirname ${BASH_SOURCE[0]})/install-lib.sh
 
 dragonframe=$(dnf list | grep dragonframe)
 dragonframeVersion=$(echo $dragonframe | awk '{print $2;}')

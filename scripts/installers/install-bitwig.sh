@@ -3,7 +3,7 @@
 # Automatic install script for Bitwig Studio
 
 # Import library
-source ./install-lib.sh
+source $(dirname ${BASH_SOURCE[0]})/install-lib.sh
 
 bitwig=$(dnf list | grep bitwig-studio)
 bitwigVersion=$(echo $bitwig | awk '{print $2;}')
