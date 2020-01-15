@@ -52,5 +52,8 @@ bind M2 KEY_LEFTSHIFT+KEY_3
 bind M3 KEY_LEFTSHIFT+KEY_4
 bind MR KEY_LEFTSHIFT+KEY_6
 
+# Add to end of timeline
+bind G13 KEY_LEFTSHIFT+KEY_F12
+
 # Save
 bind BD KEY_LEFTCTRL+KEY_S
