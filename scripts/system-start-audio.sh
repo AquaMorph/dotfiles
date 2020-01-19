@@ -31,6 +31,7 @@ done
 
 # Eurorack audio interface
 sh ~/.config/scripts/start-es-8.sh 
+sh ~/.config/scripts/start-es-9.sh
 
 # Start up programs that use audio
 if [ -z "$skipi3" ]; then
