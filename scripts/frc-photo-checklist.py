@@ -4,6 +4,7 @@
 
 import configparser
 import datetime as dt
+import re
 import operator
 import os
 import tbapy
@@ -16,6 +17,22 @@ def getProjectID(api, name):
             return project['id']
     print('Error: No project with the name {} found'.format(name))
     exit(1)
+
+# getChecklistName()
+def getChecklistName(evemt):
+    return '{} Photos'.format(event['name'])
+
+# getEventListID() returns the id of the checklist for the event and if there is none
+# returns -1.
+def getEventListID(items, event):
+    for item in items:
+        if item['content'] == getChecklistName(event):
+            return item['id']
+    return -1
+
+# matchToTeamList() converts a match to two lists of teams
+def matchToTeamList(match):
+    return match['alliances']['red']['team_keys'], match['alliances']['blue']['team_keys']
 
 # createChecklistItem() creates a checklist item of the highest priority.
 def createChecklistItem(name, api, projectID, item, date):
@@ -88,7 +105,8 @@ todoistToken = configParser.get('Settings', 'TodoistToken')
 # Setup Todoist
 api = todoist.TodoistAPI(todoistToken)
 api.sync()
-projectID = getProjectID(api, 'Test')
+projectID = getProjectID(api, 'Test01')
+items = api.state['items']
 
 # Setup the Blue Alliance
 tba = tbapy.TBA(tbaKey)
@@ -99,26 +117,56 @@ day1 = (dt.datetime.strptime(setupDay, '%Y-%m-%d') + dt.timedelta(days=1)).strft
 day2 = event['end_date']
 teams = sorted(tba.event_teams(eventKey), key=operator.attrgetter('team_number'))
 
-# Create checklist
-checklist = api.items.add('{} Photos'.format(event['name']),
-                          project_id=projectID,
-                          date_string=day2,
-                          priority=2)
+def firstMatch(team, matches):
+    for match in matches:
+        red, blue = matchToTeamList(match)
+        if team in red:
+            return match, 'red'
+        elif team in blue:
+            return match, 'blue'
+    return None, None
 
-# Setup
-createPitList(api, teams, projectID, checklist, setupDay)
-createChecklistItem('**Schedule** Judges photo', api, projectID, checklist, setupDay)
-createChecklistItem('**Schedule** Inspectors photo', api, projectID, checklist, setupDay)
-createChecklistItem('**Schedule** Seniors photo', api, projectID, checklist, setupDay)
-createGroupsList(api, projectID, checklist, setupDay)
-# Day 1
-createPhotoChecklistItem('Guest Speakers', api, projectID, checklist, day1)
-createRobotList(api, teams, projectID, checklist, day1)
-# Day 2
-createPhotoChecklistItem('Guest Speakers', api, projectID, checklist, day2)
-createPhotoChecklistItem('Mentors after parade', api, projectID, checklist, day2)
-createPhotoChecklistItem('Seniors', api, projectID, checklist, day2)
-createPhotoChecklistItem('Alliances Representatives', api, projectID, checklist, day2)
-createWinnersList(api, projectID, checklist, day2)
-createChecklistItem('**Email** guest speakers and winners photos', api, projectID, checklist, day2)
+# Check if list already exists
+eventListID = getEventListID(items, event)
+if eventListID == -1:
+    # Create checklist
+    checklist = api.items.add(getChecklistName(event),
+                              project_id=projectID,
+                              date_string=day2,
+                              priority=2)
+    # Setup
+    createPitList(api, teams, projectID, checklist, setupDay)
+    createChecklistItem('**Schedule** Judges photo', api, projectID, checklist, setupDay)
+    createChecklistItem('**Schedule** Inspectors photo', api, projectID, checklist, setupDay)
+    createChecklistItem('**Schedule** Seniors photo', api, projectID, checklist, setupDay)
+    createGroupsList(api, projectID, checklist, setupDay)
+    # Day 1
+    createPhotoChecklistItem('Guest Speakers', api, projectID, checklist, day1)
+    createRobotList(api, teams, projectID, checklist, day1)
+    # Day 2
+    createPhotoChecklistItem('Guest Speakers', api, projectID, checklist, day2)
+    createPhotoChecklistItem('Mentors after parade', api, projectID, checklist, day2)
+    createPhotoChecklistItem('Seniors', api, projectID, checklist, day2)
+    createPhotoChecklistItem('Alliances Representatives', api, projectID, checklist, day2)
+    createWinnersList(api, projectID, checklist, day2)
+    createChecklistItem('**Email** guest speakers and winners photos', api, projectID, checklist, day2)
+else:
+    print('List already created')
+    matches = sorted(tba.event_matches(eventKey), key=operator.attrgetter('time'))
+    if not matches:
+        print('No match schedule yet')
+    else:
+        photoParentID = [item['id'] for item in items if 'parent_id' in item
+                         and item['parent_id'] == eventListID
+                         and 'Robot Photos' in item['content']][0]
+        robotPhotoList = [item for item in items if 'Robot photo of' in item['content']
+                          and item['parent_id'] == photoParentID]
+        for robot in robotPhotoList:
+            if 'match' not in robot['content']:
+                team = 'frc{}'.format(re.findall(r'\d+', robot['content'])[0])
+                match, side = firstMatch(team, matches)
+                if match != None:
+                    matchNumber = match['match_number']
+                    matchTime = dt.datetime.fromtimestamp(match['time']).strftime('%Y-%m-%d %I:%M %p')
+                    robot.update(date_string=matchTime, content='{} match {} {}'.format(robot['content'], matchNumber, side))
 api.commit()
