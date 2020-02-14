@@ -7,6 +7,7 @@ import datetime as dt
 import re
 import operator
 import os
+import sys
 import tbapy
 import todoist
 
@@ -105,12 +106,12 @@ todoistToken = configParser.get('Settings', 'TodoistToken')
 # Setup Todoist
 api = todoist.TodoistAPI(todoistToken)
 api.sync()
-projectID = getProjectID(api, 'Test01')
+projectID = getProjectID(api, '🤖 Robotics')
 items = api.state['items']
 
 # Setup the Blue Alliance
 tba = tbapy.TBA(tbaKey)
-eventKey = '2020ncpem'
+eventKey = sys.argv[1]
 event = tba.event(eventKey)
 setupDay = event['start_date']
 day1 = (dt.datetime.strptime(setupDay, '%Y-%m-%d') + dt.timedelta(days=1)).strftime('%Y-%m-%d')
