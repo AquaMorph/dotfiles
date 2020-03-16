@@ -32,14 +32,31 @@ bind G10 KEY_A
 bind G11 KEY_S
 bind G12 KEY_D
 bind G22 KEY_SPACE
-bind STICK_UP KEY_RIGHTSHIFT
+
+# Weapon Select
+## Pistol
+bind STICK_DOWN KEY_1
+## Rocket Launcher
+bind STICK_LEFT KEY_5
+## Heavy Assault Rifle
+bind STICK_RIGHT KEY_4
+# Combat Shotgun
+bind STICK_UP KEY_2
+# Chaingun
+bind G3 KEY_8
+# Super Shotgun
+bind DOWN KEY_6
+
+
+# Other
+## Use
+bind G6 KEY_E
 
 bind G20 KEY_RIGHTCTRL
 bind G15 KEY_RIGHTCTRL
 
 # Other
-bind G6 KEY_R
-bind DOWN KEY_E
+bind GR KEY_R
 bind LEFT KEY_F
 
 bind G18 KEY_C
