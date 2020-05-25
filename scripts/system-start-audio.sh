@@ -24,7 +24,7 @@ wait %1
 ladish_control sload studio
 
 # Make start up reliable
-for i in {1..8}; do
+for i in {1..10}; do
     killPulse
     pulseaudio -D
 done
