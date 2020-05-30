@@ -6,6 +6,19 @@ function killPulse() {
     killall pulseaudio
 }
 
+# Start Pulseaudio properly
+function fixPulse() {
+    PULSE="$(alsamixer 2>&1 | killall alsamixer)"
+    if [[ $PULSE == *'Connection refused'* ]]; then
+	echo 'Fixing Pulseaudio'
+	pulseaudio -k
+	pulseaudio -D
+	fixPulse
+    else
+	echo 'Pulseaudio is working correctly'
+    fi
+}
+
 # arg parser
 for arg in "$@"
 do
@@ -24,10 +37,8 @@ wait %1
 ladish_control sload studio
 
 # Make start up reliable
-for i in {1..10}; do
-    killPulse
-    pulseaudio -D
-done
+killPulse
+fixPulse
 
 # Eurorack audio interface
 sh ~/.config/scripts/start-es-8.sh 
