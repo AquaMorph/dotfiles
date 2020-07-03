@@ -1,5 +1,5 @@
 configuration {
-/*	modi: "window,run,ssh";*/
+	modi: "window,run,ssh";
 	width: 30;
 	lines: 10;
 /*	columns: 1;*/
@@ -10,7 +10,7 @@ configuration {
 /*	yoffset: 0;*/
 /*	xoffset: 0;*/
 /*	fixed-num-lines: true;*/
-/*	show-icons: false;*/
+	show-icons: true;
 	terminal: "alacritty";
 /*	ssh-client: "ssh";*/
 /*	ssh-command: "{terminal} -e {ssh-client} {host} [-p {port}]";*/
@@ -34,7 +34,7 @@ configuration {
 /*	auto-select: false;*/
 /*	parse-hosts: false;*/
 /*	parse-known-hosts: true;*/
-/*	combi-modi: "window,run";*/
+	combi-modi: "window,run,drun,ssh";
 /*	matching: "normal";*/
 /*	tokenize: true;*/
 /*	m: "-5";*/
@@ -67,8 +67,8 @@ configuration {
 /*	display-windowcd: ;*/
 	display-run: "run: ";
 	display-ssh: "ssh: ";
-/*	display-drun: ;*/
-/*	display-combi: ;*/
+	display-drun: "drun: ";
+	display-combi: "combi: ";
 /*	display-keys: ;*/
 /*	kb-primary-paste: "Control+V,Shift+Insert";*/
 /*	kb-secondary-paste: "Control+v,Insert";*/
