@@ -16,4 +16,18 @@ bind G12 KEY_D
 bind G3 KEY_Q
 bind G5 KEY_E
 
+# Pause
+bind G22 KEY_P
+
+# Path Length
+bind M3 KEY_MINUS
+bind MR KEY_EQUAL
+# Path Width
+bind M1 KEY_LEFTBRACE
+bind M2 KEY_RIGHTBRACE
+
+# History
+bind G1 KEY_LEFTCTRL+KEY_Z
+bing G2 KEY_LEFTCTRL+KEY_Y
+
 rgb 0 120 181
