@@ -1,5 +1,5 @@
 configuration {
-	modi: "window,run,ssh";
+	modi: "window,drun,ssh";
 	width: 30;
 	lines: 10;
 	columns: 1;
@@ -44,14 +44,14 @@ configuration {
 /*	separator-style: "dash";*/
 /*	hide-scrollbar: false;*/
 	fullscreen: false;
-/*	fake-transparency: false;*/
+	fake-transparency: false;
 /*	dpi: -1;*/
 /*	threads: 0;*/
-/*	scrollbar-width: 8;*/
-/*	scroll-method: 0;*/
+	scrollbar-width: 0;
+	scroll-method: 0;
 /*	fake-background: "screenshot";*/
 /*	window-format: "{w}    {c}   {t}";*/
-/*	click-to-exit: true;*/
+	click-to-exit: true;
 /*	show-match: true;*/
 	theme: aqua; 
 /*	color-normal: ;*/
