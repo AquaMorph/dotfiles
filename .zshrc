@@ -29,3 +29,7 @@ alias p='git pull'
 alias gp='git push'
 
 export TERM=xterm
+
+# Daisy build toolkit
+GCC_PATH=~/dev/gcc-arm-none-eabi-9-2020-q2-update/bin
+export PATH=$GCC_PATH:$PATH
