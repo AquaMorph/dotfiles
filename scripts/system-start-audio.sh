@@ -2,6 +2,8 @@
 
 # Kill Pulse
 function killPulse() {
+    systemctl --user stop pulseaudio.socket
+    systemctl --user stop pulseaudio.service
     pulseaudio -k
     killall pulseaudio
 }
@@ -12,6 +14,7 @@ function fixPulse() {
     if [[ $PULSE == *'Connection refused'* ]]; then
 	echo 'Fixing Pulseaudio'
 	killPulse
+	sleep 0.1
 	pulseaudio -D
 	fixPulse
     else
@@ -48,6 +51,7 @@ ladish_control sload studio
 # Make start up reliable
 killPulse
 fixPulse
+pulseaudio -D
 
 # Eurorack audio interface
 sh ~/.config/scripts/start-es-8.sh 
