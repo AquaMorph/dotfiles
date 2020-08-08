@@ -25,4 +25,7 @@ bind LEFT KEY_LEFTSHIFT
 # Show names
 bind DOWN KEY_TAB
 
+# Other
+bind G1 KEY_ESC
+
 rgb 0 128 180
