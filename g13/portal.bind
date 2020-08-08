@@ -1,0 +1,31 @@
+# Portal
+stickzone del STICK_PAGEUP
+stickzone del STICK_PAGEDOWN
+stickzone bounds STICK_LEFT 0.0 0.3 0.2 0.7
+stickzone bounds STICK_RIGHT 0.8 0.3 1.0 0.7
+stickzone bounds STICK_UP 0.3 0.0 0.7 0.2
+stickzone bounds STICK_DOWN 0.3 0.8 0.7 1.0
+
+# Character Movement
+bind G4 KEY_W
+bind G10 KEY_A
+bind G11 KEY_S
+bind G12 KEY_D
+bind G22 KEY_SPACE
+bind G20 KEY_RIGHTCTRL
+bind G15 KEY_RIGHTCTRL
+
+
+# Pickup/Use Object
+bind G6 KEY_E
+
+# Pause
+bind G1 KEY_ESC
+
+# Ping
+bind DOWN KEY_F
+
+# Gesture (co-op)
+bind LEFT KEY_Q
+
+rgb 61 189 238
