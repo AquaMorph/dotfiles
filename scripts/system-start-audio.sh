@@ -54,7 +54,7 @@ fixPulse
 pulseaudio -D
 
 # Eurorack audio interface
-sh ~/.config/scripts/start-es-8.sh 
-sh ~/.config/scripts/start-es-9.sh
+sh ~/.config/scripts/es8start.sh 
+sh ~/.config/scripts/es9start.sh
 
 launchi3

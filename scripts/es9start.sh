@@ -14,5 +14,5 @@ if test -z "$DEVICENUM"
 fi
 
 # Start up audio interface
-alsa_in -d hw:$DEVICENUM -j "$DEVICENAME In" -q 1 &
-alsa_out -d hw:$DEVICENUM -j "$DEVICENAME Out" -q 1 &
+alsa_in -d hw:$DEVICENUM -j "$DEVICENAME In" -c 16 -q 1 &
+alsa_out -d hw:$DEVICENUM -j "$DEVICENAME Out" -c 16 -q 1 &
