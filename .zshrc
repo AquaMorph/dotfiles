@@ -16,7 +16,7 @@ alias e='emacs -nw'
 # Other
 alias i='sudo dnf install'
 alias d='sudo dnf'
-alias u='sudo dnf update; flatpak update'
+alias u='sh ~/.config/scripts/update.sh'
 alias dot='cd ~/dotfiles'
 # Git
 alias c='git commit -m'
