@@ -1,4 +1,4 @@
-sh ~/.config/scripts/install.sh -nr
+sh ~/.config/scripts/setup.sh -nr
 
 # Load user settings from config file.
 . ~/.config/settings.conf
