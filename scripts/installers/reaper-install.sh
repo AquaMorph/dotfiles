@@ -22,7 +22,7 @@ wget $url
 # Install Reaper. Requires user input
 tar -xf $(basename $url)
 reaperDir=reaper_linux_x86_64
-sudo sh ./$reaperDir/install-reaper.sh
+sudo sh ./$reaperDir/install-reaper.sh --install /opt --integrate-sys-desktop --usr-local-bin-symlink
 
 # Delete extracted directory
 rm -rd $reaperDir
