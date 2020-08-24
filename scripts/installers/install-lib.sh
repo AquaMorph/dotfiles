@@ -1,4 +1,4 @@
-# Program version number comparison
+# Program version number comparison.
 function versionGreater() {
     if [[ $1 == $2 ]];then
         return 0
@@ -24,14 +24,25 @@ function versionGreater() {
     return 0
 }
 
-# Check if installed to the most recent version
+# Check if installed to the most recent version.
 function checkUptoDate() {
     if versionGreater $2 $3; then
-	echo $1 is up to date. Installed version $2 Web version $3
+	echo $1 is up to date. Installed version $2 web version $3
 	exit
+    else
+	echo Updating $1 from $2 to $3...
     fi
 }
 
+# Filters string to Semantic Versioning.
 function filterVersion() {
-    grep -Go [0-9]\.[0-9]\.[0-9]
+    grep -Po -m 1 '\d{1,4}\.\d{1,4}\.\d{1,4}'
+}
+
+# Downloads a file to the given download directory with
+# the given name.
+function downloadPackage() {
+    mkdir -p ~/Downloads/installers/$1
+    cd ~/Downloads/installers/$1
+    wget -O $3 $2
 }

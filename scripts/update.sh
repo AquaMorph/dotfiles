@@ -30,7 +30,7 @@ function flatpakUpdate {
 # Checks if a program is installed and if it is runs an updater script
 function updateProgram {
     if command -v $1 &> /dev/null; then
-	sudo sh $2
+	sh $2
     fi
 }
 
@@ -41,6 +41,7 @@ function manualUpdate {
 	updateProgram bitwig-studio ~/.config/scripts/installers/bitwig-install.sh
 	updateProgram dragonframe ~/.config/scripts/installers/dragonframe-install.sh
 	updateProgram reaper ~/.config/scripts/installers/reaper-install.sh
+	updateProgram /opt/resolve/bin/resolve ~/.config/scripts/installers/resolve-install.sh
     fi
 }
 
