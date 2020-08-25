@@ -6,13 +6,15 @@
 source $(dirname ${BASH_SOURCE[0]})/install-lib.sh
 
 dragonframe=$(sudo dnf list | grep dragonframe)
-dragonframeVersion=$(echo $dragonframe | awk '{print $2;}')
+dragonframeVersion=$(echo $dragonframe | awk '{print $2;}' | filterVersion)
 url=$(curl -s https://www.dragonframe.com/downloads/ | grep .rpm | grep downloadButton | grep -Po '(?<=href=")[^"]*.rpm')
 urlVersion=$(echo $url | awk -F "-" '{ print $2 }')
 
 # Check if installed to the most recent version
 checkUptoDate dragonframe $dragonframeVersion $urlVersion
 echo Installing Dragonframe $urlVersion
+
+exit
 
 # Setting up and downloading package
 mkdir -p ~/Downloads/installers
