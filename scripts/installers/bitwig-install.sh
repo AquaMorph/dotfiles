@@ -15,9 +15,7 @@ checkUptoDate Bitwig $bitwigVersion $urlVersion
 echo Installing Bitwig Studio $urlVersion
 
 # Setting up and downloading package
-mkdir -p ~/Downloads/installers
-cd ~/Downloads/installers
-wget $url
+downloadPackage bitwig $url $(basename $url)
 
 # Converting to Fedora friendly package
 echo Creating rpm package

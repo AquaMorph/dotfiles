@@ -15,9 +15,7 @@ url=$reaperSite$(echo "$downloadPage" | grep linux_x86_64 | grep -Po '(?<=href="
 checkUptoDate Reaper $reaperVersion $urlVersion
 
 # Setting up and downloading package
-mkdir -p ~/Downloads/installers
-cd ~/Downloads/installers
-wget $url
+downloadPackage reaper $url $(basename $url)
 
 # Install Reaper. Requires user input
 tar -xf $(basename $url)
