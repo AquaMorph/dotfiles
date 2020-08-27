@@ -51,7 +51,7 @@ downloadPackage resolve $zipUrl $packageName
 # Installing package
 sudo dnf install libxcrypt-compat
 unzip -o $packageName
-sudo ./*16.2.5*.run -i -y
+sudo ./*${urlVersion}*.run -i -y
 
 # Graphics card fix
 sudo rm /etc/OpenCL/vendors/mesa.icd
