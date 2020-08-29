@@ -1,0 +1,23 @@
+# Two Point Hospital
+
+# Setup stick bounds
+stickzone del STICK_PAGEUP
+stickzone del STICK_PAGEDOWN
+stickzone bounds STICK_LEFT 0.0 0.3 0.2 0.7
+stickzone bounds STICK_RIGHT 0.8 0.3 1.0 0.7
+stickzone bounds STICK_UP 0.3 0.0 0.7 0.2
+stickzone bounds STICK_DOWN 0.3 0.8 0.7 1.0
+
+# Camera Movement
+bind G4 KEY_W
+bind G10 KEY_A
+bind G11 KEY_S
+bind G12 KEY_D
+bind G3 KEY_Q
+bind G5 KEY_E
+
+# Rotate objects
+bind STICK_LEFT KEY_Z
+bind STICK_RIGHT KEY_X
+
+rgb 12 167 145
