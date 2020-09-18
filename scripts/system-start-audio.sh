@@ -26,8 +26,10 @@ function fixPulse() {
 function launchi3() {
     if [ -z "$skipi3" ]; then
 	echo Opening i3wm sound workspaces
-	sleep .1 && i3-msg 'workspace 10; exec google-play-music-desktop-player'
 	sleep .1 && i3-msg 'workspace 5; exec firefox'
+	sleep .1 && i3-msg 'workspace 10; exec firefox --new-window music.youtube.com'
+	sleep .1 && python python ~/.config/scripts/launch-stocks-tracker.py
+	sleep .1 && i3-msg 'workspace 10; exec firefox --new-window youtube.com/feed/subscriptions'
     fi
 }
 
@@ -45,7 +47,7 @@ killPulse
 
 # Start up jack
 cadence-session-start --system-start &
-wait %1
+wait %1 && sleep 1
 ladish_control sload studio
 
 # Make start up reliable

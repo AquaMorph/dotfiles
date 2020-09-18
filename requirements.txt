@@ -1,1 +1,1 @@
-configparser todoist-python tbapy
+configparser todoist-python tbapy holidays
