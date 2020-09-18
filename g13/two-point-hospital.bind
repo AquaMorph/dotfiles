@@ -20,4 +20,8 @@ bind G5 KEY_E
 bind STICK_LEFT KEY_Z
 bind STICK_RIGHT KEY_X
 
+# Other
+bind G22 KEY_SPACE
+bing G1 KEY_ESC
+
 rgb 12 167 145
