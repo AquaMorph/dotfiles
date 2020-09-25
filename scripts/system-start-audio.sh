@@ -27,9 +27,7 @@ function launchi3() {
     if [ -z "$skipi3" ]; then
 	echo Opening i3wm sound workspaces
 	sleep .1 && i3-msg 'workspace 5; exec firefox'
-	sleep .1 && i3-msg 'workspace 10; exec firefox --new-window music.youtube.com'
-	sleep .1 && python python ~/.config/scripts/launch-stocks-tracker.py
-	sleep .1 && i3-msg 'workspace 10; exec firefox --new-window youtube.com/feed/subscriptions'
+	sleep .1 && python ~/.config/scripts/start-firefox.py
     fi
 }
 
