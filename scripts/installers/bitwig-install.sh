@@ -5,10 +5,12 @@
 # Import library
 source $(dirname ${BASH_SOURCE[0]})/install-lib.sh
 
+site='https://www.bitwig.com/download/'
 bitwig=$(sudo dnf list | grep bitwig-studio)
 bitwigVersion=$(echo $bitwig | awk '{print $2;}'| filterVersion)
-url=$(curl -s https://www.bitwig.com/en/download.html | grep .deb | grep -Po '(?<=href=")[^"]*.deb')
-urlVersion=$(echo $url | awk -F "-" '{ print $3 }' | rev | cut -f 2- -d '.' | rev)
+downloadPage=$(curl -s $site)
+urlVersion=$(echo $downloadPage | filterVersion | head -n 1) # grep -Po 'Bitwig Studio \d{1,4}\.\d{1,4}\.\d{1,4}')
+url=https://downloads-na.bitwig.com/stable/$urlVersion/bitwig-studio-$urlVersion.deb
 
 checkUptoDate Bitwig $bitwigVersion $urlVersion
 
