@@ -14,8 +14,6 @@ urlVersion=$(echo $url | awk -F "-" '{ print $2 }')
 checkUptoDate dragonframe $dragonframeVersion $urlVersion
 echo Installing Dragonframe $urlVersion
 
-exit
-
 # Setting up and downloading package
 mkdir -p ~/Downloads/installers
 cd ~/Downloads/installers
