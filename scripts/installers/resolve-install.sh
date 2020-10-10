@@ -5,12 +5,19 @@
 # Import library
 source $(dirname ${BASH_SOURCE[0]})/install-lib.sh
 
+versionFile=/opt/resolve/version.txt
+
 resolveVersion=$(cat /opt/resolve/docs/ReadMe.html | grep 'DaVinci Resolve Studio' | filterVersion)
 url=$(python $(dirname ${BASH_SOURCE[0]})/blackmagic-parser.py | head -n 1)
 urlVersion=$(echo $url |  awk '{print $1;}')
 downloadID=$(echo $url |  awk '{print $2;}')
 referId=$(echo $url |  awk '{print $3;}')
 packageName="DaVinci_Resolve_Studio_${urlVersion}.zip"
+
+# Get version if beta installed
+if [ -n $resolveVersion ]; then
+    resolveVersion=$(cat $versionFile)
+fi
 
 checkUptoDate Resolve $resolveVersion $urlVersion
 
@@ -45,6 +52,9 @@ zipUrl="$(curl \
             --compressed \
             "$downloadUrl")"
 
+echo $url
+exit
+
 # Setting up and downloading package
 downloadPackage resolve $zipUrl $packageName
 
@@ -52,6 +62,9 @@ downloadPackage resolve $zipUrl $packageName
 sudo dnf install libxcrypt-compat
 unzip -o $packageName
 sudo ./*${urlVersion}*.run -i -y
+
+# Version number backup
+sudo echo $urlVersion > $versionFile
 
 # Graphics card fix
 sudo rm /etc/OpenCL/vendors/mesa.icd
