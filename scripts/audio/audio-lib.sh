@@ -22,6 +22,19 @@ function getCardNumber() {
     echo $(cat /proc/asound/cards | grep -m 1 $1 | grep -Po '\d{1,2}' | head -1)
 }
 
+# Checks if the card exists and if not exits.
+#
+# $1 card name
+# $2 card number
+function checkCard() {
+    if [ -z "$2" ]; then
+	echo $1 not connected
+	exit 1
+    else
+	echo $1 found at hw:$2
+    fi
+}
+
 # Prints a list of all controls for the given sound card.
 function printControls() {
     amixer -c $1 controls

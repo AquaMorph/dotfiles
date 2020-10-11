@@ -27,7 +27,7 @@ function launchi3() {
     if [ -z "$skipi3" ]; then
 	echo Opening i3wm sound workspaces
 	sleep .1 && i3-msg 'workspace 5; exec firefox'
-	sleep .1 && python ~/.config/scripts/start-firefox.py
+	sleep 8 && python ~/.config/scripts/start-firefox.py
     fi
 }
 
@@ -54,7 +54,7 @@ fixPulse
 pulseaudio -D
 
 # Eurorack audio interface
-sh ~/.config/scripts/es8start.sh 
-sh ~/.config/scripts/es9start.sh
+sh ~/.config/scripts/audio/es8start.sh 
+sh ~/.config/scripts/audio/es9start.sh
 
 launchi3

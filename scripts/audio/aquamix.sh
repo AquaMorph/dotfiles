@@ -7,6 +7,7 @@ source $(dirname ${BASH_SOURCE[0]})/audio-lib.sh
 
 INTERFACE_NAME='Scarlett 18i20'
 INTERFACE_NUM=$(getCardNumber $INTERFACE_NAME)
+checkCard $INTERFACE_NAME $INTERFACE_NUM
 
 # Sets the volume levels of the first mono instrument.
 #
