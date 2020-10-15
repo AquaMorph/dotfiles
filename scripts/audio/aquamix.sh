@@ -7,7 +7,7 @@ source $(dirname ${BASH_SOURCE[0]})/audio-lib.sh
 
 INTERFACE_NAME='Scarlett 18i20'
 INTERFACE_NUM=$(getCardNumber $INTERFACE_NAME)
-checkCard $INTERFACE_NAME $INTERFACE_NUM
+checkCard "$INTERFACE_NAME" "$INTERFACE_NUM"
 
 # Sets the volume levels of the first mono instrument.
 #
@@ -85,6 +85,33 @@ function setInstruments() {
     setStereoTwo $1 $2 $3
 }
 
-setInstruments $ZERO_DB
-setMic $MUTE
-setComputerAudio $ZERO_DB
+function DAWMode() {
+    setInstruments $MUTE
+    setMic $MUTE
+    setComputerAudio $ZERO_DB
+}
+
+function NormalMode() {
+    setInstruments $ZERO_DB
+    setMic $MUTE
+    setComputerAudio $ZERO_DB
+}
+
+function PrintHelp() {
+    echo AquaMixer
+    echo '-h --help    print out help options'
+    echo '-d --daw     set interface to DAW mode'
+    echo '-n --normal  set interface to normal mode'
+    exit 0
+}
+
+for var in "$@"; do
+    if [ $var == '-h' ] || [ $var == '--help' ]; then
+	PrintHelp
+    elif [ $var == '-d' ] || [ $var == '--daw' ]; then
+	DAWMode
+    elif [ $var == '-n' ] || [ $var == '--normal' ]; then
+	NormalMode
+    fi
+done
+
