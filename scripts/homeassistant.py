@@ -6,12 +6,16 @@ from requests import get, post
 import json
 
 class HomeAssistant(object):
+
+    # Initalizes Home Assistant API wrapper.
     def __init__(self, ip, token):
         self.url = 'http://{}:8123'.format(ip)
         self.headers = {
             'Authorization': 'Bearer {}'.format(token),
             'content-type': 'application/json',
         }
+
+    # Sends post requests.
     def postService(self, domain, service, data):
         response = post("{}/api/services/{}/{}".format(self.url,
                                                        domain,
@@ -19,10 +23,12 @@ class HomeAssistant(object):
                         headers=self.headers, data=json.dumps(data))
         response.raise_for_status()
         return response
-    def getRequest(self, domain, data=''):
+
+    # Sends get requests and turns requested data.
+    def getRequest(self, domain):
         response = get("{}/api/{}".format(self.url, domain),
-                        headers=self.headers, data=json.dumps(data))
-        return response.text
+                        headers=self.headers)
+        return json.loads(response.text)
 
     # Returns a message if the API is up and running.
     def getAPI(self):
@@ -95,7 +101,35 @@ class HomeAssistant(object):
     # Returns the data (image) from the specified camera entity_id.
     def getCameraProxy(self, entityId):
         return self.getRequest('camera_proxy/' + entityId)
-    
+
+    # Runs a Home Assistant scene.
     def runScene(self, entityId):
         data = {'entity_id': entityId}
         self.postService('scene', 'turn_on', data)
+
+    # Runs a Home Assistant script.
+    def runScript(self, entityId):
+        data = {'entity_id': entityId}
+        self.postService('script', 'turn_on', data)
+
+    # Sets the brightness level of a device.
+    def setLevel(self, entityId, level):
+        data = {'entity_id': entityId, 'brightness_pct': level}
+        self.postService('homeassistant', 'turn_on', data)
+
+    # Turns a device off.
+    def turnOn(self, entityId):
+        data = {'entity_id': entityId}
+        self.postService('homeassistant', 'turn_on', data)
+
+    # Turns a device on.
+    def turnOff(self, entityId):
+        data = {'entity_id': entityId}
+        self.postService('homeassistant', 'turn_off', data)
+
+    # Turns a device of the given power state.
+    def setOnOff(self, entityId, power):
+        if power:
+            self.turnOn(entityId)
+        else:
+            self.turnOff(entityId)
