@@ -9,6 +9,11 @@ Run the following command to install
 ```sh
 cd ~ && git clone git@github.com:AquaMorph/dotfiles.git && sh ~/dotfiles/scripts/setup.sh
 ```
+Install the needed Python packages
+
+```sh
+pip install -r requirements.txt
+```
 
 ## Scripts
 
