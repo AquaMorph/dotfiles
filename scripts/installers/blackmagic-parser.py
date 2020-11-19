@@ -1,5 +1,6 @@
 import json
 import os
+import re
 import urllib.request
 
 # getJSONData returns JSON data from Blackmagic Design's website.
@@ -31,7 +32,13 @@ def getURLId(url):
 
 # getURLVersion() returns the url version number.
 def getURLVersion(url):
-    return '{}.{}.{}'.format(url['major'], url['minor'], url['releaseNum'])
+    if 'Beta' in url['downloadTitle']:
+        beta = re.search('Beta \d+', url['downloadTitle'])
+        if beta:
+            beta = re.search('\d+', beta.group()).group()
+    else:
+        beta = '99'
+    return '{}.{}.{}.{}'.format(url['major'], url['minor'], url['releaseNum'], beta)
 
 # getDownloadId() returns downlaod id hash.
 def getDownloadId(download):

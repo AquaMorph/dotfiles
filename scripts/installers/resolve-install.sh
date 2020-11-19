@@ -52,9 +52,6 @@ zipUrl="$(curl \
             --compressed \
             "$downloadUrl")"
 
-echo $url
-exit
-
 # Setting up and downloading package
 downloadPackage resolve $zipUrl $packageName
 
