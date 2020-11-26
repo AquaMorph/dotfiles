@@ -5,7 +5,8 @@
 import argparse
 import configparser
 import os,sys,inspect
-currentDir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+currentDir = os.path.dirname(os.path.abspath(
+    inspect.getfile(inspect.currentframe())))
 parentDir = os.path.dirname(currentDir)
 sys.path.insert(0, parentDir) 
 from homeassistant import HomeAssistant
@@ -44,7 +45,8 @@ def setSynthsPower(state):
     setHydrasynthPower(state)
     setMatrixBrutePower(state)
 
-parser = argparse.ArgumentParser(description='Control power state of synthesizers.')
+parser = argparse.ArgumentParser(
+    description='Control power state of synthesizers.')
 parser.add_argument('-d', '--daw', action='store_true',
                     help='enable DAW mode',
                     dest='daw', default=False, required=False)

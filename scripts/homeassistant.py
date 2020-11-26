@@ -133,3 +133,10 @@ class HomeAssistant(object):
             self.turnOn(entityId)
         else:
             self.turnOff(entityId)
+
+    # Toggles power state of a given device.
+    def togglePower(self, entityId):
+        if self.getState(entityId)['state'] == 'off':
+            self.turnOn(entityId)
+        else:
+            self.turnOff(entityId)
