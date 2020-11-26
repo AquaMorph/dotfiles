@@ -8,8 +8,7 @@ source $(dirname ${BASH_SOURCE[0]})/install-lib.sh
 site='https://www.bitwig.com/download/'
 bitwig=$(sudo dnf list | grep bitwig-studio)
 bitwigVersion=$(echo $bitwig | awk '{print $2;}'| filterVersion)
-downloadPage=$(curl -s $site)
-urlVersion=$(echo $downloadPage | filterVersion | head -n 1) # grep -Po 'Bitwig Studio \d{1,4}\.\d{1,4}\.\d{1,4}')
+urlVersion=$(curl -s $site | grep 'Bitwig Studio' | filterVersion | head -n 1)
 url=https://downloads-na.bitwig.com/stable/$urlVersion/bitwig-studio-$urlVersion.deb
 
 checkUptoDate Bitwig $bitwigVersion $urlVersion

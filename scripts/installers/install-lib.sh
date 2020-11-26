@@ -36,7 +36,7 @@ function checkUptoDate() {
 
 # Filters string to Semantic Versioning.
 function filterVersion() {
-    grep -Po -m 1 '\d{1,4}\.\d{1,4}\.\d{1,4}'
+    grep -Po -m 1 '\d{1,4}\.\d{1,4}\.*\d{0,4}'
 }
 
 # Downloads a file to the given download directory with
