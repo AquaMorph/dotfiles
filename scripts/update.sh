@@ -38,11 +38,12 @@ function updateProgram {
 function manualUpdate {
     if command -v dnf &> /dev/null; then
 	echo Updating manually installed programs...
-	updateProgram bitwig-studio ~/.config/scripts/installers/bitwig-install.sh
-	updateProgram dragonframe ~/.config/scripts/installers/dragonframe-install.sh
-	updateProgram reaper ~/.config/scripts/installers/reaper-install.sh
-	updateProgram /opt/resolve/bin/resolve ~/.config/scripts/installers/resolve-install.sh
-	updateProgram keeweb ~/dotfiles/scripts/installers/keeweb-install.sh
+	updateProgram bitwig-studio ~/.config/scripts/installers/bitwig-install.sh &
+	updateProgram dragonframe ~/.config/scripts/installers/dragonframe-install.sh &
+	updateProgram reaper ~/.config/scripts/installers/reaper-install.sh &
+	updateProgram /opt/resolve/bin/resolve ~/.config/scripts/installers/resolve-install.sh &
+	updateProgram /opt/keeweb/keeweb ~/dotfiles/scripts/installers/keeweb-install.sh &
+	wait
     fi
 }
 
