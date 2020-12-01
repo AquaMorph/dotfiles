@@ -12,7 +12,18 @@ url=$(python $(dirname ${BASH_SOURCE[0]})/blackmagic-parser.py | head -n 1)
 urlVersion=$(echo $url |  awk '{print $1;}')
 downloadID=$(echo $url |  awk '{print $2;}')
 referId=$(echo $url |  awk '{print $3;}')
-packageName="DaVinci_Resolve_Studio_${urlVersion}.zip"
+
+# Check for beta
+major=$(echo $urlVersion | cut -d. -f1)
+minor=$(echo $urlVersion | cut -d. -f2)
+micro=$(echo $urlVersion | cut -d. -f3)
+beta=$(echo $urlVersion | cut -d. -f4)
+
+if [ -n "$beta" ]; then
+    packageName="DaVinci_Resolve_Studio_${major}.${minor}b${beta}"
+else
+    packageName="DaVinci_Resolve_Studio_${urlVersion}"
+fi
 
 # Get version if beta installed
 if [ -n $resolveVersion ]; then
@@ -53,12 +64,12 @@ zipUrl="$(curl \
             "$downloadUrl")"
 
 # Setting up and downloading package
-downloadPackage resolve $zipUrl $packageName
+downloadPackage resolve $zipUrl "${packageName}.zip"
 
 # Installing package
 sudo dnf install libxcrypt-compat
 unzip -o $packageName
-sudo ./*${urlVersion}*.run -i -y
+sudo ./*${packageName}*.run -i -y
 
 # Version number backup
 sudo echo $urlVersion > $versionFile
