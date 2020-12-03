@@ -6,10 +6,10 @@
 source $(dirname ${BASH_SOURCE[0]})/install-lib.sh
 
 # Get download url
-reaperVersion=$(head /opt/REAPER/whatsnew.txt |  grep -Go '[0-9]\.[0-9][0-9]')
+reaperVersion=$(head /opt/REAPER/whatsnew.txt | filterVersion)
 reaperSite='https://www.reaper.fm/'
 downloadPage=$(curl -s ${reaperSite}download.php)
-urlVersion=$(echo "$downloadPage" | grep -A 2 'Linux x86_64' | grep -Go '[0-9]\.[0-9][0-9]')
+urlVersion=$(echo "$downloadPage" | grep -A 2 'Linux x86_64' | filterVersion)
 url=$reaperSite$(echo "$downloadPage" | grep linux_x86_64 | grep -Po '(?<=href=")[^"]*')
 
 checkUptoDate Reaper $reaperVersion $urlVersion
