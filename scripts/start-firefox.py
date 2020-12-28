@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from i3ipc import Connection, Event
-import os
+import os, time
 
 # moveWindowToWorkspace() moves a given window to a given workspace.
 def moveWindowToWorkspace(window, workspace):
@@ -30,10 +30,19 @@ def filterWindowsByClass(windowClass, windows):
 def doesWindowExist(window):
     return window != None
 
+# switchWorkspace() switches currently selected workspace.
+def switchWorkspace(workspace):
+    i3.command('workspace ' + workspace)
+
+# execI3() runs a command from i3wm.
+def execI3(program):
+    i3.command('exec ' + program)
+
 # launchProgram() launches a program on a given workspace.
 def launchProgram(program, workspace):
-    i3.command('workspace ' + workspace + '; exec ' + program)
-
+    switchWorkspace(workspace)
+    execI3(program)
+    
 # isProgramRunning() returns if a program is running and if it is
 # moves it to a given workspace.
 def isProgramRunning(name, windows, workspace):
@@ -45,10 +54,12 @@ def isProgramRunning(name, windows, workspace):
 
 i3 = Connection()
 firefoxWindows = filterWindowsByClass('Firefox', getWindows(i3))
+switchWorkspace('10')
+switchWorkspace('1')
 
 # Music
 if not isProgramRunning('YouTube Music', firefoxWindows, '10'):
-    launchProgram('exec firefox --new-window music.youtube.com', '10')
+    launchProgram('firefox --new-window music.youtube.com', '10')
 
 # Stocks
 if not isProgramRunning('Robinhood', firefoxWindows, '10'):
