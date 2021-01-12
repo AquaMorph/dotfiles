@@ -5,7 +5,7 @@
 # Import library
 source $(dirname ${BASH_SOURCE[0]})/install-lib.sh
 
-keeweb=$(sudo dnf list | grep KeeWeb)
+keeweb=$(searchProgramInstalled KeeWeb)
 keewebVersion=$(echo $keeweb | awk '{print $2;}' | filterVersion)
 url=$(curl -s https://github.com/keeweb/keeweb/releases | grep .rpm | grep -Po '(?<=href=")[^"]*.rpm'| head -n 1)
 url='https://github.com'$url
