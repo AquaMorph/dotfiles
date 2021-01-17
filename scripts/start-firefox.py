@@ -65,8 +65,6 @@ if not isProgramRunning('YouTube Music', firefoxWindows, '10'):
 if not isProgramRunning('Robinhood', firefoxWindows, '10'):
     os.system('python ~/.config/scripts/launch-stocks-tracker.py')
 
-
 # YouTube
-if not isProgramRunning('Subscriptions - YouTube', firefoxWindows, '10'):
+if not isProgramRunning(' - YouTube', firefoxWindows, '10'):
     launchProgram('firefox --new-window youtube.com/feed/subscriptions', '10')
-
