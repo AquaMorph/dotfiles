@@ -46,10 +46,11 @@ def launchProgram(program, workspace):
 # isProgramRunning() returns if a program is running and if it is
 # moves it to a given workspace.
 def isProgramRunning(name, windows, workspace):
-    program = getWindowByName(name, windows)
-    if doesWindowExist(program):
-        moveWindowToWorkspace(program, workspace)
-        return True
+    for n in name:
+        program = getWindowByName(n, windows)
+        if doesWindowExist(program):
+            moveWindowToWorkspace(program, workspace)
+            return True
     return False
 
 i3 = Connection()
@@ -58,13 +59,14 @@ switchWorkspace('10')
 switchWorkspace('1')
 
 # Music
-if not isProgramRunning('YouTube Music', firefoxWindows, '10'):
+if not isProgramRunning(['music.youtube.com'], firefoxWindows, '10'):
     launchProgram('firefox --new-window music.youtube.com', '10')
 
 # Stocks
-if not isProgramRunning('Robinhood', firefoxWindows, '10'):
+if not isProgramRunning(['Robinhood'], firefoxWindows, '10'):
     os.system('python ~/.config/scripts/launch-stocks-tracker.py')
 
-# YouTube
-if not isProgramRunning(' - YouTube', firefoxWindows, '10'):
+# Videos
+if not isProgramRunning(['odysee.com', 'lbry.tv', 'www.youtube.com', 'hulu.com', 'netflix.com'], firefoxWindows, '10'):
     launchProgram('firefox --new-window youtube.com/feed/subscriptions', '10')
+    launchProgram('sleep 1 && firefox -new-tab odysee.com/$/following', '10')
