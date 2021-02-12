@@ -69,6 +69,7 @@ downloadPackage resolve $zipUrl "${packageName}.zip"
 # Installing package
 sudo dnf install libxcrypt-compat
 unzip -o $packageName
+chmod +x ./*${packageName}*.run
 sudo ./*${packageName}*.run -i -y
 
 # Version number backup
