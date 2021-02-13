@@ -67,6 +67,7 @@ if not isProgramRunning(['Robinhood'], firefoxWindows, '10'):
     os.system('python ~/.config/scripts/launch-stocks-tracker.py')
 
 # Videos
-if not isProgramRunning(['odysee.com', 'lbry.tv', 'www.youtube.com', 'hulu.com', 'netflix.com'], firefoxWindows, '10'):
+if not isProgramRunning(['odysee.com', 'lbry.tv', 'www.youtube.com',
+                         ' - YouTube', 'hulu.com', 'netflix.com'], firefoxWindows, '10'):
     launchProgram('firefox --new-window youtube.com/feed/subscriptions', '10')
     launchProgram('sleep 1 && firefox -new-tab odysee.com/$/following', '10')
