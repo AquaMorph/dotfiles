@@ -44,6 +44,7 @@ function manualUpdate {
 	updateProgram reaper ~/.config/scripts/installers/reaper-install.sh &
 	updateProgram /opt/resolve/bin/resolve ~/.config/scripts/installers/resolve-install.sh &
 	updateProgram /opt/keeweb/keeweb ~/dotfiles/scripts/installers/keeweb-install.sh &
+	updateProgram yabridgectl ~/dotfiles/scripts/installers/yabridge-install.sh &
 	wait
     fi
 }
