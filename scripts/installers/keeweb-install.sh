@@ -16,8 +16,8 @@ checkUptoDate keeweb $keewebVersion $urlVersion
 echo Installing KeeWeb $urlVersion
 
 # Setting up and downloading package
-mkdir -p ~/Downloads/installers
-cd ~/Downloads/installers
+mkdir -p ~/Downloads/installers/keeweb
+cd ~/Downloads/installers/keeweb
 wget $url
 
 # Install package

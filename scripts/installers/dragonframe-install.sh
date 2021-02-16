@@ -15,8 +15,8 @@ checkUptoDate dragonframe $dragonframeVersion $urlVersion
 echo Installing Dragonframe $urlVersion
 
 # Setting up and downloading package
-mkdir -p ~/Downloads/installers
-cd ~/Downloads/installers
+mkdir -p ~/Downloads/installers/dragonframe
+cd ~/Downloads/installers/dragonframe
 wget $url
 
 # Install package

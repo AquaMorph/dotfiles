@@ -47,7 +47,7 @@ function filterVersion() {
 # Downloads a file to the given download directory with
 # the given name.
 function downloadPackage() {
-    mkdir -p ~/Downloads/installers/$1
-    cd ~/Downloads/installers/$1
-    wget -O $3 $2
+    mkdir -p ~/Downloads/installers/${1}
+    cd ~/Downloads/installers/${1}
+    wget -O ${3} ${2}
 }
