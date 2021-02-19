@@ -1,0 +1,14 @@
+[Unit]
+Description=ES-9 Audio Interface
+BindsTo=dev-snd-by\x2did-usb\x2dExpert_Sleepers_Ltd_ES\x2d9\x2d01.device
+After=dev-snd-by\x2did-usb\x2dExpert_Sleepers_Ltd_ES\x2d9\x2d01.device
+Requisite=dev-snd-by\x2did-usb\x2dExpert_Sleepers_Ltd_ES\x2d9\x2d01.device
+
+[Install]
+WantedBy=dev-snd-by\x2did-usb\x2dExpert_Sleepers_Ltd_ES\x2d9\x2d01.device
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+ExecStart=%h/.config/scripts/audio/es9start.sh
+ExecStop=%h/.config/scripts/audio/es9stop.sh
