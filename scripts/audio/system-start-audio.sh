@@ -58,3 +58,4 @@ sh ~/.config/scripts/audio/es8start.sh
 sh ~/.config/scripts/audio/es9start.sh
 
 launchi3
+systemctl --user restart polybar
