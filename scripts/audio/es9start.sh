@@ -13,6 +13,6 @@ checkCard $DEVICE_NAME $DEVICE_NUM
 alsa_in -d hw:$DEVICE_NUM -j "$DEVICE_NAME In" -c 16 -q 1 &
 alsa_out -d hw:$DEVICE_NUM -j "$DEVICE_NAME Out" -c 16 -q 1 &
 pkill es5jack || true
-es5jack >/dev/null 2>/dev/null &
+~/.cargo/bin/es5jack >/dev/null 2>/dev/null &
 sleep 0.1
-jack_connect ES-5:out "$DEVICE_NAME Out:playback_9" || true
+jack_connect es-5:out "$DEVICE_NAME Out:playback_9" || true
