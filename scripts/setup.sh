@@ -107,7 +107,14 @@ function setup {
     fi
 }
 
+function systemd {
+    echo 'Setting up custom systemd services...'
+    systemctl --user enable es-9
+    systemctl --user enable i3wm-close-window
+}
+
 setup
+systemd
 update
 dotfiles
 emacs
