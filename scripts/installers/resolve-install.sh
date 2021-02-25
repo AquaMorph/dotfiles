@@ -19,7 +19,9 @@ minor=$(echo $urlVersion | cut -d. -f2)
 micro=$(echo $urlVersion | cut -d. -f3)
 beta=$(echo $urlVersion | cut -d. -f4)
 
-if [ -n "$beta" ]; then
+if [ "$beta" == '99' ]; then
+    packageName="DaVinci_Resolve_Studio_${major}.${minor}"
+elif [ -n "$beta" ]; then
     packageName="DaVinci_Resolve_Studio_${major}.${minor}b${beta}"
 else
     packageName="DaVinci_Resolve_Studio_${urlVersion}"
@@ -69,6 +71,11 @@ downloadPackage resolve $zipUrl "${packageName}.zip"
 # Installing package
 sudo dnf install libxcrypt-compat
 unzip -o $packageName
+
+if [ ! -f "./*${packageName}*.run" ]; then
+    $packageName
+fi
+
 chmod +x ./*${packageName}*.run
 sudo ./*${packageName}*.run -i -y
 
