@@ -36,7 +36,7 @@ function checkUptoDate() {
 
 # Returns installed programs with a given name.
 function searchProgramInstalled() {
-    sudo dnf list | grep $1
+    dnf list | grep $1
 }
 
 # Filters string to Semantic Versioning.
