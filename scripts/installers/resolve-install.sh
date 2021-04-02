@@ -71,8 +71,13 @@ downloadPackage resolve $zipUrl "${packageName}.zip"
 # Installing package
 sudo dnf install libxcrypt-compat
 unzip -o $packageName
-chmod +x ./*${packageName}_Linux.run
-sudo ./*${packageName}_Linux.run -i -y
+installerName="DaVinci_Resolve_Studio_${major}.${minor}.${micro}"
+if [ ! -f ./*${installerName}_Linux.run ]; then
+    installerName="${packageName}"
+fi
+echo "Installing ./*${installerName}_Linux.run"
+chmod +x ./*${installerName}_Linux.run
+sudo ./*${installerName}_Linux.run -i -y
 
 # Version number backup
 sudo echo $urlVersion > $versionFile
