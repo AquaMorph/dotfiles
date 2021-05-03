@@ -18,6 +18,7 @@ alias i='sudo dnf install'
 alias d='sudo dnf'
 alias u='sh ~/.config/scripts/update.sh'
 alias dot='cd ~/dotfiles'
+alias h='cd ~/git/cacolglazier.com/ && hugo server'
 # Git
 alias c='git commit -m'
 alias a='git add'
