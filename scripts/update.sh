@@ -6,7 +6,7 @@
 function dnfUpdate {
     if command -v dnf &> /dev/null; then
 	echo Updating DNF...
-	sudo dnf update
+	sudo dnf update #--exclude=wine*
     fi
 }
 
@@ -43,8 +43,8 @@ function manualUpdate {
 	updateProgram dragonframe ~/.config/scripts/installers/dragonframe-install.sh &
 	updateProgram reaper ~/.config/scripts/installers/reaper-install.sh &
 	updateProgram /opt/resolve/bin/resolve ~/.config/scripts/installers/resolve-install.sh &
-	updateProgram /opt/keeweb/keeweb ~/dotfiles/scripts/installers/keeweb-install.sh &
-	updateProgram yabridgectl ~/dotfiles/scripts/installers/yabridge-install.sh &
+	updateProgram /opt/keeweb/keeweb ~/.config/scripts/installers/keeweb-install.sh &
+	updateProgram yabridgectl ~/.config/scripts/installers/yabridge-install.sh &
 	wait
     fi
 }
