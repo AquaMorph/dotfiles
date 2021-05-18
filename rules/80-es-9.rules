@@ -1,0 +1,2 @@
+ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="2485", ATTR{idProduct}=="50e0", RUN=="systemctl --user start es-9"
+ACTION=="remove", SUBSYSTEM=="usb", ATTR{idVendor}=="2485", ATTR{idProduct}=="50e0", RUN=="systemctl --user stop es-9"
