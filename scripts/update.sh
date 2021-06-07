@@ -51,7 +51,7 @@ function manualUpdate {
 
 dnfUpdate
 aptUpdate
-printf '\n'
+echo ''
 flatpakUpdate
-printf '\n'
+echo ''
 manualUpdate
