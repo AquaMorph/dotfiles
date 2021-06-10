@@ -1,5 +1,5 @@
 [colors]
-black = #88666666
+black = #BB000000
 blue = #0288D1
 blue-light = #B3E5FC
 pink = #E91E63
@@ -9,7 +9,7 @@ white = #FFFFFF
 
 [bar/aqua]
 width = 100%
-height = 28
+height = 34
 radius = 0.0               
 fixed-center = true
 background = ${colors.black}
@@ -20,9 +20,9 @@ line-color = ${colors.pink}
 border-size = 0
 border-color = ${colors.black}
 padding-left = 0
-padding-right = 2
+padding-right = 3
 module-margin-left = 1
-module-margin-right = 2
+module-margin-right = 3
 
 font-0 = SF Pro Display:semibold:fixed:pixelsize=17;3
 ; Version 4.7
@@ -124,12 +124,12 @@ animation-charging-framerate = 500
 type = internal/alsa
 
 format-volume = <label-volume>
-label-volume = %percentage%%
+label-volume =  %percentage%%
 label-volume-foreground = ${root.foreground}
 format-volume-underline = ${colors.blue}
 
 format-muted-prefix = " "
-label-muted = %percentage%%
+label-muted =  %percentage%%
 format-muted-underline = ${colors.pink}
 
 [module/backlight]
@@ -139,7 +139,7 @@ type = internal/backlight
 card = intel_backlight
 
 format = <label>
-label = %percentage%%
+label =  %percentage%%
 format-underline = ${colors.blue}
 
 [module/temperature]
@@ -179,7 +179,7 @@ label-disconnected-underline = ${colors.pink}
 [module/mouse-battery]
 type = custom/script
 exec = ~/.config/scripts/get-mouse-battery.sh
-label = %output%
+label =  %output%
 interval = 60
 
 [settings]
