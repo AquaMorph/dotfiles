@@ -63,7 +63,7 @@ if not isProgramRunning(['music.youtube.com'], firefoxWindows, '10'):
     launchProgram('firefox --new-window music.youtube.com', '10')
 
 # Stocks
-if not isProgramRunning(['Robinhood'], firefoxWindows, '10'):
+if not isProgramRunning(['Robinhood', 'Webull'], firefoxWindows, '10'):
     os.system('python ~/.config/scripts/launch-stocks-tracker.py')
 
 # Videos
