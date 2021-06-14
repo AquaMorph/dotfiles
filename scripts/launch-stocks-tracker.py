@@ -27,4 +27,4 @@ def closed():
 if (openToday() and not closed()):
     print("Open")
     os.system("i3-msg 'workspace 10; exec firefox --new-window robinhood.com \
-        && sleep 0.1 && firefox -new-tab app.webull.com/watch'")
+        && sleep 1 && firefox -new-tab app.webull.com/watch'")
