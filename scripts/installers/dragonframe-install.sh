@@ -5,7 +5,7 @@
 # Import library
 source $(dirname ${BASH_SOURCE[0]})/install-lib.sh
 
-dragonframe=$(searchProgramInstalled dragonframe)
+dragonframe=$(searchProgramInstalled dragonframe | awk 'END {print $(NF-2), $(NF-1), $NF}')
 dragonframeVersion=$(echo $dragonframe | awk '{print $2;}' | filterVersion)
 url=$(curl -s https://www.dragonframe.com/downloads/ | grep .rpm | grep downloadButton | grep -Po '(?<=href=")[^"]*.rpm')
 urlVersion=$(echo $url | awk -F "-" '{ print $2 }')
