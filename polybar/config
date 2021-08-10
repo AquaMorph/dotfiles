@@ -37,7 +37,7 @@ font-5 = Font Awesome 5 Free Solid:pixelsize=70;3
 
 modules-left = i3
 modules-center = xwindow
-modules-right = backlight volume network battery mouse-battery date
+modules-right = backlight volume network battery date
 
 tray-position = right
 tray-padding = 2
