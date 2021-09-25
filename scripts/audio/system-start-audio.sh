@@ -40,18 +40,21 @@ do
     fi
 done
 
-# Close any active audio
-killPulse
+sleep 0.1
 
-# Start up jack
-cadence-session-start --system-start &
-wait %1 && sleep 1
-ladish_control sload studio
+# Create sinks
+pactl load-module module-null-sink sink_name=speakers
+pactl load-module module-null-sink sink_name=mic
+pactl set-default-sink speakers
 
-# Make start up reliable
-killPulse
-fixPulse
-pulseaudio -D
+# Wire sinks
+sleep 2
+pw-link -o && pw-link -i
+pw-link speakers:monitor_FL alsa_output.usb-Focusrite_Scarlett_18i20_USB-00.pro-output-0:playback_AUX0
+pw-link speakers:monitor_FR alsa_output.usb-Focusrite_Scarlett_18i20_USB-00.pro-output-0:playback_AUX1
+
+pw-link alsa_input.usb-Focusrite_Scarlett_18i20_USB-00.pro-input-0:capture_AUX3 mic:playback_FL
+pw-link alsa_input.usb-Focusrite_Scarlett_18i20_USB-00.pro-input-0:capture_AUX3 mic:playback_FR
 
 # Eurorack audio interface
 sh ~/.config/scripts/audio/es8start.sh 
