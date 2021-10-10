@@ -4,4 +4,4 @@
 
 pkill alsa_in
 pkill alsa_out
-pkill es5jack
+pkill es-5-pipewire

@@ -9,10 +9,10 @@ DEVICE_NAME='ES-9'
 DEVICE_NUM=$(getCardNumber $DEVICE_NAME)
 checkCard $DEVICE_NAME $DEVICE_NUM
 
-# Start up audio interface
-alsa_in -d hw:$DEVICE_NUM -j "$DEVICE_NAME In" -c 16 -q 1 &
-alsa_out -d hw:$DEVICE_NUM -j "$DEVICE_NAME Out" -c 16 -q 1 &
-pkill es5jack || true
-~/.cargo/bin/es5jack >/dev/null 2>/dev/null &
+# Rename Audio Devices
+
+# Start up ES-5
+pkill es-5-pipewire || true
+/opt/es-5-pipewire/es-5-pipewire >/dev/null 2>/dev/null &
 sleep 0.1
-jack_connect es-5:out "$DEVICE_NAME Out:playback_9" || true
+jack_connect ES-5:output "$DEVICE_NAME:playback_SL" || true
