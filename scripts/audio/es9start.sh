@@ -9,8 +9,6 @@ DEVICE_NAME='ES-9'
 DEVICE_NUM=$(getCardNumber $DEVICE_NAME)
 checkCard $DEVICE_NAME $DEVICE_NUM
 
-# Rename Audio Devices
-
 # Start up ES-5
 pkill es-5-pipewire || true
 /opt/es-5-pipewire/es-5-pipewire >/dev/null 2>/dev/null &

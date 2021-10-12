@@ -27,7 +27,7 @@ function launchi3() {
     if [ -z "$skipi3" ]; then
 	echo Opening i3wm sound workspaces
 	sleep .1 && i3-msg 'workspace 5; exec firefox'
-	sleep 8 && python ~/.config/scripts/start-firefox.py
+	sleep 6 && python ~/.config/scripts/start-firefox.py
     fi
 }
 
@@ -56,8 +56,18 @@ pw-link speakers:monitor_FR alsa_output.usb-Focusrite_Scarlett_18i20_USB-00.pro-
 pw-link alsa_input.usb-Focusrite_Scarlett_18i20_USB-00.pro-input-0:capture_AUX3 mic:playback_FL
 pw-link alsa_input.usb-Focusrite_Scarlett_18i20_USB-00.pro-input-0:capture_AUX3 mic:playback_FR
 
+# Rename Audio Devices
+for n in `seq 0 17` ; do
+    jack_property -p -s "alsa:pcm:2:hw:2,0:capture:capture_${n}" http://jackaudio.org/metadata/pretty-name "capture_$((n+1))"
+done
+for n in `seq 0 19` ; do
+    jack_property -p -s "alsa:pcm:2:hw:2,0:playback:playback_${n}" http://jackaudio.org/metadata/pretty-name "playback_$((n+1))"
+done
+for n in `seq 0 19` ; do
+    jack_property -p -s "alsa:pcm:2:hw:2,0:playback:monitor_${n}" http://jackaudio.org/metadata/pretty-name "monitor_$((n+1))"
+done
+
 # Eurorack audio interface
-sh ~/.config/scripts/audio/es8start.sh 
 sh ~/.config/scripts/audio/es9start.sh
 
 launchi3
