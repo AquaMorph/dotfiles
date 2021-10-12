@@ -68,6 +68,7 @@ if not isProgramRunning(['Robinhood', 'Webull'], firefoxWindows, '10'):
 
 # Videos
 if not isProgramRunning(['odysee.com', 'lbry.tv', 'www.youtube.com',
-                         ' - YouTube', 'hulu.com', 'netflix.com'], firefoxWindows, '10'):
+                         ' - YouTube', 'hulu.com', 'netflix.com',
+                         'disneyplus.com'], firefoxWindows, '10'):
     launchProgram('firefox --new-window youtube.com/feed/subscriptions', '10')
     launchProgram('sleep 1 && firefox -new-tab odysee.com/$/following', '10')
