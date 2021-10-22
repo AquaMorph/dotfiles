@@ -18,7 +18,8 @@ files=($dotdir/.zprofile                  ~/                     'n'
        $dotdir/polybar                    ~/.config/             'n'
        $dotdir/rofi                       ~/.config/             'n'
        $dotdir/scripts                    ~/.config/             'n'
-       $dotdir/systemd                    ~/.config/             'n')
+       $dotdir/systemd                    ~/.config/             'n'
+       $dotdir/waybar                     ~/.config/             'n')
 
 # arg parser
 for arg in "$@"
