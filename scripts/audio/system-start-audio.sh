@@ -40,21 +40,18 @@ do
     fi
 done
 
-sleep 0.1
-
-# Create sinks
-pactl load-module module-null-sink sink_name=speakers
-pactl load-module module-null-sink sink_name=mic
-pactl set-default-sink speakers
+sleep .35
 
 # Wire sinks
-sleep 2
+pactl set-default-sink speakers
+pactl set-default-source sm7b
+sleep .35
 pw-link -o && pw-link -i
-pw-link speakers:monitor_FL alsa_output.usb-Focusrite_Scarlett_18i20_USB-00.pro-output-0:playback_AUX0
-pw-link speakers:monitor_FR alsa_output.usb-Focusrite_Scarlett_18i20_USB-00.pro-output-0:playback_AUX1
+pw-link speakers:monitor_FL alsa_output.usb-Focusrite_Scarlett_18i20_USB-00.multichannel-output:playback_FL
+pw-link speakers:monitor_FR alsa_output.usb-Focusrite_Scarlett_18i20_USB-00.multichannel-output:playback_FR
 
-pw-link alsa_input.usb-Focusrite_Scarlett_18i20_USB-00.pro-input-0:capture_AUX3 mic:playback_FL
-pw-link alsa_input.usb-Focusrite_Scarlett_18i20_USB-00.pro-input-0:capture_AUX3 mic:playback_FR
+pw-link alsa_input.usb-Focusrite_Scarlett_18i20_USB-00.multichannel-input:capture_RR sm7b:input_FL
+pw-link alsa_input.usb-Focusrite_Scarlett_18i20_USB-00.multichannel-input:capture_RR sm7b:input_FR
 
 # Rename Audio Devices
 for n in `seq 0 17` ; do
