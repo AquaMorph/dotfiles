@@ -27,7 +27,7 @@ function launchi3() {
     if [ -z "$skipi3" ]; then
 	echo Opening i3wm sound workspaces
 	sleep .1 && i3-msg 'workspace 5; exec firefox'
-	sleep 6 && python ~/.config/scripts/start-firefox.py
+	sleep 5.1 && python ~/.config/scripts/start-firefox.py
     fi
 }
 
@@ -49,9 +49,13 @@ sleep .35
 pw-link -o && pw-link -i
 pw-link speakers:monitor_FL alsa_output.usb-Focusrite_Scarlett_18i20_USB-00.multichannel-output:playback_FL
 pw-link speakers:monitor_FR alsa_output.usb-Focusrite_Scarlett_18i20_USB-00.multichannel-output:playback_FR
+pw-link speakers:monitor_FL alsa_output.usb-Focusrite_Scarlett_18i20_USB-00.multichannel-output:playback_AUX0
+pw-link speakers:monitor_FR alsa_output.usb-Focusrite_Scarlett_18i20_USB-00.multichannel-output:playback_AUX1
 
 pw-link alsa_input.usb-Focusrite_Scarlett_18i20_USB-00.multichannel-input:capture_RR sm7b:input_FL
 pw-link alsa_input.usb-Focusrite_Scarlett_18i20_USB-00.multichannel-input:capture_RR sm7b:input_FR
+pw-link alsa_input.usb-Focusrite_Scarlett_18i20_USB-00.multichannel-input:capture_AUX3 sm7b:input_FL
+pw-link alsa_input.usb-Focusrite_Scarlett_18i20_USB-00.multichannel-input:capture_AUX3 sm7b:input_FR
 
 # Rename Audio Devices
 for n in `seq 0 17` ; do
