@@ -52,6 +52,8 @@ pw-link speakers:monitor_FL alsa_output.usb-Focusrite_Scarlett_18i20_USB-00.mult
 pw-link speakers:monitor_FR alsa_output.usb-Focusrite_Scarlett_18i20_USB-00.multichannel-output:playback_AUX1
 pw-link speakers:monitor_FL alsa_output.usb-Focusrite_Scarlett_18i20_USB-00.pro-output-0:playback_AUX0
 pw-link speakers:monitor_FR alsa_output.usb-Focusrite_Scarlett_18i20_USB-00.pro-output-0:playback_AUX1
+pw-link speakers:monitor_FL alsa_output.usb-Focusrite_Clarett__8Pre_00002325-00.pro-output-0:playback_AUX0
+pw-link speakers:monitor_FR alsa_output.usb-Focusrite_Clarett__8Pre_00002325-00.pro-output-0:playback_AUX1
 
 pw-link alsa_input.usb-Focusrite_Scarlett_18i20_USB-00.multichannel-input:capture_RR sm7b:input_FL
 pw-link alsa_input.usb-Focusrite_Scarlett_18i20_USB-00.multichannel-input:capture_RR sm7b:input_FR
@@ -59,6 +61,8 @@ pw-link alsa_input.usb-Focusrite_Scarlett_18i20_USB-00.multichannel-input:captur
 pw-link alsa_input.usb-Focusrite_Scarlett_18i20_USB-00.multichannel-input:capture_AUX3 sm7b:input_FR
 pw-link alsa_input.usb-Focusrite_Scarlett_18i20_USB-00.pro-input-0:capture_AUX3 sm7b:input_FL
 pw-link alsa_input.usb-Focusrite_Scarlett_18i20_USB-00.pro-input-0:capture_AUX3 sm7b:input_FR
+pw-link alsa_input.usb-Focusrite_Clarett__8Pre_00002325-00.pro-input-0:capture_AUX3 sm7b:input_FL
+pw-link alsa_input.usb-Focusrite_Clarett__8Pre_00002325-00.pro-input-0:capture_AUX3 sm7b:input_FR
 
 # Rename Audio Devices
 for n in `seq 0 17` ; do
