@@ -23,8 +23,8 @@ function aptUpdate {
 function flatpakUpdate {
     if command -v flatpak &> /dev/null; then
 	echo Updating Flatpak...
-	flatpak uninstall --unused
-	flatpak update
+	sudo flatpak uninstall --unused
+	sudo flatpak update
     fi
 }
 
