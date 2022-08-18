@@ -1,7 +1,9 @@
 #! /bin/bash
 
 # Load user settings from config file.
-. ~/.config/settings.conf
+if [ -e ~/.config/settings.conf ]; then 
+    . ~/.config/settings.conf
+fi
 
 dotdir=~/dotfiles
 
