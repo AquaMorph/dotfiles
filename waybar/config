@@ -1,6 +1,6 @@
 {
     "layer": "top",
-    "output": ["DVI-D-0", "LVDS-1"],
+    "output": ["DVI-D-0", "LVDS-1", "eDP-1"],
     "position": "top",
     "height": 35, // Waybar height (to be removed for auto height)
     "modules-left": ["sway/workspaces", "sway/mode", "custom/media"],
