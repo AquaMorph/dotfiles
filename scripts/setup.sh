@@ -21,7 +21,8 @@ files=($dotdir/.zprofile                  ~/                     'n'
        $dotdir/rofi                       ~/.config/             'n'
        $dotdir/scripts                    ~/.config/             'n'
        $dotdir/systemd                    ~/.config/             'n'
-       $dotdir/waybar                     ~/.config/             'n')
+       $dotdir/waybar                     ~/.config/             'n'
+       $dotdir/settings.conf              ~/.config/             'n')
 
 # arg parser
 for arg in "$@"
