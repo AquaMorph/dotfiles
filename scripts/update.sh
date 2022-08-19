@@ -40,7 +40,7 @@ function manualUpdate {
     if command -v dnf &> /dev/null; then
 	echo Updating manually installed programs...
 	updateProgram bitwig-studio ~/.config/scripts/installers/bitwig-install.sh &
-	updateProgram dragonframe ~/.config/scripts/installers/dragonframe-install.sh &
+	updateProgram /opt/dragonframe5/bin/Dragonframe ~/.config/scripts/installers/dragonframe-install.sh &
 	updateProgram reaper ~/.config/scripts/installers/reaper-install.sh &
 	updateProgram /opt/resolve/bin/resolve ~/.config/scripts/installers/resolve-install.sh &
 	updateProgram /opt/keeweb/keeweb ~/.config/scripts/installers/keeweb-install.sh &
