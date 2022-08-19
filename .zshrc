@@ -28,6 +28,7 @@ alias s='git status'
 alias g='git'
 alias p='git pull'
 alias gp='git push'
+alias gd='git diff $(git rev-parse --abbrev-ref HEAD)'
 
 export TERM=xterm
 
