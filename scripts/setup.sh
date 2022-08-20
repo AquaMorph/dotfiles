@@ -22,6 +22,7 @@ files=($dotdir/.zprofile                  ~/                     'n'
        $dotdir/scripts                    ~/.config/             'n'
        $dotdir/systemd                    ~/.config/             'n'
        $dotdir/waybar                     ~/.config/             'n'
+       $dotdir/mako                       ~/.config/             'n'
        $dotdir/settings.conf              ~/.config/             'n')
 
 # arg parser

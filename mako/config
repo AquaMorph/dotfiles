@@ -1,0 +1,39 @@
+max-history=10
+sort=-time
+
+# Bindings
+on-button-left=invoke-default-action
+on-button-middle=none
+on-button-right=dismiss
+on-touch=dismiss
+on-notify=none
+
+# Theme
+font=NimbusSans 12
+background-color=#00000088
+text-color=#FFFFFFFF
+width=400
+height=100
+outer-margin=11
+margin=5
+padding=5
+border-size=3
+border-color=#0288D1FF
+border-radius=0
+progress-color=#E91E63FF
+icons=1
+max-icon-size=64
+icon-path=""
+icon-location=left
+markup=1
+actions=1
+history=1
+text-alignment=left
+default-timeout=0
+ignore-timeout=0
+group-by=none
+max-visible=-1
+output=""
+layer=top
+anchor=top-right
+
