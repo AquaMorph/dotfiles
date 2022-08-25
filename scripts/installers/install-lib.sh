@@ -51,3 +51,12 @@ function downloadPackage() {
     cd ~/Downloads/installers/${1}
     wget -O ${3} ${2}
 }
+
+# Get package manager
+function packageManager() {
+    if command -v dnf &> /dev/null; then
+	echo dnf
+    elif command -v apt &> /dev/null; then
+	echo apt
+    fi
+}
