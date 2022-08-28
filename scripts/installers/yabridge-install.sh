@@ -5,6 +5,15 @@
 # Import library
 source $(dirname ${BASH_SOURCE[0]})/install-lib.sh
 
+# Install wine if not already installed
+if ! command -v wine &> /dev/null; then
+    if command -v dnf &> /dev/null; then
+	sudo dnf config-manager --add-repo \
+	     https://dl.winehq.org/wine-builds/fedora/36/winehq.repo
+    fi
+    sudo $(packageManager) install winehq-staging
+fi
+
 program=yabridgectl
 programVersion=$(yabridgectl --help | filterVersion)
 url=$(curl -s https://github.com/robbert-vdh/yabridge/releases/ | grep .tar.gz \
