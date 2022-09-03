@@ -33,4 +33,7 @@ bind G19 KEY_ C
 # Mission Choice
 bind G1 KEY_V
 
+# Electric Tool
+bind G6 KEY_4
+
 rgb 255 5 5
