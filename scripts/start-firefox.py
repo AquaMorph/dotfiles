@@ -53,8 +53,18 @@ def isProgramRunning(name, windows, workspace):
             return True
     return False
 
+
+def isPagesLoaded(firefoxWindows):
+    for w in firefoxWindows:
+        if 'http' not in w.name:
+            return True
+    return True
 i3 = Connection()
-firefoxWindows = filterWindowsByClass('Firefox', getWindows(i3))
+firefoxWindows = filterWindowsByClass('firefox', getWindows(i3))
+
+while(not isPagesLoaded(firefoxWindows)):
+    time.sleep(0.1)
+
 switchWorkspace('10')
 switchWorkspace('1')
 
