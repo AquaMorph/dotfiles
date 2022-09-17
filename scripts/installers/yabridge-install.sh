@@ -15,9 +15,10 @@ if ! command -v wine &> /dev/null; then
 fi
 
 program=yabridgectl
-programVersion=$(yabridgectl --help | filterVersion)
-url=$(curl -s https://github.com/robbert-vdh/yabridge/releases/ | grep .tar.gz \
-    | grep -v ubuntu | grep -Po '(?<=href=")[^"]*.tar.gz'| head -n 1)
+programVersion=$(yabridgectl --version | filterVersion)
+url=$(curl -s https://api.github.com/repos/robbert-vdh/yabridge/releases | \
+	  grep .tar.gz | grep releases/download | \
+	  grep -Po 'https://[^"]*.tar.gz' | grep -v ubuntu | head -n 1)
 url='https://github.com'$url
 urlVersion=$(echo $url | filterVersion | head -n 1)
 
