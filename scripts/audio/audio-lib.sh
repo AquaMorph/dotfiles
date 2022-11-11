@@ -46,7 +46,7 @@ function printControls() {
 # $2 matrix number
 # $3 mix channel
 function setMix() {
-    amixer -c $1 set "Matrix $(formatMatrixNum $2) Mix $3" $4
+    amixer -c $1 set "Mix $3 Input $(formatMatrixNum $2)" $4
 }
 
 

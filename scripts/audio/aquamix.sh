@@ -5,7 +5,7 @@
 # Import library
 source $(dirname ${BASH_SOURCE[0]})/audio-lib.sh
 
-INTERFACE_NAME='Scarlett 18i20'
+INTERFACE_NAME='Clarett+ 8Pre'
 INTERFACE_NUM=$(getCardNumber $INTERFACE_NAME)
 checkCard "$INTERFACE_NAME" "$INTERFACE_NUM"
 
@@ -54,6 +54,44 @@ function setStereoTwo() {
     setStereo $INTERFACE_NUM 7 $1 $2 $3
 }
 
+# Sets the volume levels of the third stereo instrument.
+#
+# $1 monitor volume
+# $2 first headphone volume
+# $3 second headphone volume
+function setStereoThree() {
+    setStereo $INTERFACE_NUM 9 $1 $2 $3
+}
+
+# Sets the volume levels of the fourth stereo instrument.
+#
+# $1 monitor volume
+# $2 first headphone volume
+# $3 second headphone volume
+function setStereoFour() {
+    setStereo $INTERFACE_NUM 11 $1 $2 $3
+}
+
+# Sets the volume levels of the fifth stereo instrument.
+#
+# $1 monitor volume
+# $2 first headphone volume
+# $3 second headphone volume
+function setStereoFive() {
+    setStereo $INTERFACE_NUM 13 $1 $2 $3
+}
+
+# Sets the volume levels of the sixth stereo instrument.
+#
+# $1 monitor volume
+# $2 first headphone volume
+# $3 second headphone volume
+function setStereoSix() {
+    setStereo $INTERFACE_NUM 15 $1 $2 $3
+}
+
+
+
 # Sets the volume levels of the studio microphone.
 #
 # $1 monitor volume
@@ -78,11 +116,15 @@ function setComputerAudio() {
 # $2 first headphone volume
 # $3 second headphone volume
 function setInstruments() {
-    setMonoOne $1 $2 $3
-    setMonoTwo $1 $2 $3
-    setMonoThree $1 $2 $3
-    setStereoOne $1 $2 $3
-    setStereoTwo $1 $2 $3
+    setMonoOne     $1 $2 $3
+    setMonoTwo     $1 $2 $3
+    setMonoThree   $1 $2 $3
+    setStereoOne   $1 $2 $3
+    setStereoTwo   $1 $2 $3
+    setStereoThree $1 $2 $3
+    setStereoFour  $1 $2 $3
+    setStereoFive  $1 $2 $3
+    setStereoSix   $1 $2 $3
 }
 
 function DAWMode() {
