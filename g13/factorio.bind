@@ -31,12 +31,13 @@ bind STICK_UP KEY_1
 bind STICK_RIGHT KEY_2
 bind STICK_DOWN KEY_3
 bind STICK_LEFT KEY_4
-bind DOWN KEY_
 
 # Other
 bind G22 KEY_SPACE
 bind G15 KEY_LEFTSHIFT
 bind G20 KEY_LEFTCTRL
+bind DOWN KEY_ENTER
+bind LEFT KEY_TAB
 
 # Character Movement
 bind G4 KEY_W
