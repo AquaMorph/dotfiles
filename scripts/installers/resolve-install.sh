@@ -86,5 +86,9 @@ sudo echo $urlVersion > $versionFile
 sudo rm /etc/OpenCL/vendors/mesa.icd
 sudo rm /etc/OpenCL/vendors/pocl.icd
 
+# gLib fix
+sudo mkdir /opt/resolve/libs/_disabled
+sudo mv /opt/resolve/libs/libglib-2.0.so* /opt/resolve/libs/_disabled
+
 # Keyboard mapping fix
 setxkbmap -option 'caps:super'
