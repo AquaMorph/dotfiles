@@ -8,9 +8,7 @@ fi
 dotdir=~/dotfiles
 
 #      src                                dest                   sudo
-files=($dotdir/gtk-3.0/settings.ini       ~/.config/gtk-3.0/     'n'
-       $dotdir/gtk-4.0/settings.ini       ~/.config/gtk-4.0/     'n'
-       $dotdir/i3                         ~/.config/             'n'
+files=($dotdir/i3                         ~/.config/             'n'
        $dotdir/i3status                   ~/.config/             'n'
        $dotdir/kitty                      ~/.config/             'n'
        $dotdir/polybar                    ~/.config/             'n'
@@ -119,6 +117,7 @@ function stow_dotfiles {
     stow zsh
     stow alacritty
     stow g13
+    stow gtk
 }
 
 setup
