@@ -19,7 +19,6 @@ programVersion=$(yabridgectl --version | filterVersion)
 url=$(curl -s https://api.github.com/repos/robbert-vdh/yabridge/releases | \
 	  grep .tar.gz | grep releases/download | \
 	  grep -Po 'https://[^"]*.tar.gz' | grep -v ubuntu | head -n 1)
-url='https://github.com'$url
 urlVersion=$(echo $url | filterVersion | head -n 1)
 
 # Check if installed to the most recent version
