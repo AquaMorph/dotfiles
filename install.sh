@@ -8,9 +8,7 @@ fi
 dotdir=~/dotfiles
 
 #      src                                dest                   sudo
-files=($dotdir/.zprofile                  ~/                     'n'
-       $dotdir/.zshrc                     ~/                     'n'
-       $dotdir/alacritty                  ~/.config/             'n'
+files=($dotdir/alacritty                  ~/.config/             'n'
        $dotdir/g13                        ~/.config/             'n'
        $dotdir/gtk-3.0/settings.ini       ~/.config/gtk-3.0/     'n'
        $dotdir/gtk-4.0/settings.ini       ~/.config/gtk-4.0/     'n'
@@ -120,6 +118,7 @@ function systemd {
 
 function stow_dotfiles {
     stow wireplumber
+    stow zsh
 }
 
 setup
