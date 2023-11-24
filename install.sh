@@ -118,8 +118,13 @@ function systemd {
     systemctl --user enable i3wm-close-window
 }
 
+function stow_dotfiles {
+    stow wireplumber
+}
+
 setup
 systemd
 update
 dotfiles
+stow_dotfiles
 emacs
