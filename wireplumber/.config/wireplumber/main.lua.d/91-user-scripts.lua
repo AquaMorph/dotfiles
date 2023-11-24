@@ -1,0 +1,1 @@
+load_script("/home/aqua/.config/wireplumber/scripts/auto-connect-ports.lua")
