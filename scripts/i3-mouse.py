@@ -54,7 +54,7 @@ focused = i3.get_tree().find_focused()
 command = sys.argv[1]
 
 if command in ['back', 'forward']:
-   if focused.window_instance not in ['overwatch.exe']:
+   if focused.window_instance not in ['overwatch.exe', 'hl2_linux']:
       if sys.argv[1] == 'forward':
          i3.command('workspace prev_on_output')
       else:
