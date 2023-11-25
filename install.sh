@@ -8,8 +8,7 @@ fi
 dotdir=~/dotfiles
 
 #      src                                dest                   sudo
-files=($dotdir/rofi                       ~/.config/             'n'
-       $dotdir/scripts                    ~/.config/             'n'
+files=($dotdir/scripts                    ~/.config/             'n'
        $dotdir/systemd                    ~/.config/             'n'
        $dotdir/waybar                     ~/.config/             'n'
        $dotdir/mako                       ~/.config/             'n'
@@ -118,6 +117,7 @@ function stow_dotfiles {
     stow i3status
     stow kitty
     stow polybar
+    stow rofi
 }
 
 setup
