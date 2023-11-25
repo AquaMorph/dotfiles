@@ -120,9 +120,14 @@ function stow_dotfiles {
     stow mako
 }
 
+function install_python_libs {
+    pip install -r requirements.txt
+}
+
 setup
 systemd
 update
 dotfiles
 stow_dotfiles
+install_python_libs
 emacs
