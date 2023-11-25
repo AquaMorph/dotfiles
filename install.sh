@@ -8,8 +8,7 @@ fi
 dotdir=~/dotfiles
 
 #      src                                dest                   sudo
-files=($dotdir/scripts                    ~/.config/             'n'
-       $dotdir/systemd                    ~/.config/             'n'
+files=($dotdir/systemd                    ~/.config/             'n'
        $dotdir/settings.conf              ~/.config/             'n')
 
 # arg parser
@@ -118,6 +117,7 @@ function stow_dotfiles {
     stow rofi
     stow waybar
     stow mako
+    stow scripts
 }
 
 function install_python_libs {
