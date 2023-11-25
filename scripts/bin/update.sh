@@ -39,12 +39,13 @@ function updateProgram {
 function manualUpdate {
     if command -v dnf &> /dev/null; then
 	echo Updating manually installed programs...
-	updateProgram bitwig-studio ~/.config/scripts/installers/bitwig-install.sh &
-	updateProgram /opt/dragonframe5/bin/Dragonframe ~/.config/scripts/installers/dragonframe-install.sh &
-	updateProgram reaper ~/.config/scripts/installers/reaper-install.sh &
-	updateProgram /opt/resolve/bin/resolve ~/.config/scripts/installers/resolve-install.sh &
-	updateProgram /opt/keeweb/keeweb ~/.config/scripts/installers/keeweb-install.sh &
-	updateProgram yabridgectl ~/.config/scripts/installers/yabridge-install.sh &
+	SCRIPT_PATH="$HOME/bin/installers"
+	updateProgram bitwig-studio $SCRIPT_PATH/bitwig-install.sh &
+	updateProgram /opt/dragonframe5/bin/Dragonframe $SCRIPT_PATH/dragonframe-install.sh &
+	updateProgram reaper $SCRIPT_PATH/reaper-install.sh &
+	updateProgram /opt/resolve/bin/resolve $SCRIPT_PATH/resolve-install.sh &
+	updateProgram /opt/keeweb/keeweb $SCRIPT_PATH/keeweb-install.sh &
+	updateProgram yabridgectl $SCRIPT_PATH/yabridge-install.sh &
 	wait
     fi
 }
