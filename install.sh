@@ -10,7 +10,6 @@ dotdir=~/dotfiles
 #      src                                dest                   sudo
 files=($dotdir/scripts                    ~/.config/             'n'
        $dotdir/systemd                    ~/.config/             'n'
-       $dotdir/waybar                     ~/.config/             'n'
        $dotdir/mako                       ~/.config/             'n'
        $dotdir/settings.conf              ~/.config/             'n')
 
@@ -118,6 +117,7 @@ function stow_dotfiles {
     stow kitty
     stow polybar
     stow rofi
+    stow waybar
 }
 
 setup
