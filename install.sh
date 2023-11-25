@@ -118,6 +118,7 @@ function stow_dotfiles {
     stow waybar
     stow mako
     stow scripts
+    stow orcaslicer
 }
 
 function install_python_libs {

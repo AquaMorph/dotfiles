@@ -1,0 +1,85 @@
+{
+    "before_layer_change_gcode": ";BEFORE_LAYER_CHANGE\n;{layer_z}\n\n",
+    "from": "User",
+    "inherits": "MyKlipper 0.4 nozzle",
+    "is_custom_defined": "0",
+    "machine_end_gcode": "END_PRINT",
+    "machine_max_acceleration_extruding": [
+        "500",
+        "20000"
+    ],
+    "machine_max_acceleration_retracting": [
+        "1000",
+        "5000"
+    ],
+    "machine_max_acceleration_x": [
+        "500",
+        "20000"
+    ],
+    "machine_max_acceleration_y": [
+        "500",
+        "20000"
+    ],
+    "machine_max_acceleration_z": [
+        "100",
+        "200"
+    ],
+    "machine_max_jerk_e": [
+        "5",
+        "2.5"
+    ],
+    "machine_max_jerk_x": [
+        "8",
+        "9"
+    ],
+    "machine_max_jerk_y": [
+        "8",
+        "9"
+    ],
+    "machine_max_jerk_z": [
+        "0.4",
+        "0.4"
+    ],
+    "machine_max_speed_e": [
+        "60",
+        "25"
+    ],
+    "machine_max_speed_z": [
+        "10",
+        "12"
+    ],
+    "machine_start_gcode": "START_PRINT BED_TEMP=[bed_temperature_initial_layer_single] EXTRUDER_TEMP=[nozzle_temperature_initial_layer]",
+    "max_layer_height": [
+        "0.48"
+    ],
+    "name": "Ender 3 0.6 nozzle",
+    "nozzle_diameter": [
+        "0.6"
+    ],
+    "nozzle_type": "brass",
+    "print_host": "192.168.1.6",
+    "printable_area": [
+        "0x0",
+        "235x0",
+        "235x235",
+        "0x235"
+    ],
+    "printer_settings_id": "Ender 3 0.6 nozzle",
+    "retract_length_toolchange": [
+        "1"
+    ],
+    "retraction_length": [
+        "0.5"
+    ],
+    "retraction_minimum_travel": [
+        "2"
+    ],
+    "use_firmware_retraction": "1",
+    "version": "1.6.1.0",
+    "wipe": [
+        "0"
+    ],
+    "z_hop_types": [
+        "Auto Lift"
+    ]
+}
