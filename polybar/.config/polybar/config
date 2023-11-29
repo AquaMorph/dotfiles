@@ -178,7 +178,7 @@ label-disconnected-underline = ${colors.pink}
 
 [module/mouse-battery]
 type = custom/script
-exec = ~/.config/scripts/get-mouse-battery.sh
+exec = ~/bin/get-mouse-battery.sh
 label =  %output%
 interval = 60
 
