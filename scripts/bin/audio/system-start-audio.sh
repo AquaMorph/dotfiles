@@ -27,7 +27,7 @@ function launchi3() {
     if [ -z "$skipi3" ]; then
 	echo Opening i3wm sound workspaces
 	sleep .1 && i3-msg 'workspace 5; exec firefox'
-	sleep 5.1 && python ~/.config/scripts/start-firefox.py
+	sleep 5.1 && python ~/bin/start-firefox.py
     fi
 }
 
@@ -83,7 +83,7 @@ done
 #renameInterface
 
 # Eurorack audio interface
-sh ~/.config/scripts/audio/es9start.sh
+sh ~/bin/audio/es9start.sh
 
 launchi3
 systemctl --user restart polybar
