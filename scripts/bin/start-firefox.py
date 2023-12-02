@@ -74,7 +74,7 @@ if not isProgramRunning(['music.youtube.com'], firefoxWindows, '10'):
 
 # Stocks
 if not isProgramRunning(['Robinhood', 'Webull'], firefoxWindows, '10'):
-    os.system('python ~/.config/scripts/launch-stocks-tracker.py')
+    os.system('python ~/bin/launch-stocks-tracker.py')
 
 # Videos
 if not isProgramRunning(['odysee.com', 'lbry.tv', 'www.youtube.com',
