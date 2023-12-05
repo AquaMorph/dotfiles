@@ -38,6 +38,7 @@ alias gp='git push'
 alias gd='git diff $(git rev-parse --abbrev-ref HEAD)'
 
 export TERM=xterm
+export EDITOR=emacs
 
 # Daisy build toolkit
 GCC_PATH=~/dev/gcc-arm-none-eabi-9-2020-q2-update/bin
