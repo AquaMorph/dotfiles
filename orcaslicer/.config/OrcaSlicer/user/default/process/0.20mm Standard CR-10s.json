@@ -1,8 +1,7 @@
 {
-    "brim_type": "brim_ears",
+    "brim_type": "no_brim",
     "brim_width": "10",
     "default_acceleration": "0",
-    "enable_support": "1",
     "from": "User",
     "gap_infill_speed": "30",
     "infill_combination": "1",
