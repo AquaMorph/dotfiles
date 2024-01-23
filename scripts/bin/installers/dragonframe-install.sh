@@ -5,7 +5,14 @@
 # Import library
 source $(dirname ${BASH_SOURCE[0]})/install-lib.sh
 
-dragonframe=$(searchProgramInstalled dragonframe | \
+# Fix issue with shared library files.
+function postInstallFix() {
+  sudo rm /opt/dragonframe2024/lib/libtiff.so.5
+  sudo rm /opt/dragonframe2024/lib/libudev.so.0
+  sudo ln -s -f /lib64/libudev.so.1 /opt/dragonframe2024/lib/libudev.so.0
+}
+
+dragonframe=$(searchProgramInstalled dragonframe20* | \
 		  awk 'END {print $(NF-2), $(NF-1), $NF}')
 dragonframeVersion=$(echo $dragonframe | awk '{print $2;}' | filterVersion)
 url=$(curl -s https://www.dragonframe.com/downloads/ \
