@@ -3,6 +3,7 @@
 	email = christian@cacolglazier.com
 [core]
 	editor = emacs
+	excludesFile = ~/.gitignore
 [rerere]
 	enabled = true
 [column]
