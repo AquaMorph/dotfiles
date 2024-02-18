@@ -109,6 +109,7 @@ function stow_dotfiles {
     stow zsh
     stow alacritty
     stow g13
+    stow git
     stow gtk
     stow i3
     stow i3status
