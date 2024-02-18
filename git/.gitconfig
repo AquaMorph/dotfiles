@@ -3,3 +3,5 @@
 	email = christian@cacolglazier.com
 [core]
 	editor = emacs
+[rerere]
+	enabled = true
