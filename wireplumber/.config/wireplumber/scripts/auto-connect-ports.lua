@@ -32,6 +32,41 @@ function link_port(output_port, input_port)
   return true
 end
 
+function delete_link(link_om, output_port, input_port)
+  print("Trying to delete")
+
+  if not input_port or not output_port then
+    print("No ports")
+    return false
+  end
+
+  local link = link_om:lookup {
+    Constraint {
+      "link.input.node", "equals", input_port.properties["node.id"]
+    },
+    Constraint {
+      "link.input.port", "equals", input_port.properties["object.id"],
+    },
+    Constraint {
+      "link.output.node", "equals", output_port.properties["node.id"],
+    },
+    Constraint {
+      "link.output.port", "equals", output_port.properties["object.id"],
+    }
+  }
+
+  if not link then
+
+    print("No link!")
+
+    return
+  end
+
+  print("Deleting link!")
+
+  link:request_destroy()
+end
+
 -- Automatically link ports together by their specific audio channels.
 --
 -- ┌──────────────────┐         ┌───────────────────┐
@@ -131,9 +166,6 @@ function auto_connect_ports(args)
   end
 end
 
-
--- pw-cli list-objects | grep object.path
-
 -- Connect to speakers
 auto_connect_ports {
   output = Constraint { "object.path", "matches", "speakers:*" },
@@ -144,12 +176,3 @@ auto_connect_ports {
   }
 }
 
--- Connect to mic
-auto_connect_ports {
-  output = Constraint { "object.path", "matches", "alsa:pcm:2:hw:2,0:capture:*" },
-  input = Constraint { "object.path", "matches", "sm7b-processed:" },
-  connect = {
-    ["AUX0"] = "FL",
-    ["AUX1"] = "FR"
-  }
-}
