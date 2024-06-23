@@ -26,7 +26,7 @@ function fixPulse() {
 function launchi3() {
     if [ -z "$skipi3" ]; then
 	echo Opening i3wm sound workspaces
-	sleep .1 && i3-msg 'workspace 5; exec firefox'
+	sleep .1 && i3-msg 'workspace 5; exec librewolf'
 	sleep 5.1 && python ~/bin/start-firefox.py
     fi
 }
