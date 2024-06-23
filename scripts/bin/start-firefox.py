@@ -54,32 +54,32 @@ def isProgramRunning(name, windows, workspace):
     return False
 
 
-def isPagesLoaded(firefoxWindows):
-    for w in firefoxWindows:
+def isPagesLoaded(windows):
+    for w in windows:
         if 'http' not in w.name:
             return True
     return True
 i3 = Connection()
-firefoxWindows = filterWindowsByClass('firefox', getWindows(i3))
+windows = filterWindowsByClass('librewolf-default', getWindows(i3))
 
-while(not isPagesLoaded(firefoxWindows)):
+while(not isPagesLoaded(windows)):
     time.sleep(0.1)
 
 switchWorkspace('10')
 switchWorkspace('1')
 
 # Music
-if not isProgramRunning(['music.youtube.com'], firefoxWindows, '10'):
-    launchProgram('firefox --new-window music.youtube.com', '10')
+if not isProgramRunning(['music.youtube.com'], windows, '10'):
+    launchProgram('librewolf --new-window music.youtube.com', '10')
 
 # Stocks
-if not isProgramRunning(['Robinhood', 'Webull'], firefoxWindows, '10'):
+if not isProgramRunning(['Robinhood', 'Webull'], windows, '10'):
     os.system('python ~/bin/launch-stocks-tracker.py')
 
 # Videos
 if not isProgramRunning(['odysee.com', 'lbry.tv', 'www.youtube.com',
                          ' - YouTube', 'hulu.com', 'netflix.com',
                          'disneyplus.com', 'tv.youtube.com'],
-                        firefoxWindows, '10'):
-    launchProgram('firefox --new-window youtube.com/feed/subscriptions', '10')
-    launchProgram('sleep 1 && firefox -new-tab odysee.com/$/following', '10')
+                        windows, '10'):
+    launchProgram('librewolf --new-window youtube.com/feed/subscriptions', '10')
+    launchProgram('sleep 1 && librewolf -new-tab odysee.com/$/following', '10')
