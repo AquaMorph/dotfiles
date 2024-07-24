@@ -28,6 +28,11 @@ function flatpakUpdate {
     fi
 }
 
+# Appimage Updater
+function appimageUpdate {
+    am update
+}
+
 # Checks if a program is installed and if it is runs an updater script
 function updateProgram {
     if command -v $1 &> /dev/null; then
@@ -55,4 +60,7 @@ aptUpdate
 echo ''
 flatpakUpdate
 echo ''
+appimageUpdate
+echo ''
 manualUpdate
+
