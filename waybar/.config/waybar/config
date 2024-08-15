@@ -3,11 +3,27 @@
     "output": ["DVI-D-0", "LVDS-1", "eDP-1"],
     "position": "top",
     "height": 35, // Waybar height (to be removed for auto height)
-    "modules-left": ["sway/workspaces", "sway/mode", "custom/media"],
-    "modules-center": ["sway/window"],
+    "modules-left": ["hyprland/workspaces", "hyprland/mode", "sway/workspaces", "sway/mode", "custom/media"],
+    "modules-center": ["hyprland/window", "sway/window"],
     "modules-right": ["pulseaudio", "network", "backlight", "battery", "tray", "clock"],
     // Modules configuration
      "sway/workspaces": {
+         "disable-scroll": true,
+         "all-outputs": true,
+         "format": "{icon}",
+         "format-icons": {
+             "1": "1",
+             "2": "",
+             "3": "3",
+             "4": "4",
+             "5": "5",
+	     "13": "♫",
+             "urgent": "",
+             "focused": "",
+             "default": ""
+         }
+     },
+     "hyprland/workspaces": {
          "disable-scroll": true,
          "all-outputs": true,
          "format": "{icon}",
@@ -33,6 +49,9 @@
         }
     },
     "sway/mode": {
+        "format": "<span style=\"italic\">{}</span>"
+    },
+    "hyprland/mode": {
         "format": "<span style=\"italic\">{}</span>"
     },
     "tray": {
