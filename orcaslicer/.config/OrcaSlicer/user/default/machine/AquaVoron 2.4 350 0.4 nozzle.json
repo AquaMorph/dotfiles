@@ -1,0 +1,8 @@
+{
+    "from": "User",
+    "inherits": "Voron 2.4 350 0.4 nozzle",
+    "is_custom_defined": "0",
+    "name": "AquaVoron 2.4 350 0.4 nozzle",
+    "printer_settings_id": "AquaVoron 2.4 350 0.4 nozzle",
+    "version": "1.8.0.0"
+}
