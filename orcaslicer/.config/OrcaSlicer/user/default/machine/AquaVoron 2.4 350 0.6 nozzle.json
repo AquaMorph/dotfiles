@@ -2,7 +2,12 @@
     "from": "User",
     "inherits": "Voron 2.4 350 0.6 nozzle",
     "is_custom_defined": "0",
+    "machine_start_gcode": "PRINT_START BED_TEMP=[bed_temperature_initial_layer_single] EXTRUDER_TEMP=[nozzle_temperature_initial_layer]",
     "name": "AquaVoron 2.4 350 0.6 nozzle",
+    "print_host": "http://192.168.20.21",
     "printer_settings_id": "AquaVoron 2.4 350 0.6 nozzle",
+    "retraction_length": [
+        "0.1"
+    ],
     "version": "1.8.0.0"
 }

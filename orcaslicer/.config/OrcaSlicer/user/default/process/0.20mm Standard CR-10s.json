@@ -25,6 +25,7 @@
     "print_settings_id": "0.20mm Standard CR-10s",
     "sparse_infill_density": "30%",
     "sparse_infill_line_width": "107%",
+    "sparse_infill_pattern": "adaptivecubic",
     "sparse_infill_speed": "60",
     "support_interface_speed": "30",
     "support_line_width": "95%",

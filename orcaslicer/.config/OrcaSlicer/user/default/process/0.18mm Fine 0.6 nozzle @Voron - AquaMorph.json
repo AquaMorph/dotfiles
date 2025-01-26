@@ -1,0 +1,9 @@
+{
+    "brim_type": "no_brim",
+    "from": "User",
+    "inherits": "0.18mm Fine 0.6 nozzle @Voron",
+    "is_custom_defined": "0",
+    "name": "0.18mm Fine 0.6 nozzle @Voron - AquaMorph",
+    "print_settings_id": "0.18mm Fine 0.6 nozzle @Voron - AquaMorph",
+    "version": "2.2.0.4"
+}

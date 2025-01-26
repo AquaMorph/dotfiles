@@ -1,0 +1,13 @@
+{
+    "filament_flow_ratio": [
+        "0.955"
+    ],
+    "filament_settings_id": [
+        "Voron Overture PETG"
+    ],
+    "from": "User",
+    "inherits": "Voron Generic PETG",
+    "is_custom_defined": "0",
+    "name": "Voron Overture PETG",
+    "version": "2.2.0.4"
+}
