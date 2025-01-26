@@ -5,6 +5,20 @@
 # Import library
 source $(dirname ${BASH_SOURCE[0]})/install-lib.sh
 
+# Graphics card fix
+function graphicsCardFix() {
+  sudo rm /etc/OpenCL/vendors/mesa.icd
+  sudo rm /etc/OpenCL/vendors/pocl.icd
+}
+
+# gLib fix
+function glibFix() {
+  sudo mkdir /opt/resolve/libs/_disabled
+  sudo mv /opt/resolve/libs/libglib-2.0.so* /opt/resolve/libs/_disabled
+  sudo mv /opt/resolve/libs/libgio-2.0.so*  /opt/resolve/libs/_disabled
+  sudo mv /opt/resolve/libs/libgmodule-2.0.so* /opt/resolve/libs/_disabled
+}
+
 versionFile=/opt/resolve/version.txt
 
 resolveVersion=$(cat /opt/resolve/docs/ReadMe.html | grep 'DaVinci Resolve Studio' | filterVersion)
@@ -77,18 +91,12 @@ if [ ! -f ./*${installerName}_Linux.run ]; then
 fi
 echo "Installing ./*${installerName}_Linux.run"
 chmod +x ./*${installerName}_Linux.run
-sudo ./*${installerName}_Linux.run -i -y
+sudo SKIP_PACKAGE_CHECK=1 ./*${installerName}_Linux.run -i -y
 
 # Version number backup
 sudo echo $urlVersion > $versionFile
 
-# Graphics card fix
-sudo rm /etc/OpenCL/vendors/mesa.icd
-sudo rm /etc/OpenCL/vendors/pocl.icd
-
-# gLib fix
-sudo mkdir /opt/resolve/libs/_disabled
-sudo mv /opt/resolve/libs/libglib-2.0.so* /opt/resolve/libs/_disabled
+glibFix
 
 # Keyboard mapping fix
 setxkbmap -option 'caps:super'

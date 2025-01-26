@@ -33,9 +33,9 @@ def getURLId(url):
 # getURLVersion() returns the url version number.
 def getURLVersion(url):
     if 'Beta' in url['downloadTitle']:
-        beta = re.search('Beta \d+', url['downloadTitle'])
+        beta = re.search('Beta \\d+', url['downloadTitle'])
         if beta:
-            beta = re.search('\d+', beta.group()).group()
+            beta = re.search('\\d+', beta.group()).group()
     else:
         beta = '99'
     return '{}.{}.{}.{}'.format(url['major'], url['minor'], url['releaseNum'], beta)
