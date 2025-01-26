@@ -7,7 +7,7 @@
 -- Link two ports together
 function link_port(output_port, input_port)
   if not input_port or not output_port then
-    return false
+    return nil
   end
 
   local link_args = {
@@ -29,42 +29,7 @@ function link_port(output_port, input_port)
   local link = Link("link-factory", link_args)
   link:activate(1)
 
-  return true
-end
-
-function delete_link(link_om, output_port, input_port)
-  print("Trying to delete")
-
-  if not input_port or not output_port then
-    print("No ports")
-    return false
-  end
-
-  local link = link_om:lookup {
-    Constraint {
-      "link.input.node", "equals", input_port.properties["node.id"]
-    },
-    Constraint {
-      "link.input.port", "equals", input_port.properties["object.id"],
-    },
-    Constraint {
-      "link.output.node", "equals", output_port.properties["node.id"],
-    },
-    Constraint {
-      "link.output.port", "equals", output_port.properties["object.id"],
-    }
-  }
-
-  if not link then
-
-    print("No link!")
-
-    return
-  end
-
-  print("Deleting link!")
-
-  link:request_destroy()
+  return link
 end
 
 -- Automatically link ports together by their specific audio channels.
@@ -107,6 +72,8 @@ function auto_connect_ports(args)
     }
   }
 
+  local links = {}
+
   local input_om = ObjectManager {
     Interest {
       type = "port",
@@ -131,22 +98,40 @@ function auto_connect_ports(args)
         Constraint { "port.direction", "equals", "in" }
       }
     }
-
   end
 
   function _connect()
     local delete_links = unless and unless:get_n_objects() > 0
 
-    print("Delete links", delete_links)
+    if delete_links then
+      for _i, link in pairs(links) do
+        link:request_destroy()
+      end
 
-    for output_name, input_name in pairs(args.connect) do
-      local output = output_om:lookup { Constraint { "audio.channel", "equals", output_name } }
-      local input =  input_om:lookup { Constraint { "audio.channel", "equals", input_name } }
+      links = {}
+
+      return
+    end
+
+    for output_name, input_names in pairs(args.connect) do
+      local input_names = input_names[1] == nil and { input_names } or input_names
 
       if delete_links then
-        delete_link(all_links, output, input)
       else
-        link_port(output, input)
+        -- Iterate through all the output ports with the correct channel name
+        for output in output_om:iterate { Constraint { "audio.channel", "equals", output_name } } do
+          for _i, input_name in pairs(input_names) do
+            -- Iterate through all the input ports with the correct channel name
+            for input in input_om:iterate { Constraint { "audio.channel", "equals", input_name } } do
+              -- Link all the nodes
+              local link = link_port(output, input)
+
+              if link then
+                table.insert(links, link)
+              end
+            end
+          end
+        end
       end
     end
   end
@@ -166,10 +151,12 @@ function auto_connect_ports(args)
   end
 end
 
+-- pw-cli list-objects | grep object.path
+
 -- Connect to speakers
 auto_connect_ports {
   output = Constraint { "object.path", "matches", "speakers:*" },
-  input = Constraint { "object.path", "matches", "alsa:pcm:2:hw:2,0:playback:*" },
+  input = Constraint { "object.path", "matches", "alsa:acp:C8Pre:0:playback:*" },
   connect = {
     ["FL"] = "AUX0",
     ["FR"] = "AUX1"
