@@ -43,3 +43,8 @@ export EDITOR=emacs
 # Daisy build toolkit
 GCC_PATH=~/dev/gcc-arm-none-eabi-10-2020-q4-major/bin
 export PATH=$GCC_PATH:$PATH
+
+# AM auto complete
+autoload bashcompinit
+bashcompinit
+source "/home/aqua/.local/share/bash-completion/completions/am"
