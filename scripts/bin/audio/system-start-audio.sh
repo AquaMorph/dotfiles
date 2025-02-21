@@ -26,8 +26,8 @@ function fixPulse() {
 function launchi3() {
     if [ -z "$skipi3" ]; then
 	echo Opening i3wm sound workspaces
-	sleep .1 && i3-msg 'workspace 5; exec librewolf'
-	sleep 5.1 && python ~/bin/start-firefox.py
+	sleep .1 && i3-msg 'workspace 5; exec brave-browser'
+	#sleep 5.1 && python ~/bin/start-firefox.py
     fi
 }
 
@@ -59,6 +59,13 @@ function renameInterface() {
     done
 }
 
+# Restart the Wireplumber service.
+function restartWireplumber() {
+    systemctl --user stop wireplumber
+    sleep 5
+    systemctl --user restart wireplumber
+}
+
 # arg parser
 for arg in "$@"
 do
@@ -70,20 +77,12 @@ done
 
 # Wire sinks
 setupSinks
-connectSinks
-status=$?
-while [[ $status -eq 0 ]]; do
-    echo "Connecting Sinks"
-    connectSinks
-    status=$?
-    sleep 1
-done
-
-# Rename Audio Devices
-#renameInterface
 
 # Eurorack audio interface
 sh ~/bin/audio/es9start.sh
 
 launchi3
 systemctl --user restart polybar
+sleep 5
+restartWireplumber
+
