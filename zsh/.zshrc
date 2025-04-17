@@ -1,7 +1,3 @@
-HISTFILE=~/.zsh_history
-HISTSIZE=99999999
-SAVEHIST=99999999
-
 autoload -Uz vcs_info
 precmd() { vcs_info }
 zstyle ':vcs_info:git:*' formats '%b '
@@ -15,6 +11,11 @@ zstyle :compinstall filename '~/.zshrc'
 
 autoload -Uz compinit
 compinit
+
+HISTFILE=~/.zsh_history
+HISTSIZE=99999999
+SAVEHIST=99999999
+
 
 # Text Editor
 alias emacs='emacs -nw'
@@ -36,6 +37,9 @@ alias g='git'
 alias p='git pull'
 alias gp='git push'
 alias gd='git diff $(git rev-parse --abbrev-ref HEAD)'
+alias stash='git stash create; git stash push'
+alias pop='git stash pop'
+
 
 export TERM=xterm
 export EDITOR=emacs
