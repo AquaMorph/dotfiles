@@ -40,9 +40,18 @@ alias gd='git diff $(git rev-parse --abbrev-ref HEAD)'
 alias stash='git stash create; git stash push'
 alias pop='git stash pop'
 
+# AquaAI
+export AQUAAI_PATH='~/bin/aquaai.sh'
+alias q=${AQUAAI_PATH}
+alias qc="${AQUAAI_PATH} --cli"
+alias qg="${AQUAAI_PATH} --git"
+alias cr="${AQUAAI_PATH} --code-review"
+export AQUAAI_DEFAULT_MODEL='qwen2.5:1.5b'
+export AQUAAI_CODING_MODEL='qwen2.5:3b'
+export AQUAAI_RICH_FORMAT_MODE=true
 
 export TERM=xterm
-export EDITOR=emacs
+export EDITOR='emacs -nw'
 
 # Daisy build toolkit
 GCC_PATH=~/dev/gcc-arm-none-eabi-10-2020-q4-major/bin
@@ -52,3 +61,4 @@ export PATH=$GCC_PATH:$PATH
 autoload bashcompinit
 bashcompinit
 source "/home/aqua/.local/share/bash-completion/completions/am"
+
