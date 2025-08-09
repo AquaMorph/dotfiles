@@ -630,6 +630,7 @@ function chat() {
   handle_edit
   handle_cli_mode
   handle_debug
+  rc=$((rc + $?))
   handle_save
   rc=$((rc + $?))
   if [ "$rc" -ne 0 ]; then
