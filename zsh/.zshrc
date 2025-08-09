@@ -16,10 +16,14 @@ HISTFILE=~/.zsh_history
 HISTSIZE=99999999
 SAVEHIST=99999999
 
+source "$HOME/.config/settings.conf"
 
 # Text Editor
 alias emacs='emacs -nw'
 alias e='emacs -nw'
+
+# Search
+alias g='grep -Irn'
 
 # Other
 alias i='sudo dnf install'
@@ -33,7 +37,6 @@ alias a='git add'
 alias ga='git add -A'
 alias gu='git add -u'
 alias s='git status'
-alias g='git'
 alias p='git pull'
 alias gp='git push'
 alias gd='git diff $(git rev-parse --abbrev-ref HEAD)'
@@ -49,6 +52,7 @@ alias cr="${AQUAAI_PATH} --code-review"
 export AQUAAI_DEFAULT_MODEL='qwen2.5:1.5b'
 export AQUAAI_CODING_MODEL='qwen2.5:3b'
 export AQUAAI_RICH_FORMAT_MODE=true
+export AQUAAI_KEY
 
 export TERM=xterm
 export EDITOR='emacs -nw'
