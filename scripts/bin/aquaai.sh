@@ -74,7 +74,7 @@
 #
 # export AQUAAI_OLLAMA_URL='192.168.1.156:11434'
 #
-ollama_url=${AQUAAI_OLLAMA_URL:='https://ollama.aquamorph.com'}
+ollama_url=${AQUAAI_OLLAMA_URL:='https://ai.aquamorph.com'}
 #
 # Set the default model.
 #
@@ -116,11 +116,23 @@ rich_format_path=${AQUAAI_RICH_FORMAT_PATH:=streamdown}
 # export AQUAAI_INSECURE_MODE=true
 #
 insecure_mode=${AQUAAI_INSECURE_MODE:=false}
+#
+# Use OpenAI api design instead of Ollama.
+#
+# export AQUAAI_OPENAI_API:=true
+#
+openai_api=${AQUAAI_OPENAI_API:=true}
+#
+# Set key used to authenticate with the API.
+#
+# export AQUAAI_KEY:=true
+#
+key=${AQUAAI_KEY:=''}
 #===============================================================================
 
 # Constants.
 OLLAMA_URL=${ollama_url}
-CURL_FLAGS='-sN'
+CURL_FLAGS=('-sN')
 USER=$(whoami)
 DATA_DIR="${HOME}/.local/share/aquaai"
 RESPONSE_FIFO="${DATA_DIR}/.response"
@@ -264,14 +276,31 @@ function check_requirements() {
   fi
 }
 
-# Get list of available models.
+# Get available models info.
 function get_models() {
-  curl "${OLLAMA_URL}/api/tags" ${CURL_FLAGS}
+  local model_path=''
+  if [ "${openai_api}" == true ]; then
+    model_path='/api/models'
+  else
+    model_path='/api/tags'
+  fi
+  curl "${CURL_FLAGS[@]}" "${OLLAMA_URL}${model_path}"
+}
+
+# Get a list of available models.
+function get_models_list() {
+  local jq_filter=''
+  if [ "${openai_api}" == true ]; then
+    jq_filter='.data[].id'
+  else
+    jq_filter='.models[].model'
+  fi
+  get_models | jq -r ${jq_filter}
 }
 
 # Print list of models.
 function print_models() {
-  get_models | jq -r '.models[].model' | column -t -s $'\t'
+  get_models_list | column -t -s $'\t'
 }
 
 # Print message variable.
@@ -282,7 +311,7 @@ function print_debug_message_history() {
 # Check if the model exists.
 function check_if_model_exists() {
   local model=${1}
-  local model_list=($(get_models | jq -r '.models[].model'))
+  local model_list=($(get_models_list))
 
   for m in "${model_list[@]}"; do
     if [[ "$m" == "$model" ]]; then
@@ -517,7 +546,7 @@ function get_friendly_save_names() {
 
 # Validate site certificate.
 function check_cert() {
-  curl ${OLLAMA_URL} ${CURL_FLAGS} 2>&1 >/dev/null
+  curl "${CURL_FLAGS[@]}" ${OLLAMA_URL}  2>&1 >/dev/null
   local ec=$?
   if [ "${ec}" == '60' ]; then
     print_error 'unable to get local issuer certificate.'
@@ -655,9 +684,20 @@ function chat() {
   else
     cat ${RESPONSE_FIFO} &
   fi
-  local response=$(curl -sN "$OLLAMA_URL/api/chat" \
-    -d "$JSON_PAYLOAD" \
-    | stdbuf -o0 jq -j '.message.content // empty' \
+  local flags=("${CURL_FLAGS[@]}")
+  local chat_path=''
+  local filter=''
+  if [ "${openai_api}" == true ]; then
+    flags+=(-H "Content-Type: application/json")
+    chat_path='/api/chat/completions'
+    filter='.choices[].delta.content // empty'
+  else
+    chat_path='/api/chat'
+    filter='.message.content // empty'
+  fi
+  local response=$(curl "${flags[@]}" "${OLLAMA_URL}${chat_path}" \
+    -d "${JSON_PAYLOAD}" | stdbuf -o0 sed 's/^data: //' \
+    | stdbuf -o0 jq -j "${filter}" 2>/dev/null \
     | tee ${RESPONSE_FIFO})
   wait
   # Newline for AI response.
@@ -683,9 +723,12 @@ function chat() {
 
 check_requirements
 if [ "${insecure_mode}" == true ]; then
-  CURL_FLAGS+=' -k'
+  CURL_FLAGS+=('-k')
 else
   check_cert
+fi
+if [ "${openai_api}" == true ]; then
+  CURL_FLAGS+=(-H "Authorization: Bearer ${key}")
 fi
 cmd=chat_loop
 set_default_agent
