@@ -136,6 +136,7 @@ CURL_FLAGS=('-sN')
 USER=$(whoami)
 DATA_DIR="${HOME}/.local/share/aquaai"
 RESPONSE_FIFO="${DATA_DIR}/.response"
+AGENT_NAME='AquaAI'
 
 # Colors.
 CLEAR='\033[0m'
@@ -146,6 +147,7 @@ LIGHT_GRAY='\e[38;5;247m'
 # Globals.
 message_history=''
 cli_mode=false
+git_mode=false
 code_review_start=false
 selected_model=${default_model}
 message_history="[]"
@@ -163,39 +165,74 @@ ERROR_UNKNOWN_SSL=9
 
 #===============================================================================
 
-# Set the default agent.
-function set_default_agent() {
-  system_prompt='You are an AI assistant named AquaAI.'
-  system_prompt+=' Follow the users instructions carefully.'
-  system_prompt+=' Respond using extended markdown.'
+# Give the AI a name. It improves prompting to call it by name.
+function name_agent() {
+  system_prompt="You are an AI assistant named ${AGENT_NAME}."
+}
+
+# Make the AI write and behave better.
+function set_better_conversions() {
   system_prompt+=' Be as concise as possible.'
+  system_prompt+=' Be extremely accurate.'
+  system_prompt+=' Recommend things I would not realize I would benefit from.'
+  system_prompt+=' Call out my misconceptions and tell me when I am wrong.'
+  system_prompt+=" For personal matters ${AGENT_NAME} is encouraging"
+  system_prompt+=' but brutally honest.'
+  system_prompt+=' Never sycophantic.'
+}
+
+# Set the formatting for all reponses.
+function set_response_format() {
+  system_prompt+=' Do not wrap response in quotation marks.'
+  system_prompt+=' Do not use html to format response.'
+}
+
+# Limit format of output to just commands.
+function format_for_cli() {
+  system_prompt+=" ${AGENT_NAME} does not put commands in quotation marks."
+  system_prompt+=" ${AGENT_NAME} does not put commands in markdown."
+  system_prompt+=" ${AGENT_NAME} only outputs terminal commands."
+}
+
+# Default prompt.
+function set_default_agent() {
+  name_agent
+  system_prompt+=" ${AGENT_NAME} follows the users instructions carefully."
+  system_prompt+=" ${AGENT_NAME} responds using extended markdown."
+  set_better_conversions
+  set_response_format
 }
 
 # Set chat to help with command line questions.
 function set_cli_agent() {
   local os_version=$(cat /etc/os-release | grep 'PRETTY_NAME' | \
                        sed 's/PRETTY_NAME=//g' | tr -d '"')
-  system_prompt='You are a large language model trained to assist users with an'
-  system_prompt+=" ${os_version} OS. Only output terminal commands."
-  system_prompt+=' Do not put commands in quotation marks.'
-  system_prompt+=' Do not put commands in markdown.'
+  name_agent
+  system_prompt+=" ${AGENT_NAME} assists users with ${os_version}."
+  format_for_cli
+  set_response_format
 }
 
 # Set chat to help with bash questions.
 function set_bash_agent() {
-  system_prompt='You are a large language model trained to assist users with'
-  system_prompt+=' POSIXs bash. Format output for view in a command line. Do'
-  system_prompt+=' not put commands in quotation marks. Use double spaces and'
-  system_prompt+=' the function key word. Write documentation for a function'
-  system_prompt+=' before the function declaration.'
+  name_agent
+  system_prompt+=" ${AGENT_NAME} assists users with POSIXs bash."
+  system_prompt+=' Format output for view in a command line.'
+  system_prompt+=' Do not put commands in quotation marks.'
+  system_prompt+=' Use double spaces and the function keyword.'
+  system_prompt+=' Write documentation before the function declaration.'
+  set_response_format
 }
 
 # Set ai to help with code reviews.
 function set_code_review_agent() {
-  system_prompt='You are a senior software engineer performing a code review'
-  system_prompt+=' for a colleague.'
+  name_agent
+  system_prompt+=" ${AGENT_NAME} is a senior software engineer performing a"
+  system_prompt+=' code review for a colleague.'
   system_prompt+=''
-  system_prompt+='Your report should have the following format:'
+  set_better_conversions
+  system_prompt+=' Show code snipets when helpful.'
+  system_prompt+="${AGENT_NAME}'s reports should have the following format:"
   system_prompt+='# Typos'
   system_prompt+='List of all typos you find.'
   system_prompt+='# Formatting and Readability Issues'
@@ -204,33 +241,69 @@ function set_code_review_agent() {
   system_prompt+='List of all security issues you find.'
   system_prompt+='# Other'
   system_prompt+='List of all other issues you find.'
+  set_response_format
 }
 
 # Set chat to help with git.
 function set_git_agent() {
-  system_prompt='You are a large language model trained to assist users with'
-  system_prompt+=' git. Only output terminal commands.'
-  system_prompt+=' Do not put commands in quotation marks.'
+  name_agent
+  system_prompt+=" ${AGENT_NAME} assists users with git."
+  format_for_cli
+
+  if is_git_repo; then
+    system_prompt+="\n\nHere is some information about the current git repo.\n"
+    local current_branch=$(git branch --show-current)
+    system_prompt+="Current branch: ${current_branch} \n"
+    local git_remotes=$(git remote -v)
+    system_prompt+="Remotes: ${git_remotes}\n"
+  fi
 }
 
 # Set chat to help with regex.
 function set_regex_agent() {
-  system_prompt='You are a large language model trained to assist users with'
-  system_prompt+=' regex. Only output a single regex expression.'
+  name_agent
+  system_prompt+=" ${AGENT_NAME} assists users with regex."
+  system_prompt+=' Only output a single regex expression.'
   system_prompt+=' Use BRE and ERE regex.'
-  system_prompt+=' Do not put commands in quotation marks.'
+  format_for_cli
 }
 
 #===============================================================================
 
+# Get the first available model from a given list.
+function get_model_from_list() {
+  local models=("$@")
+  for m in "${models[@]}"; do
+    check_if_model_exists $m true
+    if [ $? -eq 0 ]; then
+      echo "${m}"
+      return
+    fi
+  done
+  print_error "could not find any models on the list."
+  exit $ERROR_UNKNOWN_MODEL
+}
+
+function load_model_from_list() {
+  local models=("$@")
+  selected_model=$(get_model_from_list "${models[@]}")
+  if [[ $? -ne 0 ]]; then
+     print_error "could not find any models on the list."
+     exit $ERROR_UNKNOWN_MODEL
+  fi
+}
+
 # Set the default coding model.
 function set_coding_model() {
-  selected_model=${coding_model}
+  local models=('qwen2.5-32b-coder', 'qwen2.5-7b-coder',
+                'llama3.3-70b-instruct', 'qwen2.5-coder:0.5b')
+  load_model_from_list "${models[@]}"
 }
 
 # Set the default reasoning model.
 function set_reasoning_model() {
-  selected_model='deepseek-r1:8b'
+  local models=('qwen3-32b', 'gpt-oss-120b')
+  load_model_from_list "${models[@]}"
 }
 
 #===============================================================================
@@ -311,6 +384,7 @@ function print_debug_message_history() {
 # Check if the model exists.
 function check_if_model_exists() {
   local model=${1}
+  local enable_rc=${2}
   local model_list=($(get_models_list))
 
   for m in "${model_list[@]}"; do
@@ -319,8 +393,12 @@ function check_if_model_exists() {
     fi
   done
 
-  print_error "model ${model} does not exists."
-  exit ${ERROR_UNKNOWN_MODEL}
+  if [ ${enable_rc} ]; then
+     return 1
+  else
+    print_error "model ${model} does not exists."
+    exit $ERROR_UNKNOWN_MODEL
+  fi
 }
 
 # Convert string to a safe format for later use.
