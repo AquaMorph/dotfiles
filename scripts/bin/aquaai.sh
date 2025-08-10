@@ -444,6 +444,11 @@ function editor_input() {
 }
 
 # Check if current directory is managed by git.
+function is_git_repo() {
+  git rev-parse --is-inside-work-tree &> /dev/null
+}
+
+# Check if current directory is managed by git.
 function check_git_directory() {
   if ! git rev-parse --is-inside-work-tree &> /dev/null; then
     print_error 'The current directory is not inside a git repository.'
