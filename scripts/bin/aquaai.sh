@@ -145,12 +145,11 @@ RED='\e[1;31m'
 LIGHT_GRAY='\e[38;5;247m'
 
 # Globals.
-message_history=''
+message_history="[]"
 cli_mode=false
 git_mode=false
 code_review_start=false
 selected_model=${default_model}
-message_history="[]"
 
 # Error Codes.
 ERROR_NO_SAVEFILE=1
@@ -183,7 +182,7 @@ function set_better_conversions() {
 
 # Set the formatting for all reponses.
 function set_response_format() {
-  system_prompt+=' Do not wrap response in quotation marks.'
+  system_prompt+=' Do not wrap response in quotation marks or apostrophes.'
   system_prompt+=' Do not use html to format response.'
 }
 
@@ -295,15 +294,24 @@ function load_model_from_list() {
 
 # Set the default coding model.
 function set_coding_model() {
-  local models=('qwen2.5-32b-coder', 'qwen2.5-7b-coder',
-                'llama3.3-70b-instruct', 'qwen2.5-coder:3b',
-                'qwen2.5-coder:0.5b')
+  local models=(${coding_model}
+                'qwen2.5-32b-coder'
+                'qwen2.5-7b-coder'
+                'llama3.3-70b-instruct'
+                'hf.co/Qwen/Qwen2.5-Coder-3B-Instruct-GGUF:Q4_K_M'
+                'hf.co/bartowski/Qwen2.5-Coder-1.5B-Instruct-GGUF:Q4_K_M'
+                'qwen2.5-coder:3b'
+                'qwen2.5-coder:0.5b'
+               )
   load_model_from_list "${models[@]}"
 }
 
 # Set the default reasoning model.
 function set_reasoning_model() {
-  local models=('qwen3-32b', 'gpt-oss-120b')
+  local models=(${reasing_model}
+                'qwen3-32b'
+                'gpt-oss-120b'
+               )
   load_model_from_list "${models[@]}"
 }
 
