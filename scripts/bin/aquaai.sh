@@ -296,7 +296,8 @@ function load_model_from_list() {
 # Set the default coding model.
 function set_coding_model() {
   local models=('qwen2.5-32b-coder', 'qwen2.5-7b-coder',
-                'llama3.3-70b-instruct', 'qwen2.5-coder:0.5b')
+                'llama3.3-70b-instruct', 'qwen2.5-coder:3b',
+                'qwen2.5-coder:0.5b')
   load_model_from_list "${models[@]}"
 }
 
@@ -377,8 +378,22 @@ function print_models() {
 }
 
 # Print message variable.
-function print_debug_message_history() {
+function print_message_history() {
   echo ${message_history}
+}
+
+# Print message variable.
+function print_debug() {
+  echo "Model: ${selected_model}"
+  echo 'System Prompt:'
+  print_system_prompt
+  echo 'Chat History:'
+  print_message_history | jq
+}
+
+# Print the system prompt.
+function print_system_prompt() {
+  echo -e "${system_prompt}"
 }
 
 # Check if the model exists.
@@ -704,8 +719,7 @@ function handle_edit() {
 # Check for debug command.
 function handle_debug() {
   if [[ $msg == 'debug' ]]; then
-    echo "model=${selected_model}"
-    print_debug_message_history | jq
+    print_debug
     return 1
   fi
   return 0
