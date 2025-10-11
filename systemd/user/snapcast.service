@@ -1,0 +1,13 @@
+[Unit]
+Description=Snapcast
+After=pipewire.service
+Requires=pipewire.service
+
+[Install]
+WantedBy=default.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+ExecStart=%h/git/audio/snapcast/bin/snapclient
+ExecStop=killall -q snapclient
