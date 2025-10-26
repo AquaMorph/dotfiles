@@ -267,6 +267,13 @@ function set_regex_agent() {
   format_for_cli
 }
 
+# Set chat to help with Home Assistant.
+function set_home_assistant_agent() {
+  name_agent
+  system_prompt+=" ${AGENT_NAME} assists users with Home Assistant programming."
+  system_prompt+=" Templating is done with Jinja2."
+}
+
 #===============================================================================
 
 # Get the first available model from a given list.
@@ -897,6 +904,12 @@ for i in "$@"; do
     --regex)
       set_coding_model
       set_regex_agent
+      cmd=chat_loop
+      rich_format_mode=false
+      ;;
+    -ha|--home-assistant)
+      set_coding_model
+      set_home_assistant_agent
       cmd=chat_loop
       rich_format_mode=false
       ;;

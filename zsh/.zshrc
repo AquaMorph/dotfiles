@@ -46,11 +46,13 @@ alias pop='git stash pop'
 # AquaAI
 export AQUAAI_PATH='~/bin/aquaai.sh'
 alias q=${AQUAAI_PATH}
+alias qb="${AQUAAI_PATH} --bash"
 alias qc="${AQUAAI_PATH} --cli"
 alias qg="${AQUAAI_PATH} --git"
-alias cr="${AQUAAI_PATH} --code-review"
-export AQUAAI_DEFAULT_MODEL='qwen2.5:1.5b'
-export AQUAAI_CODING_MODEL='qwen2.5:3b'
+alias qr="${AQUAAI_PATH} --code-review"
+alias qa="${AQUAAI_PATH} --home-assistant"
+export AQUAAI_DEFAULT_MODEL='hf.co/unsloth/Qwen3-4B-Instruct-2507-GGUF:Q4_K_M'
+export AQUAAI_CODING_MODEL='hf.co/unsloth/Qwen3-4B-Instruct-2507-GGUF:Q4_K_M'
 export AQUAAI_RICH_FORMAT_MODE=true
 export AQUAAI_KEY
 
