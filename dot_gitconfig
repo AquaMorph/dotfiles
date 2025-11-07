@@ -1,0 +1,14 @@
+[user]
+	name = Christian Colglazier
+	email = christian@cacolglazier.com
+[core]
+	editor = emacs
+	excludesFile = ~/.gitignore
+[rerere]
+	enabled = true
+[column]
+	ui = auto
+[branch]
+	sort = -committerdate
+[push]
+	autoSetupRemote = true
