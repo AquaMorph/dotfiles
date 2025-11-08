@@ -1,0 +1,39 @@
+stickzone del STICK_PAGEUP
+stickzone del STICK_PAGEDOWN
+stickzone bounds STICK_LEFT 0.0 0.3 0.2 0.7
+stickzone bounds STICK_RIGHT 0.8 0.3 1.0 0.7
+stickzone bounds STICK_UP 0.3 0.0 0.7 0.2
+stickzone bounds STICK_DOWN 0.3 0.8 0.7 1.0
+
+# Character Movement
+bind G4 KEY_W
+bind G10 KEY_A
+bind G11 KEY_S
+bind G12 KEY_D
+bind G22 KEY_SPACE
+bind G20 KEY_RIGHTCTRL
+bind G15 KEY_RIGHTCTRL
+
+# Hook
+bind STICK_UP KEY_F
+bind STICK_DOWN KEY_F
+
+# Enter Batmobile
+bind DOWN KEY_E
+
+# Detective Mode
+bind G5 LEFT KEY_X
+
+# Choose gadget
+bind G14 KEY_G
+
+# Augmented Reality Challenges
+bind G19 KEY_ C
+
+# Mission Choice
+bind G1 KEY_V
+
+# Electric Tool
+bind G6 KEY_4
+
+rgb 255 5 5

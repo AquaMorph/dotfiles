@@ -1,0 +1,65 @@
+# =================     ===============     ===============   ========  ========
+# \\ . . . . . . .\\   //. . . . . . .\\   //. . . . . . .\\  \\. . .\\// . . //
+# ||. . ._____. . .|| ||. . ._____. . .|| ||. . ._____. . .|| || . . .\/ . . .||
+# || . .||   ||. . || || . .||   ||. . || || . .||   ||. . || ||. . . . . . . ||
+# ||. . ||   || . .|| ||. . ||   || . .|| ||. . ||   || . .|| || . | . . . . .||
+# || . .||   ||. _-|| ||-_ .||   ||. . || || . .||   ||. _-|| ||-_.|\ . . . . ||
+# ||. . ||   ||-'  || ||  `-||   || . .|| ||. . ||   ||-'  || ||  `|\_ . .|. .||
+# || . _||   ||    || ||    ||   ||_ . || || . _||   ||    || ||   |\ `-_/| . ||
+# ||_-' ||  .|/    || ||    \|.  || `-_|| ||_-' ||  .|/    || ||   | \  / |-_.||
+# ||    ||_-'      || ||      `-_||    || ||    ||_-'      || ||   | \  / |  `||
+# ||    `'         || ||         `'    || ||    `'         || ||   | \  / |   ||
+# ||            .===' `===.         .==='.`===.         .===' /==. |  \/  |   ||
+# ||         .=='   \_|-_ `===. .==='   _|_   `===. .===' _-|/   `==  \/  |   ||
+# ||      .=='    _-'    `-_  `='    _-'   `-_    `='  _-'   `-_  /|  \/  |   ||
+# ||   .=='    _-'          `-__\._-'         `-_./__-'         `' |. /|  |   ||
+# ||.=='    _-'                                                     `' |  /==.||
+# =='    _-'                                                            \/   `==
+# \   _-'                                                                `-_   /
+#  `''                                                                      ``'
+
+	    
+stickzone del STICK_PAGEUP
+stickzone del STICK_PAGEDOWN
+stickzone bounds STICK_LEFT 0.0 0.3 0.2 0.7
+stickzone bounds STICK_RIGHT 0.8 0.3 1.0 0.7
+stickzone bounds STICK_UP 0.3 0.0 0.7 0.2
+stickzone bounds STICK_DOWN 0.3 0.8 0.7 1.0
+
+# Character Movement
+bind G4 KEY_W
+bind G10 KEY_A
+bind G11 KEY_S
+bind G12 KEY_D
+bind G22 KEY_SPACE
+
+# Weapon Select
+## Pistol
+bind STICK_DOWN KEY_1
+## Rocket Launcher
+bind STICK_LEFT KEY_5
+## Heavy Assault Rifle
+bind STICK_RIGHT KEY_4
+# Combat Shotgun
+bind STICK_UP KEY_2
+# Chaingun
+bind G3 KEY_8
+# Super Shotgun
+bind DOWN KEY_6
+
+
+# Other
+## Use
+bind G6 KEY_E
+
+bind G20 KEY_RIGHTCTRL
+bind G15 KEY_RIGHTCTRL
+
+# Other
+bind GR KEY_R
+bind LEFT KEY_F
+
+bind G18 KEY_C
+bind G13 KEY_X
+
+rgb 66 00 00

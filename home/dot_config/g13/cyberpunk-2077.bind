@@ -1,0 +1,35 @@
+# Cyberpunk 2077
+	    
+stickzone del STICK_PAGEUP
+stickzone del STICK_PAGEDOWN
+stickzone bounds STICK_LEFT 0.0 0.3 0.2 0.7
+stickzone bounds STICK_RIGHT 0.8 0.3 1.0 0.7
+stickzone bounds STICK_UP 0.3 0.0 0.7 0.2
+stickzone bounds STICK_DOWN 0.3 0.8 0.7 1.0
+
+# Character Movement
+bind G4 KEY_W
+bind G10 KEY_A
+bind G11 KEY_S
+bind G12 KEY_D
+bind G22 KEY_SPACE
+bind G15 KEY_LEFTSHIFT
+bind G20 KEY_LEFTCTRL
+
+bind G1 KEY_ESC
+bind G2 KEY_I
+bind G3 KEY_Q
+bind G5 KEY_E
+bind G6 KEY_R
+bind G7 KEY_T
+bind G14 KEY_M
+bind G16 KEY_Z
+bind G17 KEY_X
+bind G18 KEY_C
+bind G19 KEY_V
+
+bind LEFT KEY_F
+bind DOWN KEY_TAB
+bind STICK_UP KEY_LEFTALT
+
+rgb 252 236 12

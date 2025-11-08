@@ -1,0 +1,65 @@
+# =================     ===============     ===============   ========  ========
+# \\ . . . . . . .\\   //. . . . . . .\\   //. . . . . . .\\  \\. . .\\// . . //
+# ||. . ._____. . .|| ||. . ._____. . .|| ||. . ._____. . .|| || . . .\/ . . .||
+# || . .||   ||. . || || . .||   ||. . || || . .||   ||. . || ||. . . . . . . ||
+# ||. . ||   || . .|| ||. . ||   || . .|| ||. . ||   || . .|| || . | . . . . .||
+# || . .||   ||. _-|| ||-_ .||   ||. . || || . .||   ||. _-|| ||-_.|\ . . . . ||
+# ||. . ||   ||-'  || ||  `-||   || . .|| ||. . ||   ||-'  || ||  `|\_ . .|. .||
+# || . _||   ||    || ||    ||   ||_ . || || . _||   ||    || ||   |\ `-_/| . ||
+# ||_-' ||  .|/    || ||    \|.  || `-_|| ||_-' ||  .|/    || ||   | \  / |-_.||
+# ||    ||_-'      || ||      `-_||    || ||    ||_-'      || ||   | \  / |  `||
+# ||    `'         || ||         `'    || ||    `'         || ||   | \  / |   ||
+# ||            .===' `===.         .==='.`===.         .===' /==. |  \/  |   ||
+# ||         .=='   \_|-_ `===. .==='   _|_   `===. .===' _-|/   `==  \/  |   ||
+# ||      .=='    _-'    `-_  `='    _-'   `-_    `='  _-'   `-_  /|  \/  |   ||
+# ||   .=='    _-'          `-__\._-'         `-_./__-'         `' |. /|  |   ||
+# ||.=='    _-'                                                     `' |  /==.||
+# =='    _-'                                                            \/   `==
+# \   _-'                                                                `-_   /
+#  `''                                                                      ``'
+
+	    
+stickzone del STICK_PAGEUP
+stickzone del STICK_PAGEDOWN
+stickzone bounds STICK_LEFT 0.0 0.3 0.2 0.7
+stickzone bounds STICK_RIGHT 0.8 0.3 1.0 0.7
+stickzone bounds STICK_UP 0.3 0.0 0.7 0.2
+stickzone bounds STICK_DOWN 0.3 0.8 0.7 1.0
+
+# Character Movement
+bind G4 KEY_W
+bind G10 KEY_A
+bind G11 KEY_S
+bind G12 KEY_D
+bind G22 KEY_SPACE
+bind G15 KEY_LEFTSHIFT
+
+# Weapon Select
+## Glorykill/Use
+bind LEFT KEY_E
+## Flame Belch
+bind DOWN KEY_R
+## Chainsaw
+bind G19 KEY_C
+## Super Shotgun
+bind STICK_LEFT KEY_5
+## Rocket Launcher
+bind STICK_UP KEY_4
+## Heavy Cannon
+bind STICK_RIGHT KEY_2
+## Plasma Rifle
+bind STICK_DOWN KEY_3
+## Ballista
+bind G6 KEY_6
+## BFG-9000
+bind G7 KEY_8
+
+## Chaingun
+bind G5 KEY_7
+
+# Dossier
+bind G1 KEY_TAB
+# Mission Informatmation
+bind G2 KEY_LEFTALT
+
+rgb 66 00 00
