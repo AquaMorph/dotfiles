@@ -1,0 +1,19 @@
+configuration {
+	modi: "window,drun,ssh,combi";
+	font: "sf mono medium 24";
+	fixed-num-lines: true;
+	show-icons: true;
+	terminal: "alacritty";
+	case-sensitive: false;
+	sidebar-mode: false;
+	combi-modi: "window,drun,run,ssh";
+	scroll-method: 0;
+	click-to-exit: true;
+	display-window: "window";
+	display-run: "run";
+	display-ssh: "ssh";
+	display-drun: "drun";
+	display-combi: "combi";
+}
+
+@import "./themes/aqua.rasi"
