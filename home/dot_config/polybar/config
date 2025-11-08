@@ -1,0 +1,195 @@
+[colors]
+black = #BB000000
+blue = #0288D1
+blue-light = #B3E5FC
+pink = #E91E63
+pink-light = #FFCDD2
+alert = #E91E63
+white = #FFFFFF
+
+[bar/aqua]
+width = 100%
+height = 34
+radius = 0.0               
+fixed-center = true
+background = ${colors.black}
+foreground = ${colors.white}
+monitor = ${env:MONITOR:fallback-value}
+line-size = 0
+line-color = ${colors.pink}
+border-size = 0
+border-color = ${colors.black}
+padding-left = 0
+padding-right = 3
+module-margin-left = 1
+module-margin-right = 3
+
+font-0 = SF Pro Display:semibold:fixed:pixelsize=17;3
+; Version 4.7
+font-1 = FontAwesome Regular:style=Regular:pixelsize=17
+; Version 5 Regular
+font-2 = Font Awesome 5 Free Regular:pixelsize=8;
+; Version 5 Solid
+font-3 = Font Awesome 5 Free Solid:pixelsize=15;2
+; Version 5 Brands
+font-4 = Font Awesome 5 Brands:pixelsize=18;1
+font-5 = Font Awesome 5 Free Solid:pixelsize=70;3
+
+modules-left = i3
+modules-center = xwindow
+modules-right = backlight volume network battery date
+
+tray-position = right
+tray-padding = 2
+
+[module/xwindow]
+type = internal/xwindow
+label = %title:0:80:...%
+format-background = ${colors.black}
+
+[module/i3]
+type = internal/i3
+format = <label-state> <label-mode>
+index-sort = true
+wrapping-scroll = false
+
+strip-wsnumbers = true
+fuzzy-match = true
+
+label-mode-padding = 2
+label-mode-foreground = #000
+label-mode-background = ${colors.pink}
+
+label-focused = %index%
+label-focused-background = ${colors.blue}
+label-focused-underline = ${colors.pink}
+label-focused-padding = 2
+
+label-unfocused = %index%
+label-unfocused-padding = 2
+
+label-visible = %index%
+label-visible-background = ${self.label-focused-background}
+label-visible-underline = ${self.label-focused-background}
+label-visible-padding = ${self.label-focused-padding}
+
+label-urgent = %index%!
+label-urgent-background = ${colors.alert}
+label-urgent-padding = 2
+
+[module/date]
+type = internal/date
+interval = 1.0
+time = %I:%M
+time-alt = %m-%d-%Y %I:%M:%S
+label = %{T4}%{T-}%time%
+label-alt = 
+format-underline = ${colors.blue}
+
+[module/battery]
+type = internal/battery
+full-at = 99
+time-format = %-H:%M
+; $ ls -1 /sys/class/power_supply/
+battery = BAT0
+adapter = ADP1
+poll-interval = 5
+
+format-charging = <animation-charging><label-charging>
+format-charging-underline = ${colors.blue}
+label-charging = %percentage%%~%time%
+
+format-discharging = <ramp-capacity><label-discharging>
+format-discharging-underline = ${colors.blue-light}
+label-discharging = %percentage%%~%time%
+
+label-full = 100%
+
+ramp-capacity-0 = 
+ramp-capacity-1 = 
+ramp-capacity-2 = 
+ramp-capacity-3 = 
+ramp-capacity-4 = 
+
+; Only applies if <animation-charging> is used
+animation-charging-0 = 
+animation-charging-1 = 
+animation-charging-2 = 
+animation-charging-3 = 
+animation-charging-4 = 
+; Framerate in milliseconds
+animation-charging-framerate = 500
+
+[module/volume]
+type = internal/alsa
+
+format-volume = <label-volume>
+label-volume =  %percentage%%
+label-volume-foreground = ${root.foreground}
+format-volume-underline = ${colors.blue}
+
+format-muted-prefix = " "
+label-muted =  %percentage%%
+format-muted-underline = ${colors.pink}
+
+[module/backlight]
+type = internal/backlight
+; Use the following command to list available cards:
+; $ ls -1 /sys/class/backlight/
+card = intel_backlight
+
+format = <label>
+label =  %percentage%%
+format-underline = ${colors.blue}
+
+[module/temperature]
+type = internal/temperature
+
+; Seconds to sleep between updates
+; Default: 1
+interval = 1
+
+; Thermal zone to use
+; To list all the zone types, run 
+; $ for i in /sys/class/thermal/thermal_zone*; do echo "$i: $(<$i/type)"; done
+; Default: 0
+thermal-zone = 0
+
+; Full path of temperature sysfs path
+; Use `sensors` to find preferred temperature source, then run
+; $ for i in /sys/class/hwmon/hwmon*/temp*_input; do echo "$(<$(dirname $i)/name): $(cat ${i%_*}_label 2>/dev/null || echo $(basename ${i%_*})) $(readlink -f $i)"; done
+; to find path to desired file
+; Default reverts to thermal zone setting
+hwmon-path = /sys/devices/platform/coretemp.0/hwmon/hwmon2/temp1_input
+
+; Threshold temperature to display warning label (in degrees celsius)
+; Default: 80
+warn-temperature = 60
+
+[module/network]
+type = internal/network
+interface = wlp3s0
+interval = 5.0
+unknown-as-up = true
+label-connected = %essid%
+label-connected-underline = ${colors.blue}
+label-disconnected = 
+label-disconnected-underline = ${colors.pink}
+
+[module/mouse-battery]
+type = custom/script
+exec = ~/bin/get-mouse-battery.sh
+label =  %output%
+interval = 60
+
+[settings]
+screenchange-reload = true
+;compositing-background = xor
+;compositing-background = screen
+;compositing-foreground = source
+;compositing-border = over
+
+[global/wm]
+margin-top = 0
+margin-bottom = 0
+
