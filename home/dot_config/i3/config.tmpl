@@ -1,0 +1,434 @@
+# Set super key as mod
+set $mod Mod4
+
+# Colors
+set $blue  "#0288D1"
+set $pink  "#E91E63"
+set $lpink "#FFCDD2"
+
+# Font for window titles. Will also be used by the bar unless a different font
+# is used in the bar {} block below.
+font pango:NimbusSans Bold 10
+
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+
+# start a terminal
+bindsym $mod+Return exec --no-startup-id alacritty
+
+# kill focused window
+bindsym $mod+q kill
+
+# start program launcher
+bindsym $mod+d exec --no-startup-id rofi -show combi
+# change focus
+bindsym $mod+j focus left
+bindsym $mod+k focus down
+bindsym $mod+l focus up
+bindsym $mod+semicolon focus right
+
+# alternatively, you can use the cursor keys:
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+# move focused window
+bindsym $mod+Shift+j move left
+bindsym $mod+Shift+k move down
+bindsym $mod+Shift+l move up
+bindsym $mod+Shift+semicolon move right
+
+# alternatively, you can use the cursor keys:
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+
+# split in horizontal orientation
+bindsym $mod+h split h
+
+# split in vertical orientation
+bindsym $mod+v split v
+
+# Cycle workspaces
+bindsym $mod+apostrophe workspace next_on_output
+
+# enter fullscreen mode for the focused container
+bindsym $mod+f fullscreen toggle
+
+# change container layout (stacked, tabbed, toggle split)
+#bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+
+# toggle tiling / floating
+bindsym $mod+Shift+space floating toggle
+
+# change focus between tiling / floating windows
+bindsym $mod+space focus mode_toggle
+
+# focus the parent container
+bindsym $mod+a focus parent
+
+# media controls
+bindsym Ctrl+Left exec playerctl previous
+bindsym Ctrl+Down exec playerctl play-pause
+bindsym Ctrl+Right exec playerctl next
+
+# Gaps
+set $inner 8
+set $outer 0
+gaps inner $inner
+gaps outer $outer
+
+# Define names for default workspaces
+set $ws1       "1"
+set $ws2       "2"
+set $ws3       "3"
+set $ws4       "4"
+set $ws5       "5"
+set $ws6       "6"
+set $ws7       "7"
+set $ws8       "8"
+set $ws9       "9"
+set $ws10      "10"
+set $wsResolve "11"
+set $wsReaper  "12"
+set $wsBitwig  "13"
+set $wsGames   "14"
+set $wsSignal  "15"
+
+# switch to workspace
+bindsym $mod+1 workspace $ws1
+bindsym $mod+2 workspace $ws2
+bindsym $mod+3 workspace $ws3
+bindsym $mod+4 workspace $ws4
+bindsym $mod+5 workspace $ws5
+bindsym $mod+6 workspace $ws6
+bindsym $mod+7 workspace $ws7
+bindsym $mod+8 workspace $ws8
+bindsym $mod+9 workspace $ws9
+bindsym $mod+0 workspace $ws10
+
+# move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace $ws1
+bindsym $mod+Shift+2 move container to workspace $ws2
+bindsym $mod+Shift+3 move container to workspace $ws3
+bindsym $mod+Shift+4 move container to workspace $ws4
+bindsym $mod+Shift+5 move container to workspace $ws5
+bindsym $mod+Shift+6 move container to workspace $ws6
+bindsym $mod+Shift+7 move container to workspace $ws7
+bindsym $mod+Shift+8 move container to workspace $ws8
+bindsym $mod+Shift+9 move container to workspace $ws9
+bindsym $mod+Shift+0 move container to workspace $ws10
+
+# reload the configuration file
+bindsym $mod+Shift+c exec "sh ~/bin/i3wm-config-gen.sh"
+# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym $mod+Shift+r exec "sh ~/bin/i3wm-config-gen.sh" ; restart
+# exit i3 (logs you out of your X session)
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+
+# resize window (you can also use the mouse for that)
+mode "resize" {
+        # These bindings trigger as soon as you enter the resize mode
+
+        # Pressing left will shrink the window’s width.
+        # Pressing right will grow the window’s width.
+        # Pressing up will shrink the window’s height.
+        # Pressing down will grow the window’s height.
+        bindsym j resize shrink width 10 px or 10 ppt
+        bindsym k resize grow height 10 px or 10 ppt
+        bindsym l resize shrink height 10 px or 10 ppt
+        bindsym semicolon resize grow width 10 px or 10 ppt
+
+	bindsym Shift+j resize shrink width 1 px or 1 ppt
+        bindsym Shift+k resize grow height 1 px or 1 ppt
+        bindsym Shift+l resize shrink height 1 px or 1 ppt
+        bindsym Shift+semicolon resize grow width 1 px or 1 ppt
+
+        # same bindings, but for the arrow keys
+        bindsym Left resize shrink width 10 px or 10 ppt
+        bindsym Down resize grow height 10 px or 10 ppt
+        bindsym Up resize shrink height 10 px or 10 ppt
+        bindsym Right resize grow width 10 px or 10 ppt
+
+	bindsym Shift+Left resize shrink width 1 px or 1 ppt
+        bindsym Shift+Down resize grow height 1 px or 1 ppt
+        bindsym Shift+Up resize shrink height 1 px or 1 ppt
+        bindsym Shift+Right resize grow width 1 px or 1 ppt
+
+        # back to normal: Enter or Escape or $mod+r
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+        bindsym $mod+r mode "default"
+}
+
+bindsym $mod+r mode "resize"
+
+# Set caps lock key to super
+exec_always --no-startup-id setxkbmap -option 'caps:super'
+
+# Startup scripts
+exec --no-startup-id ~/bin/system/system-start.sh
+
+# class                 border  backgr. text    indicator child_border
+client.focused          $pink   $pink   $pink   $pink     $pink
+client.focused_inactive $blue   $blue   $blue   $blue     $blue
+client.unfocused        $blue   $blue   $blue   $blue     $blue
+client.urgent           $blue   $blue   $blue   $blue     $blue
+client.placeholder      $blue   $blue   $blue   $blue     $blue
+
+client.background       $blue
+
+# Removes border and title bar 
+for_window [class="^.*"] border pixel 3
+#new_window 1pixel
+#new_float normal 4
+default_floating_border normal 3
+#new_window normal 0 px
+
+# Screenshots
+bindsym Print exec scrot '%Y:%m:%d:%H:%M:%S.png' -e 'mv $f ~/Pictures/screenshots/'
+bindsym --release $mod+Print exec scrot '%Y:%m:%d:%H:%M:%S.png' -s -e 'mv $f ~/Pictures/screenshots/'
+bindsym $mod+s exec scrot '%Y:%m:%d:%H:%M:%S.png' -e 'mv $f ~/Pictures/screenshots/'
+bindsym --release $mod+Shift+s exec grim -g "$(slurp)" - | wl-copy
+
+bindsym $mod+n exec nautilus
+bindsym $mod+m exec nautilus ~/Videos
+
+# Steam
+for_window [class="^steamwebhelper$" title="^Friends$"] floating enable
+for_window [class="^steamwebhelper$" title="Steam - News"] floating enable
+for_window [class="^steamwebhelper" title=".* - Chat"] floating enable
+for_window [class="^steamwebhelper$" title="^Settings$"] floating enable
+for_window [class="^steamwebhelper$" title=".* - event started"] floating enable
+for_window [class="^steamwebhelper$" title=".* CD key"] floating enable
+for_window [class="^steamwebhelper$" title="^Steam - Self Updater$"] floating enable
+for_window [class="^steamwebhelper$" title="^Screenshot Uploader$"] floating enable
+for_window [class="^steamwebhelper$" title="^Steam Guard - Computer Authorization Required$"] floating enable
+for_window [title="^Steam Keyboard$"] floating enable
+
+# Jetbrains
+for_window [class="^com-intellij-updater-Runner$" title="^Update$"] floating enable
+for_window [instance="^sun-awt-X11-XDialogPeer$" title="^Complete Installation$"] floating enable
+
+# DaVinci Resolve
+#for_window [class="resolve"] gaps inner current set 0; gaps outer current set 0
+
+# Bitwig
+for_window [class="^Bitwig Studio$" title="^Bitwig Studio"] gaps inner set 0; gaps outer set 0
+for_window [class="^Bitwig Studio$" title="^Bitwig Studio"] exec python ~/bin/audio/synth-power.py -d
+for_window [class="^Bitwig Studio$" title="^Bitwig Studio"] exec sh ~/bin/audio/aquamix.sh -d
+for_window [class="^Bitwig Studio$" title="^Bitwig Studio"] exec systemctl --user restart i3wm-close-window.service
+
+#Other
+for_window [class="Signal"] move to workspace $wsSignal
+
+#bindsym $mod+F5 gaps inner current set 0; gaps outer current set 0
+#bindsym $mod+F6 gaps inner current set $inner; gaps outer current set $outer
+
+{{- if eq .chezmoi.hostname "desktop" }}
+# Assign workspaces to monitors
+workspace $ws1           output DP-4
+workspace $ws2           output DP-4
+workspace $ws3           output DP-4
+workspace $ws4           output DP-4
+workspace $wsGames       output DP-4
+workspace $wsResolve     output DP-4
+workspace $wsReaper      output DP-4
+workspace $wsBitwig      output DP-4
+workspace $ws5           output DP-2
+workspace $ws6           output DP-2
+workspace $ws7           output DP-2
+workspace $ws8           output DP-2
+workspace $wsSignal      output DP-2
+workspace $ws9           output HDMI-0
+workspace $ws10          output HDMI-0
+
+exec --no-startup-id compton &
+exec --no-startup-id feh --bg-scale ~/Pictures/desktop/0001.jpg &
+
+mode "$g13" {
+     bindsym 1 exec --no-startup-id cat ~/.config/g13/overwatch.bind > /tmp/g13-0 && sleep .1 && cat ~/.config/g13/overwatch.lpbm > /tmp/g13-0; mode "default"
+     bindsym 2 exec --no-startup-id cat ~/.config/g13/resolve.bind > /tmp/g13-0 && sleep .1 && cat ~/.config/g13/resolve.lpbm > /tmp/g13-0; mode "default"
+     bindsym 3 exec --no-startup-id cat ~/.config/g13/planet-coaster.bind > /tmp/g13-0 && sleep 0.1 && cat ~/.config/g13/planet-coaster.lpbm > /tmp/g13-0; mode "default"
+     bindsym 4 exec --no-startup-id cat ~/.config/g13/fall-guys.bind > /tmp/g13-0 && sleep .1 && cat ~/.config/g13/fall-guys.lpbm > /tmp/g13-0; mode "default"
+     bindsym Escape mode "default"
+     bindsym Return mode "default"
+}
+set $g13 G13 Profile: [1] Overwatch [2] Resolve [3] Planet Coaster [4] Fall Guys
+bindsym $mod+F1 mode "$g13"
+exec_always --no-startup-id g13d --config ~/.config/g13/resolve.bind --logo ~/.config/g13/resolve.lpbm &
+
+# Startup programs
+exec --no-startup-id "workspace $10"
+exec --no-startup-id "workspace $15; exec flatpak run org.signal.Signal"
+
+# Starts Jack for audio
+exec --no-startup-id "workspace $1; exec alacritty"
+exec --no-startup-id sh ~/bin/audio/system-start-audio.sh
+
+# Open Google Play Music on workspace 10
+for_window [title="Google Play Music Desktop Player"] move to workspace $ws10
+
+# Among Us
+for_window [class="steam_app_945360" title="Among Us"] move to workspace $wsGames
+for_window [class="steam_app_945360" title="Among Us"] exec --no-startup-id cat ~/.config/g13/among-us.bind > /tmp/g13-0 && sleep .1 && cat ~/.config/g13/among-us.lpbm > /tmp/g13-0
+
+# Starting Overwatch
+for_window [class="overwatch.exe" title="Overwatch"] move to workspace $wsGames
+for_window [class="overwatch.exe" title="Overwatch"] exec --no-startup-id cat ~/.config/g13/overwatch.bind > /tmp/g13-0 && sleep .1 && cat ~/.config/g13/overwatch.lpbm > /tmp/g13-0
+for_window [class="steam_app_2357570" title="Overwatch"] move to workspace $wsGames
+for_window [class="steam_app_2357570" title="Overwatch"] exec --no-startup-id cat ~/.config/g13/overwatch.bind > /tmp/g13-0 && sleep .1 && cat ~/.config/g13/overwatch.lpbm > /tmp/g13-0
+for_window [class="battle.net.exe" title="Battle.net"] move to workspace $wsGames
+for_window [class="battle.net.exe" title="Blizzard Battle.net"] move to workspace $wsGames
+for_window [class="Lutris"] move to workspace $ws4
+
+# DOOM
+for_window [class="Wine" title="DOOMx64vk"] move to workspace $wsGames
+for_window [class="Wine" title="DOOMx64vk"] exec --no-startup-id cat ~/.config/g13/doom.bind > /tmp/g13-0 && sleep .1 && cat ~/.config/g13/doom.lpbm > /tmp/g13-0
+
+# DOOM Eternal
+for_window [title="DOOMEternal"] move to workspace $wsGames
+for_window [title="DOOMEternal"] exec --no-startup-id cat ~/.config/g13/doom-eternal.bind > /tmp/g13-0 && sleep .1 && cat ~/.config/g13/doom.lpbm > /tmp/g13-0
+
+# Planet Coaster
+for_window [class="planetcoaster.exe" title="Planet Coaster"] move to workspace $wsGames
+for_window [class="planetcoaster.exe" title="Planet Coaster"] exec --no-startup-id cat ~/.config/g13/planet-coaster.bind > /tmp/g13-0 && sleep .1 && cat ~/.config/g13/planet-coaster.lpbm > /tmp/g13-0
+
+# Cyberpunk 2077
+for_window [class="steam_app_1091500" title="Cyberpunk 2077 (C) 2020 by CD Projekt RED"] move to workspace $wsGames
+for_window [class="steam_app_1091500" title="Cyberpunk 2077 (C) 2020 by CD Projekt RED"] exec --no-startup-id cat ~/.config/g13/cyberpunk-2077.bind > /tmp/g13-0 && sleep .1 && cat ~/.config/g13/cyberpunk-2077.lpbm > /tmp/g13-0
+
+# Starting DaVinci Resolve
+for_window [class="resolve"] move to workspace $wsResolve
+for_window [class="resolve"] exec --no-startup-id cat ~/.config/g13/resolve.bind > /tmp/g13-0 && sleep .1 && cat ~/.config/g13/resolve.lpbm > /tmp/g13-0
+bindsym $mod+/ gaps inner current set 0; gaps outer current set 0
+
+# Starting Reaper
+for_window [class="REAPER"] move to workspace $wsReaper
+
+# Steam
+for_window [class="^Steam$"] move to workspace $wsGames
+for_window [title="^Steam$"] move to workspace $wsGames
+
+# Bitwig
+for_window [class="^Show-splash-gtk$"] move to workspace $wsBitwig
+for_window [class="^Bitwig Studio$"] move to workspace $wsBitwig
+for_window [class="com.bitwig.BitwigStudio"] exec sleep 1; move to workspace $wsBitwig
+
+# Fall Guys
+for_window [title="FallGuys_client"] move to workspace $wsGames
+for_window [title="FallGuys_client"] exec --no-startup-id cat ~/.config/g13/fall-guys.bind > /tmp/g13-0 && sleep .1 && cat ~/.config/g13/fall-guys.lpbm > /tmp/g13-0
+
+# Portal
+for_window [class="hl2_linux" title="Portal - OpenGL"] move to workspace $wsGames
+for_window [class="hl2_linux" title="Portal - OpenGL"] exec --no-startup-id cat ~/.config/g13/portal.bind > /tmp/g13-0 && sleep .1 && cat ~/.config/g13/portal.lpbm > /tmp/g13-0
+for_window [class="portal2_linux" title="PORTAL 2 - OpenGL"] move to workspace $wsGames
+for_window [class="portal2_linux" title="PORTAL 2 - OpenGL"] exec --no-startup-id cat ~/.config/g13/portal.bind > /tmp/g13-0 && sleep .1 && cat ~/.config/g13/portal.lpbm > /tmp/g13-0
+
+# Two Point Hospital
+for_window [class="TPH.x86_64" title="Two Point Hospital"] move to workspace $wsGames
+for_window [class="TPH.x86_64" title="Two Point Hospital"] exec --no-startup-id cat ~/.config/g13/two-point-hospital.bind > /tmp/g13-0 && sleep .1 && cat ~/.config/g13/two-point-hospital.lpbm > /tmp/g13-0
+
+# Minecraft
+for_window [class="Minecraft*" title="Minecraft*"] move to workspace $wsGames
+for_window [class="Minecraft*" title="Minecraft*"] exec --no-startup-id cat ~/.config/g13/minecraft.bind > /tmp/g13-0 && sleep .1 && cat ~/.config/g13/minecraft.lpbm > /tmp/g13-0
+
+# Arkham Knight
+for_window [class="steam_app_208650" title="*"] move to workspace $wsGames
+for_window [class="steam_app_208650" title="*"] exec --no-startup-id cat ~/.config/g13/arkham-knight.bind > /tmp/g13-0 && sleep .1 && cat ~/.config/g13/arkham-knight.lpbm > /tmp/g13-0
+
+# Factorio
+for_window [class="factorio" title="Factorio*"] move to workspace $wsGames
+for_window [class="factorio" title="Factorio*"] exec --no-startup-id cat ~/.config/g13/factorio.bind > /tmp/g13-0 && sleep .1 && cat ~/.config/g13/factorio.lpbm > /tmp/g13-0
+
+# The side buttons move the desktop around
+bindsym --whole-window button9 exec --no-startup-id python3 ~/bin/i3-mouse.py back
+bindsym --whole-window button8 exec --no-startup-id python3 ~/bin/i3-mouse.py forward
+bindsym $mod+Tab exec --no-startup-id python3 ~/bin/i3-mouse.py thumb
+{{- end }}
+
+{{- if eq .chezmoi.hostname "framework" }}
+# Display
+output eDP-1 scale 1.25
+
+# Desktop background
+output "*" bg ~/Pictures/wallpaper/0000.jpg fill
+
+# Screen brightness controls
+exec light -N 1
+bindsym XF86MonBrightnessUp exec light -A 5 # increase screen brightness
+bindsym XF86MonBrightnessDown exec light -U 5 # decrease screen brightness 
+
+# Pulse Audio controls
+bindsym XF86AudioRaiseVolume exec amixer set Master 3%+ #increase sound volume
+bindsym XF86AudioLowerVolume exec amixer set Master 3%- #decrease sound volume
+bindsym XF86AudioMute exec amixer set Master toggle # toggle sound
+
+# Media controls
+bindsym XF86AudioPrev exec playerctl previous
+bindsym XF86AudioPlay exec playerctl play-pause
+bindsym XF86AudioNext exec playerctl next
+
+# Lockscreen
+bindsym $mod+Escape exec swaylock
+
+# Touchpad Settings
+input "2362:628:PIXA3854:00_093A:0274_Touchpad" {
+    accel_profile flat
+    click_method clickfinger
+    dwt disabled
+    natural_scroll enabled
+    scroll_method two_finger
+    tap enabled
+    pointer_accel 0.8
+}
+
+# Move Programs
+for_window [app_id="firefox"] move to workspace $ws1
+for_window [class="Emacs"] move to workspace $ws2
+for_window [class="Steam"] move to workspace $wsGames
+for_window [class="com.bitwig.BitwigStudio"] move to workspace $wsBitwig
+
+# Notifications
+exec mako
+
+# Startup Programs
+exec "swaymsg 'workspace $wsSignal; exec flatpak run org.signal.Signal'"
+exec "swaymsg 'workspace $ws2; exec alacritty'"
+exec "swaymsg 'workspace $ws1; exec brave-browser'"
+{{- end }}
+
+{{- if eq .chezmoi.hostname "w530" }}
+# Screen brightness controls
+bindsym XF86MonBrightnessUp exec light -A 5 # increase screen brightness
+bindsym XF86MonBrightnessDown exec light -U 5 # decrease screen brightness
+
+# Pulse Audio controls
+bindsym XF86AudioRaiseVolume exec amixer set Master 3%+ #increase sound volume
+bindsym XF86AudioLowerVolume exec amixer set Master 3%- #decrease sound volume
+bindsym XF86AudioMute exec amixer set Master toggle # toggle sound
+bindsym XF86AudioMicMute exec amixer set Capture toggle # toggle mic
+
+# Turn off trackpad
+bindsym $mod+Shift+u exec sh ~/dotfiles/scripts/trackpad-toggle.sh
+exec --no-startup-id ~/dotfiles/scripts/trackpad-toggle.sh
+
+# Desktop background
+output "*" bg ~/Pictures/wallpaper/0001.jpg fill
+
+# Turn off the screen
+bindsym XF86Launch1 exec xset -display :0.0 dpms force off
+
+# Start up programs
+for_window [class="Firefox"] move to workspace $ws1
+for_window [class="emacs" title="emacs@*"] move to workspace $ws2
+for_window [class="jetbrains-studio"] move to workspace $ws3
+for_window [title="Google Play Music Desktop Player"] move to workspace $ws10
+
+exec mako
+exec --no-startup-id "firefox"
+{{- end }}
