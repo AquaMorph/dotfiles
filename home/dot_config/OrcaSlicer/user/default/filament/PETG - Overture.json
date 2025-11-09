@@ -1,0 +1,34 @@
+{
+    "enable_pressure_advance": [
+        "1"
+    ],
+    "filament_cost": [
+        "19.99"
+    ],
+    "filament_flow_ratio": [
+        "0.9025"
+    ],
+    "filament_settings_id": [
+        "PETG - Overture"
+    ],
+    "filament_vendor": [
+        "Overture"
+    ],
+    "from": "User",
+    "inherits": "My Generic PETG",
+    "is_custom_defined": "0",
+    "name": "PETG - Overture",
+    "nozzle_temperature": [
+        "245"
+    ],
+    "nozzle_temperature_initial_layer": [
+        "245"
+    ],
+    "pressure_advance": [
+        "0.26"
+    ],
+    "slow_down_layer_time": [
+        "1"
+    ],
+    "version": "1.6.1.0"
+}
