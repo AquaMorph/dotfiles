@@ -53,7 +53,7 @@ alias qr="${AQUAAI_PATH} --code-review"
 alias qa="${AQUAAI_PATH} --home-assistant"
 export AQUAAI_DEFAULT_MODEL='hf.co/unsloth/Qwen3-4B-Instruct-2507-GGUF:Q4_K_M'
 export AQUAAI_CODING_MODEL='hf.co/unsloth/Qwen3-4B-Instruct-2507-GGUF:Q4_K_M'
-export AQUAAI_RICH_FORMAT_MODE=true
+export AQUAAI_RICH_FORMAT_MODE=false
 export AQUAAI_KEY
 
 export TERM=xterm
