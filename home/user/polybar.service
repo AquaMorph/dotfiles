@@ -1,0 +1,8 @@
+[Unit]
+Description=Polybar
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+ExecStart=%h/bin/desktop/polybar-start.sh
+ExecStop=killall -q polybar

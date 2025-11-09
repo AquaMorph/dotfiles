@@ -1,0 +1,11 @@
+[Unit]
+Description=i3wm close window service
+
+[Service]
+RemainAfterExit=true
+ExecStart=python %h/.config/scripts/desktop/i3wm-close-window.py
+Restart=always
+RestartSec=1
+
+[Install]
+WantedBy=multi-user.target

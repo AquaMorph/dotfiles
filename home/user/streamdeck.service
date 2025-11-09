@@ -1,0 +1,24 @@
+[Unit]
+Description=Streamdeck
+After=multi-user.target
+#Conflicts=getty@tty1.service
+#After=graphical.target
+#After = network.target
+
+[Service]
+#Type=simple
+Type=idle
+Restart=on-failure
+#WorkingDirectory=/home/aqua
+#User=aqua
+#RemainAfterExit=true
+ExecStart=/usr/bin/python /home/aqua/git/streamdeck/streamdeck.py
+ExecStop=pkill -9 -f streamdeck.py
+#StandardInput=tty-force
+
+#StandardOutput=append:/home/aqua/streamdeck.log
+#StandardError=append:/home/aqua/streamdeck.log
+
+
+[Install]
+WantedBy = multi-user.target
