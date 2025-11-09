@@ -1,0 +1,6 @@
+configparser
+todoist-python
+tbapy
+holidays
+i3ipc
+pyautogui
