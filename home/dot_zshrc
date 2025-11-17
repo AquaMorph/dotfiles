@@ -27,15 +27,17 @@ export TERM=xterm
 # Search
 alias g='grep -Irn'
 
-# Other
-alias i='sudo dnf install'
-alias d='sudo dnf'
-alias u='sh ~/bin/update.sh'
+# Dotfiles
 alias dot='cd ~/.local/share/chezmoi'
 export DOT_PROGRAM='chezmoi'
 alias dota="${DOT_PROGRAM} add"
 alias dotd="${DOT_PROGRAM} diff"
 alias dotu="${DOT_PROGRAM} update"
+
+# Other
+alias i='sudo dnf install'
+alias d='sudo dnf'
+alias u='sh ~/bin/update.sh'
 alias h='cd ~/git/cacolglazier.com/ && hugo server'
 
 # Git
