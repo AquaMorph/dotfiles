@@ -74,7 +74,7 @@
 #
 # export AQUAAI_OLLAMA_URL='192.168.1.156:11434'
 #
-ollama_url=${AQUAAI_OLLAMA_URL:='https://ai.aquamorph.com'}
+ollama_url=${AQUAAI_OLLAMA_URL:='https://ai.aquamorph.com/api'}
 #
 # Set the default model.
 #
@@ -369,9 +369,9 @@ function check_requirements() {
 function get_models() {
   local model_path=''
   if [ "${openai_api}" == true ]; then
-    model_path='/api/models'
+    model_path='/models'
   else
-    model_path='/api/tags'
+    model_path='/tags'
   fi
   curl "${CURL_FLAGS[@]}" "${OLLAMA_URL}${model_path}"
 }
@@ -801,7 +801,7 @@ function chat() {
   local filter=''
   if [ "${openai_api}" == true ]; then
     flags+=(-H "Content-Type: application/json")
-    chat_path='/api/chat/completions'
+    chat_path='/chat/completions'
     filter='.choices[].delta.content // empty'
   else
     chat_path='/api/chat'
