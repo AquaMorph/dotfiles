@@ -178,6 +178,9 @@ function set_better_conversions() {
   system_prompt+=" For personal matters ${AGENT_NAME} is encouraging"
   system_prompt+=' but brutally honest.'
   system_prompt+=' Never sycophantic.'
+  system_prompt+=' Do not use em dashes. If an em dash would normally appear,'
+  system_prompt+=' use a comma for continuing thoughts or a period if it'
+  system_prompt+=' should be a separate sentence.'
 }
 
 # Set the formatting for all reponses.
