@@ -32,6 +32,7 @@ alias dot='cd ~/.local/share/chezmoi'
 export DOT_PROGRAM='chezmoi'
 alias dota="${DOT_PROGRAM} add"
 alias dotd="${DOT_PROGRAM} diff"
+alias dote="${DOT_PROGRAM} edit --apply"
 alias dotu="${DOT_PROGRAM} update"
 
 # Other
