@@ -1,6 +1,7 @@
 {
   "disabled_providers": ["opencode"],
   "$schema": "https://opencode.ai/config.json",
+  "share": "disabled",  
   "provider": {
     "ollama": {
       "npm": "@ai-sdk/openai-compatible",
