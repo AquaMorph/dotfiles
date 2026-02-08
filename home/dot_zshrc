@@ -41,6 +41,9 @@ alias d='sudo dnf'
 alias u='sh ~/bin/update.sh'
 alias h='cd ~/git/cacolglazier.com/ && hugo server'
 
+# OpenCode
+alias o='opencode'
+
 # Git
 alias c='git commit -m'
 alias a='git add'
