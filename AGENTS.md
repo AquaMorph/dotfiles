@@ -110,7 +110,7 @@ python3 -m py_compile ./home/bin/homeassistant.py
 ## Repository Patterns
 
 ### Commit Message Format
-Follow conventional commits style:
+Follow conventional commits style (all lowercase).
 - `feat(scope): description` - New feature
 - `fix(scope): description` - Bug fix
 - `refactor(scope): description` - Code refactoring
