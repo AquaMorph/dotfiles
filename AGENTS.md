@@ -117,6 +117,9 @@ Follow conventional commits style (all lowercase).
 - `docs(scope): description` - Documentation changes
 - Example: `feat(zsh): update dotfiles` or `fix(scripts): use correct pass entry`
 
+#### Pushing Remotes
+- **Do not push git repositories to remote unless explicitly instructed.**
+
 ### File Organization
 - Shell scripts: `home/bin/executable_<name>.sh`
 - Python scripts: `home/bin/<name>.py`
