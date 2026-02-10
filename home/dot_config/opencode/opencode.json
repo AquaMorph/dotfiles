@@ -13,6 +13,9 @@
         "gpt-oss:20b": {
           "name": "GPT OSS 20b"
         },
+        "gpt-oss:120b": {
+          "name": "GPT OSS 120b"
+        },
         "hf.co/unsloth/Qwen3-4B-Instruct-2507-GGUF:Q3_K_M": {
           "name": "Qwen3 4b"
         },
