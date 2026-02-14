@@ -1,7 +1,7 @@
 ---
 description: Commit currently staged code in git
 mode: all
-model: AquaAI/hf.co/unsloth/Qwen3-4B-Instruct-2507-GGUF:Q3_K_M
+model: AquaAI/gpt-oss:20b
 temperature: 0.1
 tools:
   write: false
@@ -14,3 +14,8 @@ You are in commit code mode. Focus on:
 - Writing a clear and simple commit message.
 - Follow the project formatting for commits.
 - Only commit files that are currently staged in git.
+
+Use the following command to look at the changes:
+```sh
+git diff --cached
+```
