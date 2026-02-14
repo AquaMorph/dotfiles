@@ -43,7 +43,10 @@ alias h='cd ~/git/cacolglazier.com/ && hugo server'
 
 # OpenCode
 export PATH="$HOME/.opencode/bin:$PATH"
-alias o='opencode'
+OPENCODE='opencode'
+alias o="${OPENCODE}"
+alias oc="${OPENCODE} --agent commit run 'Create a commit.'"
+
 
 # Git
 alias c='git commit -m'
