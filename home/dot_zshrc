@@ -46,7 +46,7 @@ export PATH="$HOME/.opencode/bin:$PATH"
 OPENCODE='opencode'
 alias o="${OPENCODE}"
 alias oc="${OPENCODE} --agent commit run 'Create a commit.'"
-
+alias or="${OPENCODE} --continue"
 
 # Git
 alias c='git commit -m'
