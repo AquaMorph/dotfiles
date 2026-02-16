@@ -46,6 +46,7 @@ export PATH="$HOME/.opencode/bin:$PATH"
 OPENCODE='opencode'
 alias o="${OPENCODE}"
 alias oc="${OPENCODE} --agent commit run 'Create a commit.'"
+alias ocr="${OPENCODE} --agent review --prompt 'Code review staged changes.'"
 alias or="${OPENCODE} --continue"
 
 # Git
