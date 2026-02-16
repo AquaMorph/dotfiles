@@ -13,7 +13,8 @@ You are in commit code mode. Focus on:
 
 - Writing a clear and simple commit message.
 - Describe what the changes do at a high level.
-- Never list what files were changed.
+- Always mention only the changes, never any file names.
+- Never mention specific files or what files changed.
 - Follow the project formatting for commits.
 - Only commit files that are currently staged in git.
 - Never add files to the staging.
