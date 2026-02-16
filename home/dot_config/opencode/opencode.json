@@ -10,7 +10,7 @@
           "baseURL": "https://ollama.aquamorph.com/v1"
       },
       "models": {
-        "hf.co/unsloth/gpt-oss-20b-GGUF:Q4_K_M": {
+        "gpt-oss:20b": {
           "name": "GPT OSS 20b"
         },
         "gpt-oss:120b": {
