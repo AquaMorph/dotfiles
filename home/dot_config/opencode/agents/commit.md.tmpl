@@ -1,7 +1,7 @@
 ---
 description: Commit currently staged code in git
 mode: all
-model: AquaAI/gpt-oss:20b
+model: {{ template "models/big-brain" . }}
 temperature: 0.1
 tools:
   write: false
