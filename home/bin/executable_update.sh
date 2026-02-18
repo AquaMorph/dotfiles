@@ -2,6 +2,14 @@
 
 # This script is a catch all program updater.
 
+# Chezmoi Updater
+function chezmoiUpdate {
+    if command -v chezmoi &> /dev/null; then
+	echo Updating chezmoi dotfiles...
+	chezmoi update
+    fi
+}
+
 # DNF Updater
 function dnfUpdate {
     if command -v dnf &> /dev/null; then
@@ -55,6 +63,8 @@ function manualUpdate {
     fi
 }
 
+chezmoiUpdate
+echo ''
 dnfUpdate
 aptUpdate
 echo ''
