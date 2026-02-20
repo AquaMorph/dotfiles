@@ -50,6 +50,7 @@ alias ocr="${OPENCODE} --agent review --prompt 'Code review staged changes.'"
 alias or="${OPENCODE} --continue"
 
 # Git
+gr() { git rebase -i HEAD~$1; }
 alias c='git commit -m'
 alias a='git add'
 alias ga='git add -A'
