@@ -2,7 +2,7 @@
 	name = Christian Colglazier
 	email = christian@cacolglazier.com
 [core]
-	editor = emacs
+	editor = emacs -nw
 	excludesFile = ~/.gitignore
 [rerere]
 	enabled = true
