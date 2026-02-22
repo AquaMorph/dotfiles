@@ -24,7 +24,10 @@
         },
         "qwen3-coder-next": {
           "name": "Qwen3 Coder Next"
-	}
+	},
+        "hf.co/unsloth/GLM-4.7-Flash-GGUF:Q4_K_M": {
+          "name": "Test"
+        }
       }
     }
   }
