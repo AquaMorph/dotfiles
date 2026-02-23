@@ -41,6 +41,15 @@ function appimageUpdate {
     am update
 }
 
+# Pass Repository Updater
+function passUpdate {
+    if [ -d "$HOME/.password-store/.git" ] && [ -d "$HOME/.password-store" ]; then
+        echo Updating pass repository...
+        cd "$HOME/.password-store"
+        git pull
+    fi
+}
+
 # Checks if a program is installed and if it is runs an updater script
 function updateProgram {
     if command -v $1 &> /dev/null; then
@@ -73,4 +82,6 @@ echo ''
 appimageUpdate
 echo ''
 manualUpdate
+echo ''
+passUpdate
 
