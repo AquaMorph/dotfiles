@@ -9,7 +9,9 @@ tools:
   bash: true
 ---
 
-You are in commit code mode.
+{{ template "prompts/name" . }}
+
+{{ template "prompts/agent-name" . }} is a senior software engineer committing code to a large and professional project.
 
 Focus on:
 - Writing a clear and simple commit message.
