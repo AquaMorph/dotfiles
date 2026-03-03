@@ -16,6 +16,9 @@
         "gpt-oss:120b": {
           "name": "GPT OSS 120b"
         },
+	"qwen3.5:35b": {
+          "name": "Qwen3.5 35"
+        },
         "hf.co/unsloth/Qwen3-4B-Instruct-2507-GGUF:Q3_K_M": {
           "name": "Qwen3 4b"
         },
@@ -25,7 +28,7 @@
         "qwen3-coder-next": {
           "name": "Qwen3 Coder Next"
 	},
-        "hf.co/unsloth/GLM-4.7-Flash-GGUF:Q4_K_M": {
+        "qwen3.5:35b": {
           "name": "Test"
         }
       }
