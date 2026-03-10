@@ -96,7 +96,7 @@ python3 -m py_compile ./home/bin/homeassistant.py
 - Redirect stderr appropriately: `2>/dev/null` or `2>&1`
 
 ### Configuration Files
-- Before generating a commit, always consult `agents/COMMITS.md` for the required style.
+- Before generating a commit, always consult `.agent/COMMITS.md` for the required style.
 
 #### chezmoi Templates
 - Dotfiles use chezmoi's templating system
