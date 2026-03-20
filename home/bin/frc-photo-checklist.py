@@ -9,13 +9,15 @@ import operator
 import os
 import sys
 import tbapy
-import todoist
+from todoist_api_python.api import TodoistAPI
 
 # getProjectID() returns the project id that matches the name given.
 def getProjectID(api, name):
-    for project in api.state['projects']:
-        if project['name'] == name:
-            return project['id']
+    projectPages = api.get_projects()
+    for projectList in projectPages:
+        for project in projectList:
+            if project.name == name:
+                return project.id
     print('Error: No project with the name {} found'.format(name))
     exit(1)
 
@@ -25,10 +27,12 @@ def getChecklistName(evemt):
 
 # getEventListID() returns the id of the checklist for the event and if there is none
 # returns -1.
-def getEventListID(items, event):
-    for item in items:
-        if item['content'] == getChecklistName(event):
-            return item['id']
+def getEventListID(api, projectID, event):
+    taskPages = api.get_tasks(project_id=projectID)
+    for taskLists in taskPages:
+        for task in taskLists:
+            if task.content == getChecklistName(event):
+                return task.id
     return -1
 
 # matchToTeamList() converts a match to two lists of teams
@@ -37,11 +41,11 @@ def matchToTeamList(match):
 
 # createChecklistItem() creates a checklist item of the highest priority.
 def createChecklistItem(name, api, projectID, item, date):
-    return api.items.add(name,
-                         project_id=projectID,
-                         parent_id=item['id'],
-                         date_string=date,
-                         priority=4)
+    return api.add_task(name,
+                        project_id=projectID,
+                        parent_id=item.id,
+                        due_string=date,
+                        priority=4)
 
 # createPhotoChecklistItem() creates a checklist item that requires a photo.
 def createPhotoChecklistItem(name, api, projectID, item, date):
@@ -50,10 +54,10 @@ def createPhotoChecklistItem(name, api, projectID, item, date):
 
 # createPitList() creates a checklist for taking photos of a teams pit.
 def createPitList(api, teams, projectID, checklist, date):
-    item = api.items.add('**Take** Pit Photos',
+    item = api.add_task('**Take** Pit Photos',
                          project_id=projectID,
-                         parent_id=checklist['id'],
-                         date_string=date,
+                         parent_id=checklist.id,
+                         due_string=date,
                          priority=3)
     for team in teams:
         createChecklistItem('Pit photo of **{}** {}'.format(team['team_number'], team['nickname']),
@@ -61,11 +65,11 @@ def createPitList(api, teams, projectID, checklist, date):
         
 # createGroupsList() creates a checklist of the different groups of volenteers.
 def createGroupsList(api, projectID, checklist, date):
-    item = api.items.add('Groups',
-                         project_id=projectID,
-                         parent_id=checklist['id'],
-                         date_string=date,
-                         priority=3)
+    item = api.add_task('Groups',
+                        project_id=projectID,
+                        parent_id=checklist.id,
+                        due_string=date,
+                        priority=3)
     groups = ['Judges', 'Robot Inspectors', 'Referees', 'Safety Inspectors',
               'Field Reset', 'Queuers', 'CSAs', 'VC and Pit Admin']
     for group in groups:
@@ -73,29 +77,29 @@ def createGroupsList(api, projectID, checklist, date):
 
 # createWinnersList() creates a checklist of the winners of an event.
 def createWinnersList(api, projectID, checklist, date):
-    item = api.items.add('Winners',
-                         project_id=projectID,
-                         parent_id=checklist['id'],
-                         date_string=date,
-                         priority=3)
-    groups = ['Chairman\'s award', 'Engineering Inspiration', 'Rookie All-Star', 'Winning Alliance',
+    item = api.add_task('Winners',
+                        project_id=projectID,
+                        parent_id=checklist.id,
+                        due_string=date,
+                        priority=3)
+    groups = ['Impact', 'Engineering Inspiration', 'Rookie All-Star', 'Winning Alliance',
               'Winning Team 1', 'Winning Team 2', 'Winning Team 3']
     for group in groups:
         createPhotoChecklistItem(group, api, projectID, item, date)
 
 # createRobotList() creates a checklist for taking photos of a team's robot.
 def createRobotList(api, teams, projectID, checklist, date):
-    item = api.items.add('**Take** Robot Photos',
-                         project_id=projectID,
-                         parent_id=checklist['id'],
-                         date_string=date,
-                         priority=3)
+    item = api.add_task('**Take** Robot Photos',
+                        project_id=projectID,
+                        parent_id=checklist.id,
+                        due_string=date,
+                        priority=3)
     for team in teams:
         createChecklistItem('Robot photo of **{}** {}'.format(team['team_number'], team['nickname']),
                             api, projectID, item, date)
         
 # Parse settings config
-configString = '[Settings]\n' + open('../settings.conf').read()
+configString = '[Settings]\n' + open('./.config/settings.conf').read()
 configParser = configparser.RawConfigParser()
 configParser.read_string(configString)
 
@@ -104,10 +108,8 @@ tbaKey = configParser.get('Settings', 'TBAKey')
 todoistToken = configParser.get('Settings', 'TodoistToken')
 
 # Setup Todoist
-api = todoist.TodoistAPI(todoistToken)
-api.sync()
+api = TodoistAPI(todoistToken)
 projectID = getProjectID(api, '🤖 Robotics')
-items = api.state['items']
 
 # Setup the Blue Alliance
 tba = tbapy.TBA(tbaKey)
@@ -128,13 +130,13 @@ def firstMatch(team, matches):
     return None, None
 
 # Check if list already exists
-eventListID = getEventListID(items, event)
+eventListID = getEventListID(api, projectID, event)
 if eventListID == -1:
     # Create checklist
-    checklist = api.items.add(getChecklistName(event),
-                              project_id=projectID,
-                              date_string=day2,
-                              priority=2)
+    checklist = api.add_task(getChecklistName(event),
+                             project_id=projectID,
+                             due_string=day2,
+                             priority=2)
     # Setup
     createPitList(api, teams, projectID, checklist, setupDay)
     createChecklistItem('**Schedule** Judges photo', api, projectID, checklist, setupDay)
@@ -170,4 +172,3 @@ else:
                     matchNumber = match['match_number']
                     matchTime = dt.datetime.fromtimestamp(match['time']).strftime('%Y-%m-%d %I:%M %p')
                     robot.update(date_string=matchTime, content='{} match {} {}'.format(robot['content'], matchNumber, side))
-api.commit()
