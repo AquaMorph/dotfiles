@@ -22,15 +22,6 @@ function fixPulse() {
     fi
 }
 
-# Start up programs that use audio.
-function launchi3() {
-    if [ -z "$skipi3" ]; then
-	echo Opening i3wm sound workspaces
-	sleep .1 && i3-msg 'workspace 5; exec brave-browser'
-	#sleep 5.1 && python ~/bin/start-firefox.py
-    fi
-}
-
 # Set up sinks.
 function setupSinks() {
     pactl set-default-sink speakers
@@ -66,23 +57,12 @@ function restartWireplumber() {
     systemctl --user restart wireplumber
 }
 
-# arg parser
-for arg in "$@"
-do
-    # Skip commands for i3wm
-    if [[ $arg == *"-s"* ]]; then
-	skipi3=true
-    fi
-done
-
 # Wire sinks
 setupSinks
 
 # Eurorack audio interface
 sh ~/bin/audio/es9start.sh
 
-launchi3
 systemctl --user restart polybar
 sleep 5
 restartWireplumber
-

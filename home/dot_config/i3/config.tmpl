@@ -264,7 +264,7 @@ exec_always --no-startup-id g13d --config ~/.config/g13/resolve.bind --logo ~/.c
 
 # Startup programs
 exec --no-startup-id i3-msg "workspace $wsSignal; exec flatpak run org.signal.Signal;"
-exec --no-startup-id i3-msg "workspace $ws5"
+exec --no-startup-id ~/bin/start-brave.sh
 exec --no-startup-id i3-msg "workspace $ws1; exec alacritty"
 
 # Starts Jack for audio
@@ -338,8 +338,8 @@ for_window [class="Minecraft*" title="Minecraft*"] move to workspace $wsGames
 for_window [class="Minecraft*" title="Minecraft*"] exec --no-startup-id cat ~/.config/g13/minecraft.bind > /tmp/g13-0 && sleep .1 && cat ~/.config/g13/minecraft.lpbm > /tmp/g13-0
 
 # Arkham Knight
-for_window [class="steam_app_208650" title="*"] move to workspace $wsGames
-for_window [class="steam_app_208650" title="*"] exec --no-startup-id cat ~/.config/g13/arkham-knight.bind > /tmp/g13-0 && sleep .1 && cat ~/.config/g13/arkham-knight.lpbm > /tmp/g13-0
+for_window [class="steam_app_208650" title=".*"] move to workspace $wsGames
+for_window [class="steam_app_208650" title=".*"] exec --no-startup-id cat ~/.config/g13/arkham-knight.bind > /tmp/g13-0 && sleep .1 && cat ~/.config/g13/arkham-knight.lpbm > /tmp/g13-0
 
 # Factorio
 for_window [class="factorio" title="Factorio*"] move to workspace $wsGames

@@ -1,0 +1,32 @@
+{
+  "border": "normal",
+  "floating": "auto_off",
+  "layout": "splitv",
+  "type": "con",
+  "nodes": [
+    {
+      "border": "pixel",
+      "floating": "auto_off",
+      "percent": 0.5,
+      "swallows": [
+        {
+          "class": "^Brave-browser$",
+          "title": ".*Music Assistant.*"
+        }
+      ],
+      "type": "con"
+    },
+    {
+      "border": "pixel",
+      "floating": "auto_off",
+      "percent": 0.5,
+      "swallows": [
+        {
+          "class": "^Brave-browser$",
+          "title": ".*YouTube.*"
+        }
+      ],
+      "type": "con"
+    }
+  ]
+}
