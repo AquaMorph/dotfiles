@@ -7,7 +7,6 @@ Requires=pipewire.service
 WantedBy=default.target
 
 [Service]
-Type=oneshot
-RemainAfterExit=true
-ExecStart=%h/git/audio/snapcast/bin/snapclient
-ExecStop=killall -q snapclient
+Type=simple
+ExecStart=%h/git/audio/snapcast/bin/snapclient --player pipewire
+Restart=on-failure
