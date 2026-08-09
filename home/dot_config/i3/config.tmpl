@@ -224,7 +224,8 @@ for_window [class="^Bitwig Studio$" title="^Bitwig Studio"] exec sh ~/bin/audio/
 for_window [class="^Bitwig Studio$" title="^Bitwig Studio"] exec systemctl --user restart i3wm-close-window.service
 
 #Other
-for_window [class="Signal"] move to workspace $wsSignal
+for_window [class="Signal"] move to workspace $wsSignal; urgent disable
+for_window [class="^Brick$"] move to workspace $ws2
 
 #bindsym $mod+F5 gaps inner current set 0; gaps outer current set 0
 #bindsym $mod+F6 gaps inner current set $inner; gaps outer current set $outer
@@ -247,7 +248,7 @@ workspace $wsSignal      output DP-2
 workspace $ws9           output HDMI-0
 workspace $ws10          output HDMI-0
 
-exec --no-startup-id compton &
+exec --no-startup-id picom --backend glx --daemon
 exec --no-startup-id feh --bg-scale ~/Pictures/desktop/0001.jpg &
 
 mode "$g13" {
@@ -263,7 +264,7 @@ bindsym $mod+F1 mode "$g13"
 exec_always --no-startup-id g13d --config ~/.config/g13/resolve.bind --logo ~/.config/g13/resolve.lpbm &
 
 # Startup programs
-exec --no-startup-id i3-msg "workspace $wsSignal; exec flatpak run org.signal.Signal;"
+exec --no-startup-id flatpak run org.signal.Signal
 exec --no-startup-id ~/bin/start-brave.sh
 exec --no-startup-id i3-msg "workspace $ws1; exec alacritty"
 
