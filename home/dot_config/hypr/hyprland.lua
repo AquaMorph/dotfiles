@@ -41,5 +41,11 @@ hl.window_rule({
   suppress_event = "maximize",
 })
 
+hl.window_rule({
+  name = "signal-workspace",
+  match = { class = "^org\\.signal\\.Signal$" },
+  workspace = "10",
+})
+
 require("bind-all")
 require("bind-framework")
