@@ -18,6 +18,27 @@ function enable_session_restore {
 }
 
 enable_session_restore
+
+if [ -n "$HYPRLAND_INSTANCE_SIGNATURE" ]; then
+  brave-browser --restore-last-session &
+
+  # Signal starts after Brave and can steal focus while its window is mapping.
+  # Wait for both startup windows, then make Brave the final focused window.
+  for _ in {1..80}; do
+    sleep 0.25
+    if hyprctl clients -j | jq -e '
+      any(.[]; .class == "brave-browser") and
+      any(.[]; .class == "org.signal.Signal")
+    ' > /dev/null; then
+      sleep 0.5
+      break
+    fi
+  done
+  hyprctl eval \
+    'hl.dispatch(hl.dsp.focus({ workspace = "1" }))' > /dev/null
+  exit 0
+fi
+
 i3-msg 'workspace 9; append_layout ~/.config/i3/brave-workspace-9.json; workspace 5'
 brave-browser --restore-last-session &
 
