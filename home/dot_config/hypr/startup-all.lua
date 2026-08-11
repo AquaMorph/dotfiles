@@ -1,0 +1,5 @@
+hl.on("hyprland.start", function()
+  hl.exec_cmd("pass git pull")
+  hl.exec_cmd("~/bin/system/system-start.sh")
+  hl.exec_cmd("hypridle")
+end)
