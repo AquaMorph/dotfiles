@@ -1,4 +1,5 @@
 hl.on("hyprland.start", function()
+  hl.exec_cmd("swaybg --image ~/Pictures/wallpaper/0000.jpg --mode fill")
   hl.exec_cmd("pass git pull")
   hl.exec_cmd("~/bin/system/system-start.sh")
   hl.exec_cmd("hypridle")
