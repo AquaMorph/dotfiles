@@ -95,9 +95,6 @@ python3 -m py_compile ./home/bin/homeassistant.py
 - Check command exit status: `if <command>; then ... fi`
 - Redirect stderr appropriately: `2>/dev/null` or `2>&1`
 
-### Configuration Files
-- Before generating a commit, always consult `.agent/COMMITS.md` for the required style.
-
 #### chezmoi Templates
 - Dotfiles use chezmoi's templating system
 - Template syntax: `{{ }}` for variables (Chezmoi specific)
@@ -111,12 +108,7 @@ python3 -m py_compile ./home/bin/homeassistant.py
 ## Repository Patterns
 
 ### Commit Message Format
-Follow conventional commits style (all lowercase).
-- `feat(scope): description` - New feature
-- `fix(scope): description` - Bug fix
-- `refactor(scope): description` - Code refactoring
-- `docs(scope): description` - Documentation changes
-- Example: `feat(zsh): update dotfiles` or `fix(scripts): use correct pass entry`
+- Before generating a commit, always consult @.agents/COMMITS.md for the required style.
 
 #### Pushing Remotes
 - **Do not push git repositories to remote unless explicitly instructed.**
