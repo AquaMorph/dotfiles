@@ -184,7 +184,11 @@ require_command jq
 find_auth_file
 
 while true; do
-  response=$(fetch_usage)
+  if ! response=$(fetch_usage); then
+    [[ -n "$watch_interval" ]] || exit 1
+    sleep "$watch_interval"
+    continue
+  fi
   print_usage "$response"
 
   [[ -n "$watch_interval" ]] || break
