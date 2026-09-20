@@ -23,3 +23,9 @@ python frc-photo-checklist.py [Event Key]
 ## get-mouse-battery.sh
 
 Prints out the battery percentage of a mouse and if it is charging.
+
+## openai-usage.sh
+
+Shows the remaining 5-hour and weekly ChatGPT Codex allowances using the current
+OpenCode or Codex CLI login. Run `openai-usage --watch` to refresh every minute,
+or `openai-usage --json` for machine-readable output.
