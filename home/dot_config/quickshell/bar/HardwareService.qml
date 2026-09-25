@@ -11,7 +11,11 @@ Scope {
 
     function setBrightness(change) {
         Quickshell.execDetached(["brightnessctl", "set", change]);
-        brightnessRefresh.restart();
+    }
+
+    function refreshNetwork() {
+        if (!networkQuery.running)
+            networkQuery.running = true;
     }
 
     function refreshWifi() {
@@ -48,39 +52,49 @@ Scope {
         }
     }
 
-    Timer {
-        interval: 5000
-        repeat: true
-        running: true
-        onTriggered: networkQuery.running = true
-    }
-
     Process {
-        id: brightnessQuery
-        command: ["brightnessctl", "-m"]
+        id: networkMonitor
+        command: ["nmcli", "monitor"]
         running: true
 
-        stdout: StdioCollector {
-            onStreamFinished: {
-                const fields = text.trim().split(",");
-                root.brightness = fields.length >= 4
-                    ? parseInt(fields[3].replace("%", ""))
-                    : -1;
+        stdout: SplitParser {
+            onRead: {
+                root.refreshNetwork();
+                if (root.wifiNetworks.length > 0)
+                    root.refreshWifi();
             }
         }
+
+        onExited: networkRestart.start()
     }
 
     Timer {
-        interval: 2000
-        repeat: true
-        running: true
-        onTriggered: brightnessQuery.running = true
+        id: networkRestart
+        interval: 1000
+        onTriggered: networkMonitor.running = true
     }
 
-    Timer {
-        id: brightnessRefresh
-        interval: 250
-        onTriggered: brightnessQuery.running = true
+    function updateBrightness() {
+        if (!brightnessFile.loaded || !maximumBrightnessFile.loaded)
+            return;
+        const current = parseInt(brightnessFile.text().trim());
+        const maximum = parseInt(maximumBrightnessFile.text().trim());
+        root.brightness = maximum > 0 && !isNaN(current)
+            ? Math.round(current / maximum * 100) : -1;
+    }
+
+    FileView {
+        id: brightnessFile
+        path: "file:///sys/class/backlight/intel_backlight/brightness"
+        watchChanges: true
+        onFileChanged: reload()
+        onLoaded: root.updateBrightness()
+    }
+
+    FileView {
+        id: maximumBrightnessFile
+        path: "file:///sys/class/backlight/intel_backlight/max_brightness"
+        onLoaded: root.updateBrightness()
     }
 
     Process {
