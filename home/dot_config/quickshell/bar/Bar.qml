@@ -26,8 +26,8 @@ PanelWindow {
         left: true
         right: true
     }
-    implicitHeight: 38
-    color: "#80000000"
+    implicitHeight: Theme.barHeight
+    color: Theme.background
 
     PwObjectTracker {
         objects: [bar.sink, bar.source]
@@ -54,7 +54,7 @@ PanelWindow {
             top: parent.top
             bottom: parent.bottom
         }
-        spacing: 8
+        spacing: Theme.moduleSpacing
 
         Row {
             height: parent.height
@@ -70,10 +70,10 @@ PanelWindow {
                     property bool active: modelData.active
 
                     visible: modelData.id > 0
-                    width: 34
+                    width: Theme.blockHeight + 2
                     height: parent.height
-                    color: modelData.urgent ? "#e91e63"
-                        : active ? "#0288d1" : "transparent"
+                    color: modelData.urgent ? Theme.urgent
+                        : active ? Theme.primary : "transparent"
 
                     Rectangle {
                         anchors {
@@ -81,17 +81,17 @@ PanelWindow {
                             right: parent.right
                             bottom: parent.bottom
                         }
-                        height: 3
-                        color: workspaceButton.active ? "#b3e5fc" : "transparent"
+                        height: Theme.activeLineWidth
+                        color: workspaceButton.active ? Theme.accent : "transparent"
                     }
 
                     Text {
                         anchors.centerIn: parent
                         text: modelData.id === 2 ? "\uf120"
                             : modelData.id === 13 ? "\uf001" : modelData.name
-                        color: "#ffffff"
-                        font.family: "SF Pro Display, Font Awesome 6 Free"
-                        font.pixelSize: 18
+                        color: Theme.foreground
+                        font.family: Theme.iconFontFamily
+                        font.pixelSize: Theme.fontSize
                     }
 
                     MouseArea {
@@ -111,13 +111,13 @@ PanelWindow {
     Text {
         anchors.centerIn: parent
         width: Math.max(0, Math.min(implicitWidth,
-            parent.width - leftModules.width - rightModules.width - 32))
+            parent.width - leftModules.width - rightModules.width - Theme.blockHeight))
         elide: Text.ElideRight
         horizontalAlignment: Text.AlignHCenter
         text: Hyprland.activeToplevel ? Hyprland.activeToplevel.title : ""
-        color: "#ffffff"
-        font.family: "SF Pro Display, Helvetica, Arial, sans-serif"
-        font.pixelSize: 18
+        color: Theme.foreground
+        font.family: Theme.fontFamily
+        font.pixelSize: Theme.fontSize
     }
 
     Row {
@@ -126,16 +126,16 @@ PanelWindow {
             right: parent.right
             top: parent.top
             bottom: parent.bottom
-            rightMargin: 4
+            rightMargin: Theme.moduleSpacing / 2
         }
-        spacing: 8
+        spacing: Theme.moduleSpacing
 
         Block {
             id: audioBlock
             blockColor: bar.sink && bar.sink.audio && bar.sink.audio.muted
-                ? "#ffffff" : "#0288d1"
+                ? Theme.foreground : Theme.primary
             textColor: bar.sink && bar.sink.audio && bar.sink.audio.muted
-                ? "#000000" : "#ffffff"
+                ? Theme.foregroundDark : Theme.foreground
             interactive: true
             text: {
                 if (!bar.sink || !bar.sink.audio)
@@ -182,9 +182,9 @@ PanelWindow {
             visible: bar.battery.ready && bar.battery.isLaptopBattery
             interactive: true
             blockColor: percentage <= 15 && UPower.onBattery
-                ? "#e91e63" : UPower.onBattery ? "#ffffff" : "#2980b9"
+                ? Theme.urgent : UPower.onBattery ? Theme.foreground : Theme.secondary
             textColor: UPower.onBattery && percentage > 15
-                ? "#000000" : "#ffffff"
+                ? Theme.foregroundDark : Theme.foreground
             text: {
                 if (!UPower.onBattery)
                     return "\uf1e6  " + percentage + "%";
@@ -199,14 +199,14 @@ PanelWindow {
 
         Rectangle {
             visible: trayRepeater.count > 0
-            implicitWidth: trayItems.implicitWidth + 20
-            implicitHeight: 32
-            color: "#0288d1"
+            implicitWidth: trayItems.implicitWidth + Theme.contentPadding * 2
+            implicitHeight: Theme.blockHeight
+            color: Theme.primary
 
             Row {
                 id: trayItems
                 anchors.centerIn: parent
-                spacing: 10
+                spacing: Theme.contentPadding
 
                 Repeater {
                     id: trayRepeater

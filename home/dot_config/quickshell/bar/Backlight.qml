@@ -6,7 +6,7 @@ Block {
     required property var service
 
     visible: service.brightness >= 0
-    blockColor: "#2980b9"
+    blockColor: Theme.secondary
     interactive: true
     text: "\uf185  " + service.brightness + "%"
     onWheel: wheel => {

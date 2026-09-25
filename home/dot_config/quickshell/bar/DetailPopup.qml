@@ -47,8 +47,9 @@ PopupWindow {
     }
 
     visible: false
-    implicitWidth: 320
-    implicitHeight: contentLoader.item ? contentLoader.item.implicitHeight + 32 : 100
+    implicitWidth: Theme.popupWidth
+    implicitHeight: contentLoader.item
+        ? contentLoader.item.implicitHeight + Theme.popupPadding * 2 : 100
     color: "transparent"
 
     anchor {
@@ -60,7 +61,7 @@ PopupWindow {
 
     Rectangle {
         anchors.fill: parent
-        color: "#e0000000"
+        color: Theme.popupBackground
 
         Loader {
             id: contentLoader
@@ -68,7 +69,7 @@ PopupWindow {
                 left: parent.left
                 right: parent.right
                 top: parent.top
-                margins: 12
+                margins: Theme.popupPadding
             }
             sourceComponent: root.page === "clock" ? clockPage
                 : root.page === "audio" ? audioPage
@@ -82,8 +83,8 @@ PopupWindow {
                 right: parent.right
                 bottom: parent.bottom
             }
-            height: 3
-            color: "#b3e5fc"
+            height: Theme.activeLineWidth
+            color: Theme.accent
         }
     }
 
@@ -98,7 +99,7 @@ PopupWindow {
             property int firstDay: new Date(year, month, 1).getDay()
             property int days: new Date(year, month + 1, 0).getDate()
 
-            implicitWidth: 288
+            implicitWidth: Theme.popupContentWidth
             implicitHeight: 310
 
             PopupHeader {
@@ -113,9 +114,9 @@ PopupWindow {
                     topMargin: 40
                 }
                 text: Qt.formatDateTime(parent.now, "h:mm:ss AP")
-                color: "#ffffff"
-                font.family: "SF Pro Display, Helvetica, Arial, sans-serif"
-                font.pixelSize: 30
+                color: Theme.foreground
+                font.family: Theme.fontFamily
+                font.pixelSize: Theme.fontClock
             }
 
             Row {
@@ -132,8 +133,8 @@ PopupWindow {
                         required property string modelData
                         width: 37
                         text: modelData
-                        color: "#7aa6da"
-                        font.family: "SF Pro Display, Helvetica, Arial, sans-serif"
+                        color: Theme.muted
+                        font.family: Theme.fontFamily
                         horizontalAlignment: Text.AlignHCenter
                         font.bold: true
                     }
@@ -160,7 +161,7 @@ PopupWindow {
                         width: 37
                         height: 29
                         radius: 0
-                        color: today ? "#0288d1" : "transparent"
+                        color: today ? Theme.primary : "transparent"
 
                         Rectangle {
                             anchors {
@@ -168,18 +169,18 @@ PopupWindow {
                                 right: parent.right
                                 bottom: parent.bottom
                             }
-                            height: 3
+                            height: Theme.activeLineWidth
                             visible: parent.today
-                            color: "#b3e5fc"
+                            color: Theme.accent
                         }
 
                         Text {
                             anchors.centerIn: parent
                             text: parent.day > 0 && parent.day <= clockContent.days
                                 ? parent.day : ""
-                            color: parent.today ? "#ffffff" : "#cfd8dc"
-                            font.family: "SF Pro Display, Helvetica, Arial, sans-serif"
-                            font.pixelSize: 14
+                            color: Theme.foreground
+                            font.family: Theme.fontFamily
+                            font.pixelSize: Theme.fontSmall
                         }
                     }
                 }
@@ -191,7 +192,7 @@ PopupWindow {
         id: audioPage
 
         Column {
-            width: 288
+            width: Theme.popupContentWidth
             spacing: 12
 
             PopupHeader {
@@ -235,7 +236,7 @@ PopupWindow {
         id: networkPage
 
         Column {
-            width: 288
+            width: Theme.popupContentWidth
             spacing: 10
 
             PopupHeader {
@@ -245,9 +246,9 @@ PopupWindow {
 
             Text {
                 text: "Connected to " + root.hardware.connection
-                color: "#ffffff"
-                font.family: "SF Pro Display, Helvetica, Arial, sans-serif"
-                font.pixelSize: 15
+                color: Theme.foreground
+                font.family: Theme.fontFamily
+                font.pixelSize: Theme.fontBody
             }
 
             Column {
@@ -263,7 +264,7 @@ PopupWindow {
                         width: networks.width
                         height: 29
                         radius: 0
-                        color: modelData.active ? "#0288d1" : "#80000000"
+                        color: modelData.active ? Theme.primary : Theme.background
 
                         Rectangle {
                             anchors {
@@ -271,9 +272,9 @@ PopupWindow {
                                 right: parent.right
                                 bottom: parent.bottom
                             }
-                            height: 3
+                            height: Theme.activeLineWidth
                             visible: parent.modelData.active
-                            color: "#b3e5fc"
+                            color: Theme.accent
                         }
 
                         Text {
@@ -285,9 +286,9 @@ PopupWindow {
                             width: parent.width - 70
                             elide: Text.ElideRight
                             text: modelData.ssid
-                            color: "#ffffff"
-                            font.family: "SF Pro Display, Helvetica, Arial, sans-serif"
-                            font.pixelSize: 14
+                            color: Theme.foreground
+                            font.family: Theme.fontFamily
+                            font.pixelSize: Theme.fontSmall
                         }
 
                         Text {
@@ -297,9 +298,9 @@ PopupWindow {
                                 verticalCenter: parent.verticalCenter
                             }
                             text: modelData.signal + "%"
-                            color: "#ffffff"
-                            font.family: "SF Pro Display, Helvetica, Arial, sans-serif"
-                            font.pixelSize: 13
+                            color: Theme.foreground
+                            font.family: Theme.fontFamily
+                            font.pixelSize: Theme.fontCaption
                         }
                     }
                 }
@@ -309,14 +310,14 @@ PopupWindow {
                 width: parent.width
                 height: 30
                 radius: 0
-                color: "#0288d1"
+                color: Theme.primary
 
                 Text {
                     anchors.centerIn: parent
                     text: "Open network settings"
-                    color: "#ffffff"
-                    font.family: "SF Pro Display, Helvetica, Arial, sans-serif"
-                    font.pixelSize: 13
+                    color: Theme.foreground
+                    font.family: Theme.fontFamily
+                    font.pixelSize: Theme.fontCaption
                 }
 
                 MouseArea {
@@ -332,7 +333,7 @@ PopupWindow {
         id: batteryPage
 
         Column {
-            width: 288
+            width: Theme.popupContentWidth
             spacing: 12
 
             PopupHeader {
@@ -343,22 +344,22 @@ PopupWindow {
             Text {
                 text: Math.round(root.battery.percentage * 100) + "%  "
                     + root.batteryState()
-                color: "#ffffff"
-                font.family: "SF Pro Display, Helvetica, Arial, sans-serif"
-                font.pixelSize: 25
+                color: Theme.foreground
+                font.family: Theme.fontFamily
+                font.pixelSize: Theme.fontDisplay
             }
 
             Rectangle {
                 width: parent.width
                 height: 8
                 radius: 0
-                color: "#40000000"
+                color: Theme.track
 
                 Rectangle {
                     width: parent.width * root.battery.percentage
                     height: parent.height
                     radius: 0
-                    color: root.battery.percentage <= 0.15 ? "#e91e63" : "#0288d1"
+                    color: root.battery.percentage <= 0.15 ? Theme.urgent : Theme.primary
                 }
             }
 
@@ -366,9 +367,9 @@ PopupWindow {
                 text: UPower.onBattery
                     ? "Remaining: " + root.duration(root.battery.timeToEmpty)
                     : "Until full: " + root.duration(root.battery.timeToFull)
-                color: "#b3e5fc"
-                font.family: "SF Pro Display, Helvetica, Arial, sans-serif"
-                font.pixelSize: 15
+                color: Theme.accent
+                font.family: Theme.fontFamily
+                font.pixelSize: Theme.fontBody
             }
 
             Text {
@@ -376,9 +377,9 @@ PopupWindow {
                     + (root.battery.healthSupported
                         ? "    Health: " + Math.round(root.battery.healthPercentage * 100) + "%"
                         : "")
-                color: "#ffffff"
-                font.family: "SF Pro Display, Helvetica, Arial, sans-serif"
-                font.pixelSize: 14
+                color: Theme.foreground
+                font.family: Theme.fontFamily
+                font.pixelSize: Theme.fontSmall
             }
         }
     }

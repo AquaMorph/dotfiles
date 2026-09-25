@@ -15,9 +15,9 @@ Item {
     Text {
         anchors.left: parent.left
         text: root.label
-        color: "#ffffff"
-        font.family: "SF Pro Display, Helvetica, Arial, sans-serif"
-        font.pixelSize: 15
+        color: Theme.foreground
+        font.family: Theme.fontFamily
+        font.pixelSize: Theme.fontBody
     }
 
     Rectangle {
@@ -28,13 +28,13 @@ Item {
         width: 58
         height: 24
         radius: 0
-        color: root.muted ? "#e91e63" : "#0288d1"
+        color: root.muted ? Theme.urgent : Theme.primary
 
         Text {
             anchors.centerIn: parent
             text: root.muted ? "MUTED" : Math.round(root.value * 100) + "%"
-            color: "#ffffff"
-            font.pixelSize: 11
+            color: Theme.foreground
+            font.pixelSize: Theme.fontTiny
             font.bold: true
         }
 
@@ -54,13 +54,13 @@ Item {
         }
         height: 8
         radius: 0
-        color: "#40000000"
+        color: Theme.track
 
         Rectangle {
             width: Math.min(parent.width, parent.width * root.value / 1.5)
             height: parent.height
             radius: 0
-            color: root.muted ? "#e91e63" : "#0288d1"
+            color: root.muted ? Theme.urgent : Theme.primary
         }
 
         MouseArea {

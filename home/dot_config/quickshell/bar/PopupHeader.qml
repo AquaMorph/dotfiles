@@ -5,19 +5,19 @@ Rectangle {
 
     property string text: ""
 
-    implicitHeight: 32
-    color: "#0288d1"
+    implicitHeight: Theme.blockHeight
+    color: Theme.primary
 
     Text {
         anchors {
             left: parent.left
-            leftMargin: 10
+            leftMargin: Theme.contentPadding
             verticalCenter: parent.verticalCenter
         }
         text: root.text
-        color: "#ffffff"
-        font.family: "SF Pro Display, Helvetica, Arial, sans-serif"
-        font.pixelSize: 18
+        color: Theme.foreground
+        font.family: Theme.fontFamily
+        font.pixelSize: Theme.fontSize
         font.bold: true
     }
 }

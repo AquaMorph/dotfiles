@@ -8,7 +8,7 @@ Block {
     property bool connected: service.connection !== "Disconnected"
     signal detailsRequested(var anchorItem)
 
-    blockColor: connected ? "#2980b9" : "#e91e63"
+    blockColor: connected ? Theme.secondary : Theme.urgent
     interactive: true
     text: connected ? "\uf1eb  " + service.connection : "Disconnected !"
     onClicked: mouse => {

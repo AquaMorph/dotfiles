@@ -4,19 +4,19 @@ import Quickshell.Widgets
 Rectangle {
     id: root
 
-    property color blockColor: "#0288d1"
-    property color textColor: "#ffffff"
+    property color blockColor: Theme.primary
+    property color textColor: Theme.foreground
     property bool interactive: false
     property string text: ""
-    property string fontFamily: "SF Pro Display, Font Awesome 6 Free"
+    property string fontFamily: Theme.iconFontFamily
     property string secondaryIcon: ""
     property string secondaryText: ""
     signal clicked(var mouse)
     signal doubleClicked(var mouse)
     signal wheel(var wheel)
 
-    implicitWidth: content.implicitWidth + 20
-    implicitHeight: 32
+    implicitWidth: content.implicitWidth + Theme.contentPadding * 2
+    implicitHeight: Theme.blockHeight
     color: blockColor
 
     Row {
@@ -28,7 +28,7 @@ Rectangle {
             text: root.text
             color: root.textColor
             font.family: root.fontFamily
-            font.pixelSize: 18
+            font.pixelSize: Theme.fontSize
         }
 
         IconImage {
@@ -45,7 +45,7 @@ Rectangle {
             text: root.secondaryText
             color: root.textColor
             font.family: root.fontFamily
-            font.pixelSize: 18
+            font.pixelSize: Theme.fontSize
         }
     }
 
