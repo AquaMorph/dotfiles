@@ -31,6 +31,15 @@ PanelWindow {
         precision: SystemClock.Seconds
     }
 
+    DetailPopup {
+        id: detailsPopup
+        hardware: bar.hardware
+        sink: bar.sink
+        source: bar.source
+        battery: bar.battery
+        clock: clock
+    }
+
     Row {
         id: leftModules
         anchors {
@@ -137,7 +146,9 @@ PanelWindow {
                     : Math.round(bar.source.audio.volume * 100) + "%")
                 : ""
             onClicked: mouse => {
-                if (mouse.button === Qt.MiddleButton && bar.sink && bar.sink.audio)
+                if (mouse.button === Qt.LeftButton)
+                    detailsPopup.toggle("audio", audioBlock);
+                else if (mouse.button === Qt.MiddleButton && bar.sink && bar.sink.audio)
                     bar.sink.audio.muted = !bar.sink.audio.muted;
                 else
                     Quickshell.execDetached(["qjackctl"]);
@@ -151,13 +162,18 @@ PanelWindow {
             }
         }
 
-        Network { service: bar.hardware }
+        Network {
+            service: bar.hardware
+            onDetailsRequested: anchorItem => detailsPopup.toggle("network", anchorItem)
+        }
         Backlight { service: bar.hardware }
 
         Block {
+            id: batteryBlock
             property int percentage: Math.round(bar.battery.percentage * 100)
 
             visible: bar.battery.ready && bar.battery.isLaptopBattery
+            interactive: true
             blockColor: percentage <= 15 && UPower.onBattery
                 ? "#e91e63" : UPower.onBattery ? "#ffffff" : "#2980b9"
             textColor: UPower.onBattery && percentage > 15
@@ -171,6 +187,7 @@ PanelWindow {
                 if (percentage <= 85) return "\uf241  " + percentage + "%";
                 return "\uf240  " + percentage + "%";
             }
+            onClicked: detailsPopup.toggle("battery", batteryBlock)
         }
 
         Rectangle {
@@ -233,12 +250,11 @@ PanelWindow {
         }
 
         Block {
-            property bool detailed: false
+            id: clockBlock
 
             interactive: true
-            text: Qt.formatDateTime(clock.date,
-                detailed ? "yyyy-MM-dd hh:mm:ss" : "hh:mm")
-            onClicked: detailed = !detailed
+            text: Qt.formatDateTime(clock.date, "hh:mm")
+            onClicked: detailsPopup.toggle("clock", clockBlock)
         }
     }
 }

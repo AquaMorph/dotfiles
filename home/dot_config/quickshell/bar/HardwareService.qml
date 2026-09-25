@@ -7,10 +7,16 @@ Scope {
 
     property string connection: "Disconnected"
     property int brightness: -1
+    property var wifiNetworks: []
 
     function setBrightness(change) {
         Quickshell.execDetached(["brightnessctl", "set", change]);
         brightnessRefresh.restart();
+    }
+
+    function refreshWifi() {
+        if (!wifiQuery.running)
+            wifiQuery.running = true;
     }
 
     Process {
@@ -75,5 +81,36 @@ Scope {
         id: brightnessRefresh
         interval: 250
         onTriggered: brightnessQuery.running = true
+    }
+
+    Process {
+        id: wifiQuery
+        command: ["nmcli", "-t", "-f", "IN-USE,SSID,SIGNAL", "device", "wifi", "list", "--rescan", "auto"]
+
+        stdout: StdioCollector {
+            onStreamFinished: {
+                const networks = [];
+                const seen = {};
+                for (let line of text.trim().split("\n")) {
+                    const fields = line.split(":");
+                    if (fields.length < 3)
+                        continue;
+                    const active = fields.shift() === "*";
+                    const signal = parseInt(fields.pop());
+                    const ssid = fields.join(":").replace(/\\:/g, ":");
+                    if (!ssid || seen[ssid])
+                        continue;
+                    seen[ssid] = true;
+                    networks.push({
+                        "ssid": ssid,
+                        "signal": signal,
+                        "active": active
+                    });
+                    if (networks.length >= 8)
+                        break;
+                }
+                root.wifiNetworks = networks;
+            }
+        }
     }
 }
