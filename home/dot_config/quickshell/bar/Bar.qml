@@ -12,6 +12,7 @@ PanelWindow {
     property var sink: Pipewire.defaultAudioSink
     property var source: Pipewire.defaultAudioSource
     property var battery: UPower.displayDevice
+    property var hardware
 
     anchors {
         top: true
@@ -150,8 +151,8 @@ PanelWindow {
             }
         }
 
-        Network {}
-        Backlight {}
+        Network { service: bar.hardware }
+        Backlight { service: bar.hardware }
 
         Block {
             property int percentage: Math.round(bar.battery.percentage * 100)
