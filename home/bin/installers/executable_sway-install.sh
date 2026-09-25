@@ -3,4 +3,4 @@
 # Import library
 source $(dirname ${BASH_SOURCE[0]})/install-lib.sh
 
-sudo $(packageManager) install sway waybar rofi mako alacritty
+sudo $(packageManager) install sway waybar quickshell rofi mako alacritty brightnessctl
