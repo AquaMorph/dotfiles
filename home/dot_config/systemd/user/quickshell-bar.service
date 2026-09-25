@@ -1,0 +1,16 @@
+[Unit]
+Description=Quickshell desktop bar
+Documentation=https://quickshell.org/
+After=graphical-session.target
+PartOf=graphical-session.target
+ConditionEnvironment=WAYLAND_DISPLAY
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/qs -c bar --no-duplicate
+Restart=on-failure
+RestartSec=2
+TimeoutStopSec=5
+
+[Install]
+WantedBy=graphical-session.target
