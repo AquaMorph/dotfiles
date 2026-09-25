@@ -14,6 +14,13 @@ PanelWindow {
     property var battery: UPower.displayDevice
     property var hardware
 
+    function formatClock(date, includeSeconds) {
+        const hour = date.getHours() % 12 || 12;
+        const minute = date.getMinutes().toString().padStart(2, "0");
+        const second = date.getSeconds().toString().padStart(2, "0");
+        return hour + ":" + minute + (includeSeconds ? ":" + second : "");
+    }
+
     anchors {
         top: true
         left: true
@@ -251,10 +258,12 @@ PanelWindow {
 
         Block {
             id: clockBlock
+            property bool showSeconds: false
 
             interactive: true
-            text: Qt.formatDateTime(clock.date, "hh:mm")
+            text: bar.formatClock(clock.date, showSeconds)
             onClicked: detailsPopup.toggle("clock", clockBlock)
+            onDoubleClicked: showSeconds = !showSeconds
         }
     }
 }

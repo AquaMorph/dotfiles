@@ -12,6 +12,7 @@ Rectangle {
     property string secondaryIcon: ""
     property string secondaryText: ""
     signal clicked(var mouse)
+    signal doubleClicked(var mouse)
     signal wheel(var wheel)
 
     implicitWidth: content.implicitWidth + 20
@@ -54,6 +55,7 @@ Rectangle {
         acceptedButtons: Qt.LeftButton | Qt.MiddleButton | Qt.RightButton
         cursorShape: Qt.PointingHandCursor
         onClicked: mouse => root.clicked(mouse)
+        onDoubleClicked: mouse => root.doubleClicked(mouse)
         onWheel: wheel => root.wheel(wheel)
     }
 }

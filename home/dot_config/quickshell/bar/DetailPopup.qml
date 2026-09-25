@@ -112,7 +112,7 @@ PopupWindow {
                     top: parent.top
                     topMargin: 40
                 }
-                text: Qt.formatDateTime(parent.now, "hh:mm:ss")
+                text: Qt.formatDateTime(parent.now, "h:mm:ss AP")
                 color: "#ffffff"
                 font.family: "SF Pro Display, Helvetica, Arial, sans-serif"
                 font.pixelSize: 30
