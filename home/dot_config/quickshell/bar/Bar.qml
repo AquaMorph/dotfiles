@@ -122,15 +122,19 @@ PanelWindow {
             interactive: true
             text: {
                 if (!bar.sink || !bar.sink.audio)
-                    return "\uf6a9";
-                const output = bar.sink.audio.muted
-                    ? "\uf6a9" : "\uf028 " + Math.round(bar.sink.audio.volume * 100) + "%";
-                const input = bar.source && bar.source.audio
-                    ? (bar.source.audio.muted ? "\uf131"
-                        : "\uf130 " + Math.round(bar.source.audio.volume * 100) + "%")
-                    : "";
-                return output + (input ? "  " + input : "");
+                    return "\uf026";
+                return bar.sink.audio.muted
+                    ? "\uf026" : "\uf028 " + Math.round(bar.sink.audio.volume * 100) + "%";
             }
+            secondaryIcon: bar.source && bar.source.audio
+                ? (bar.source.audio.muted
+                    ? "file://" + Quickshell.shellPath("icons/microphone-muted.svg")
+                    : "file://" + Quickshell.shellPath("icons/microphone.svg"))
+                : ""
+            secondaryText: bar.source && bar.source.audio
+                ? (bar.source.audio.muted ? "OFF"
+                    : Math.round(bar.source.audio.volume * 100) + "%")
+                : ""
             onClicked: mouse => {
                 if (mouse.button === Qt.MiddleButton && bar.sink && bar.sink.audio)
                     bar.sink.audio.muted = !bar.sink.audio.muted;

@@ -1,4 +1,5 @@
 import QtQuick
+import Quickshell.Widgets
 
 Rectangle {
     id: root
@@ -7,20 +8,44 @@ Rectangle {
     property color textColor: "#ffffff"
     property bool interactive: false
     property string text: ""
+    property string fontFamily: "SF Pro Display, Font Awesome 6 Free"
+    property string secondaryIcon: ""
+    property string secondaryText: ""
     signal clicked(var mouse)
     signal wheel(var wheel)
 
-    implicitWidth: label.implicitWidth + 20
+    implicitWidth: content.implicitWidth + 20
     implicitHeight: 32
     color: blockColor
 
-    Text {
-        id: label
+    Row {
+        id: content
         anchors.centerIn: parent
-        text: root.text
-        color: root.textColor
-        font.family: "SF Pro Display, Font Awesome 6 Free"
-        font.pixelSize: 18
+        spacing: 7
+
+        Text {
+            text: root.text
+            color: root.textColor
+            font.family: root.fontFamily
+            font.pixelSize: 18
+        }
+
+        IconImage {
+            width: 18
+            height: 18
+            anchors.verticalCenter: parent.verticalCenter
+            visible: root.secondaryIcon !== ""
+            source: root.secondaryIcon
+        }
+
+        Text {
+            anchors.verticalCenter: parent.verticalCenter
+            visible: root.secondaryText !== ""
+            text: root.secondaryText
+            color: root.textColor
+            font.family: root.fontFamily
+            font.pixelSize: 18
+        }
     }
 
     MouseArea {
