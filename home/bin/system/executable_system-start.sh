@@ -5,11 +5,7 @@ pass git pull
 
 # Desktop
 ~/bin/connect-nas.sh
-if [ "${XDG_SESSION_TYPE}" = "wayland" ]; then
-  ~/bin/desktop/quickshell-start.sh
-else
-  systemctl --user start polybar
-fi
+~/bin/desktop/quickshell-start.sh
 systemctl --user restart streamdeck
 /usr/libexec/polkit-gnome-authentication-agent-1 &
 

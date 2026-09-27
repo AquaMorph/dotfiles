@@ -3,7 +3,6 @@ Description=Quickshell desktop bar
 Documentation=https://quickshell.org/
 After=graphical-session.target
 PartOf=graphical-session.target
-ConditionEnvironment=WAYLAND_DISPLAY
 
 [Service]
 Type=simple

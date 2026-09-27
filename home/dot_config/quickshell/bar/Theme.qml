@@ -18,7 +18,7 @@ Singleton {
     readonly property string fontFamily: "SF Pro Display, Helvetica, Arial, sans-serif"
     readonly property string iconFontFamily: "SF Pro Display, Font Awesome 6 Free"
 
-    readonly property int barHeight: 38
+    readonly property int barHeight: 32
     readonly property int blockHeight: 32
     readonly property int fontSize: 18
     readonly property int fontTiny: 11

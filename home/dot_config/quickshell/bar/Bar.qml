@@ -1,6 +1,5 @@
 import QtQuick
 import Quickshell
-import Quickshell.Hyprland
 import Quickshell.Services.Pipewire
 import Quickshell.Services.UPower
 
@@ -11,6 +10,7 @@ PanelWindow {
     property var source: Pipewire.defaultAudioSource
     property var battery: UPower.displayDevice
     property var hardware
+    property bool isWayland: Quickshell.env("XDG_SESSION_TYPE") === "wayland"
 
     anchors {
         top: true
@@ -42,34 +42,29 @@ PanelWindow {
         id: leftModules
         anchors {
             left: parent.left
-            top: parent.top
-            bottom: parent.bottom
+            verticalCenter: parent.verticalCenter
         }
+        height: Theme.blockHeight
         spacing: Theme.moduleSpacing
 
-        Workspaces {
+        Loader {
             height: parent.height
+            source: bar.isWayland ? "Workspaces.qml" : "I3Workspaces.qml"
         }
     }
 
-    Text {
+    Loader {
         anchors.centerIn: parent
         width: Math.max(0, Math.min(implicitWidth,
             parent.width - leftModules.width - rightModules.width - Theme.blockHeight))
-        elide: Text.ElideRight
-        horizontalAlignment: Text.AlignHCenter
-        text: Hyprland.activeToplevel ? Hyprland.activeToplevel.title : ""
-        color: Theme.foreground
-        font.family: Theme.fontFamily
-        font.pixelSize: Theme.fontSize
+        source: bar.isWayland ? "HyprlandTitle.qml" : "I3Title.qml"
     }
 
     Row {
         id: rightModules
         anchors {
             right: parent.right
-            top: parent.top
-            bottom: parent.bottom
+            verticalCenter: parent.verticalCenter
             rightMargin: Theme.moduleSpacing / 2
         }
         spacing: Theme.moduleSpacing

@@ -4,10 +4,10 @@ Block {
     id: root
 
     required property var battery
-    property int percentage: Math.round(battery.percentage * 100)
+    property int percentage: battery ? Math.round(battery.percentage * 100) : 0
     signal detailsRequested(var anchorItem)
 
-    visible: battery.ready && battery.isLaptopBattery
+    visible: battery && battery.ready && battery.isLaptopBattery
     interactive: true
     blockColor: percentage <= 15 && UPower.onBattery
         ? Theme.urgent : UPower.onBattery ? Theme.foreground : Theme.secondary
