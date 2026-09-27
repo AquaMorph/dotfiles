@@ -11,7 +11,7 @@ PanelWindow {
     property var battery: UPower.displayDevice
     property var hardware
     property bool isWayland: Quickshell.env("XDG_SESSION_TYPE") === "wayland"
-        || Quickshell.env("WAYLAND_DISPLAY") !== ""
+        || (!Quickshell.env("XDG_SESSION_TYPE") && !!Quickshell.env("WAYLAND_DISPLAY"))
 
     anchors {
         top: true
