@@ -1,0 +1,49 @@
+{{ if eq .chezmoi.os "darwin" -}}
+# Linux desktop configuration
+.config/g13
+.config/gtk-3.0
+.config/gtk-4.0
+.config/hypr
+.config/i3
+.config/mako
+.config/polybar
+.config/quickshell
+.config/rofi
+.config/waybar
+
+# Linux services and PipeWire configuration
+.config/systemd
+.config/wireplumber
+.local/share/wireplumber
+user/*.service
+
+# Linux package installers and desktop startup scripts
+bin/installers
+bin/desktop
+bin/system
+bin/i3-mouse.py
+bin/i3wm-config-gen.sh
+bin/i3wm-for-window-gen.sh
+bin/launch-stocks-tracker.py
+bin/start-firefox.py
+bin/start-brave.sh
+
+# Linux hardware, screen locking, and NAS mounting
+bin/get-mouse-battery.sh
+bin/lock.sh
+bin/toggle-graphics.sh
+bin/trackpad-toggle.sh
+bin/connect-nas.sh
+
+# ALSA/PipeWire routing and Rofi prompts; keep portable audio utilities
+bin/audio/audio-lib.sh
+bin/audio/aquamix.sh
+bin/audio/es8start.sh
+bin/audio/es9start.sh
+bin/audio/es9stop.sh
+bin/audio/system-start-audio.sh
+bin/audio/synth-power-prompt.sh
+
+# Wine-based Adobe DNG conversion with GNU date
+bin/video/cr3todng.sh
+{{ end -}}
