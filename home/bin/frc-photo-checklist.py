@@ -7,6 +7,7 @@ import datetime as dt
 import re
 import operator
 import os
+import shlex
 import sys
 import tbapy
 from todoist_api_python.api import TodoistAPI
@@ -105,7 +106,7 @@ configParser.read_string(configString)
 
 # Load needed credentials
 tbaKey = configParser.get('Settings', 'TBAKey')
-todoistToken = configParser.get('Settings', 'TodoistToken')
+todoistToken = shlex.split(configParser.get('Settings', 'TodoistToken'))[0]
 
 # Setup Todoist
 api = TodoistAPI(todoistToken)

@@ -46,4 +46,7 @@ bin/audio/synth-power-prompt.sh
 
 # Wine-based Adobe DNG conversion with GNU date
 bin/video/cr3todng.sh
+{{ else -}}
+# Homebrew dependencies are only managed on macOS.
+.brewfile
 {{ end -}}

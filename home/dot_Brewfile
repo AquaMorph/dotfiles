@@ -1,0 +1,21 @@
+# Shared command-line tools
+brew "chezmoi"
+brew "git"
+brew "emacs"
+brew "python"
+brew "jq"
+
+# Password-store secrets used by chezmoi templates
+brew "pass"
+brew "gnupg"
+
+# Web browser
+cask "brave-browser"
+
+# Terminal and font used by the shared Alacritty configuration
+cask "alacritty"
+cask "font-inconsolata"
+
+# Optional tools for audio conversion and local AI
+# brew "ffmpeg"
+# brew "ollama"

@@ -1,0 +1,5 @@
+# Single-quote values and escape embedded single quotes without changing backslashes.
+computer='{{ .chezmoi.hostname | replace "'" "'\\''" }}'
+activation_bytes='{{ pass "self-host/token/audible-activation-bytes" | replace "'" "'\\''" }}'
+AQUAAI_KEY='{{ pass "self-host/token/aquaai" | replace "'" "'\\''" }}'
+TodoistToken='{{ pass "self-host/token/todoist" | replace "'" "'\\''" }}'
