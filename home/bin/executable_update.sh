@@ -22,8 +22,7 @@ function dnfUpdate {
 function aptUpdate {
     if command -v apt &> /dev/null; then
 	echo Updating APT...
-	sudo apt update
-	sudo apt upgrade
+	sudo apt update && sudo apt upgrade
     fi
 }
 
@@ -31,22 +30,31 @@ function aptUpdate {
 function flatpakUpdate {
     if command -v flatpak &> /dev/null; then
 	echo Updating Flatpak...
-	flatpak uninstall --unused
-	flatpak update
+	flatpak uninstall --unused && flatpak update
     fi
 }
 
 # Appimage Updater
 function appimageUpdate {
-    am update
+    if command -v am &> /dev/null; then
+	echo Updating AppImages...
+	am update
+    fi
+}
+
+# Homebrew Updater
+function brewUpdate {
+    if command -v brew &> /dev/null; then
+	echo Updating Homebrew...
+	brew update && brew upgrade
+    fi
 }
 
 # Pass Repository Updater
 function passUpdate {
     if [ -d "$HOME/.password-store/.git" ] && [ -d "$HOME/.password-store" ]; then
         echo Updating pass repository...
-        cd "$HOME/.password-store"
-        git pull
+        git -C "$HOME/.password-store" pull
     fi
 }
 
@@ -72,16 +80,28 @@ function manualUpdate {
     fi
 }
 
-chezmoiUpdate
-echo ''
-dnfUpdate
-aptUpdate
-echo ''
-flatpakUpdate
-echo ''
-appimageUpdate
-echo ''
-manualUpdate
-echo ''
-passUpdate
+update_failed=0
 
+# Report failures while allowing the remaining updaters to run.
+function run_updater {
+  if ! "$1"; then
+    echo "Updater failed: $1" >&2
+    update_failed=1
+  fi
+}
+
+run_updater chezmoiUpdate
+echo ''
+run_updater brewUpdate
+run_updater dnfUpdate
+run_updater aptUpdate
+echo ''
+run_updater flatpakUpdate
+echo ''
+run_updater appimageUpdate
+echo ''
+run_updater manualUpdate
+echo ''
+run_updater passUpdate
+
+exit "$update_failed"
