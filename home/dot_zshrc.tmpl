@@ -5,23 +5,40 @@ setopt PROMPT_SUBST
 PROMPT='%F{white}%n% @%m%f %F{blue}%~%f %F{red}${vcs_info_msg_0_}%f$ '
 
 setopt appendhistory autocd extendedglob nomatch notify
+setopt hist_ignore_all_dups hist_save_no_dups hist_find_no_dups
 unsetopt beep
 bindkey -e
 zstyle :compinstall filename '~/.zshrc'
+
+# Keep PATH entries unique when shell configuration is sourced again.
+typeset -U path PATH
+
+{{ if eq .chezmoi.os "darwin" -}}
+# Load Homebrew completions before initializing completion support.
+typeset -U fpath
+if [[ -n "$HOMEBREW_PREFIX" && -d "$HOMEBREW_PREFIX/share/zsh/site-functions" ]]; then
+  fpath=("$HOMEBREW_PREFIX/share/zsh/site-functions" $fpath)
+elif [[ -d /opt/homebrew/share/zsh/site-functions ]]; then
+  fpath=(/opt/homebrew/share/zsh/site-functions $fpath)
+elif [[ -d /usr/local/share/zsh/site-functions ]]; then
+  fpath=(/usr/local/share/zsh/site-functions $fpath)
+fi
+{{ end -}}
 
 autoload -Uz compinit
 compinit
 
 HISTFILE=~/.zsh_history
-HISTSIZE=99999999
-SAVEHIST=99999999
+HISTSIZE=100000
+SAVEHIST=50000
 
 if [[ -f "$HOME/.config/settings.conf" ]]; then
   source "$HOME/.config/settings.conf"
 fi
 
 # User scripts
-export PATH="$HOME/bin:$PATH"
+path=("$HOME/bin" $path)
+export PATH
 
 # Text Editor
 export EDITOR='emacs -nw'
@@ -51,7 +68,7 @@ alias u='bash ~/bin/update.sh'
 alias h='cd ~/git/cacolglazier.com/ && hugo server'
 
 # OpenCode
-export PATH="$HOME/.opencode/bin:$PATH"
+path=("$HOME/.opencode/bin" $path)
 OPENCODE='opencode'
 alias o="${OPENCODE}"
 alias oc="${OPENCODE} run --agent commit --model '{{ includeTemplate ".chezmoitemplates/models/small-brain" | trim }}' 'Create a commit.'"
@@ -85,8 +102,10 @@ export AQUAAI_RICH_FORMAT_MODE=false
 export AQUAAI_KEY
 
 # Daisy build toolkit
-GCC_PATH=~/dev/gcc-arm-none-eabi-10-2020-q4-major/bin
-export PATH=$GCC_PATH:$PATH
+GCC_PATH="$HOME/dev/gcc-arm-none-eabi-10-2020-q4-major/bin"
+if [[ -d "$GCC_PATH" ]]; then
+  path=("$GCC_PATH" $path)
+fi
 
 # AM auto complete
 if [[ -f "$HOME/.local/share/bash-completion/completions/am" ]]; then
