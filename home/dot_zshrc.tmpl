@@ -16,13 +16,17 @@ HISTFILE=~/.zsh_history
 HISTSIZE=99999999
 SAVEHIST=99999999
 
-source "$HOME/.config/settings.conf"
+if [[ -f "$HOME/.config/settings.conf" ]]; then
+  source "$HOME/.config/settings.conf"
+fi
+
+# User scripts
+export PATH="$HOME/bin:$PATH"
 
 # Text Editor
 export EDITOR='emacs -nw'
 alias emacs="${EDITOR}"
 alias e="${EDITOR}"
-export TERM=xterm
 
 # Search
 alias g='grep -Irn'
@@ -36,9 +40,14 @@ alias dote="${DOT_PROGRAM} edit --apply"
 alias dotu="${DOT_PROGRAM} update"
 
 # Other
+{{ if eq .chezmoi.os "darwin" -}}
+alias i='brew install'
+alias d='brew'
+{{ else -}}
 alias i='sudo dnf install'
 alias d='sudo dnf'
-alias u='sh ~/bin/update.sh'
+{{ end -}}
+alias u='bash ~/bin/update.sh'
 alias h='cd ~/git/cacolglazier.com/ && hugo server'
 
 # OpenCode
@@ -80,7 +89,8 @@ GCC_PATH=~/dev/gcc-arm-none-eabi-10-2020-q4-major/bin
 export PATH=$GCC_PATH:$PATH
 
 # AM auto complete
-autoload bashcompinit
-bashcompinit
-source "/home/aqua/.local/share/bash-completion/completions/am"
-
+if [[ -f "$HOME/.local/share/bash-completion/completions/am" ]]; then
+  autoload bashcompinit
+  bashcompinit
+  source "$HOME/.local/share/bash-completion/completions/am"
+fi
