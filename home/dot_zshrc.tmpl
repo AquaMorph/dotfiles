@@ -54,7 +54,7 @@ alias h='cd ~/git/cacolglazier.com/ && hugo server'
 export PATH="$HOME/.opencode/bin:$PATH"
 OPENCODE='opencode'
 alias o="${OPENCODE}"
-alias oc="${OPENCODE} run --agent commit 'Create a commit.'"
+alias oc="${OPENCODE} run --agent commit --model '{{ includeTemplate ".chezmoitemplates/models/small-brain" | trim }}' 'Create a commit.'"
 alias ocr="${OPENCODE} --agent review --prompt 'Code review staged changes.'"
 alias or="${OPENCODE} --continue"
 
