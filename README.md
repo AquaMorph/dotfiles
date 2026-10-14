@@ -66,7 +66,7 @@ brew bundle --file="$(chezmoi source-path ~/.brewfile)"
 
 ### Hover window focus on macOS
 
-AutoRaise focuses and brings a window to the front after a short hover, without
+AutoRaise focuses and brings a window to the front on hover without an intentional delay or
 moving the cursor. Its settings are managed in `~/.config/AutoRaise/config`.
 
 After installing dependencies and applying the dotfiles, enable it at login:

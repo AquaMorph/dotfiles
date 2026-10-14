@@ -1,6 +1,6 @@
-# Focus and raise after briefly hovering a window; never warp the cursor.
+# Focus and raise on hover without an intentional delay; never warp the cursor.
 pollMillis=50
-delay=4
+delay=1
 requireMouseStop=true
 warpX=0
 warpY=0
