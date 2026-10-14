@@ -50,3 +50,7 @@ bin/video/cr3todng.sh
 # Homebrew dependencies are only managed on macOS.
 .brewfile
 {{ end -}}
+
+{{ if ne .chezmoi.os "darwin" -}}
+.config/karabiner
+{{ end -}}
