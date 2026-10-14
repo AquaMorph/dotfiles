@@ -53,4 +53,5 @@ bin/video/cr3todng.sh
 
 {{ if ne .chezmoi.os "darwin" -}}
 .config/karabiner
+.config/AutoRaise
 {{ end -}}

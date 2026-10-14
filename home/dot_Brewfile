@@ -16,6 +16,10 @@ cask "brave-browser"
 cask "alacritty"
 cask "font-inconsolata"
 
+# Focus and raise windows when hovering
+tap "dimentium/autoraise"
+brew "dimentium/autoraise/autoraise"
+
 # Optional tools for audio conversion and local AI
 # brew "ffmpeg"
 # brew "ollama"

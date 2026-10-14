@@ -24,7 +24,7 @@ chezmoi init --apply git@github.com:AquaMorph/dotfiles.git
    ```
 
     The Brewfile includes chezmoi, Git, Emacs, Python, jq, pass, GnuPG, Brave Browser,
-    Alacritty, and Inconsolata. FFmpeg and Ollama are optional; install them separately
+    Alacritty, Inconsolata, and AutoRaise. FFmpeg and Ollama are optional; install them separately
     if needed.
 
 3. Restore your password store to `~/.password-store` and import its GPG private
@@ -62,4 +62,26 @@ To install newly added macOS dependencies later:
 
 ```bash
 brew bundle --file="$(chezmoi source-path ~/.brewfile)"
+```
+
+### Hover window focus on macOS
+
+AutoRaise focuses and brings a window to the front after a short hover, without
+moving the cursor. Its settings are managed in `~/.config/AutoRaise/config`.
+
+After installing dependencies and applying the dotfiles, enable it at login:
+
+```bash
+brew services start dimentium/autoraise/autoraise
+```
+
+Grant AutoRaise access in **System Settings → Privacy & Security → Accessibility**.
+If it is not listed, use **+**, press **Cmd+Shift+G**, and enter the path printed by
+`echo "$(brew --prefix autoraise)/bin/AutoRaise"`. Then restart it with
+`brew services restart dimentium/autoraise/autoraise`.
+
+Hold **Control** to temporarily suspend hover focus. To turn it off entirely:
+
+```bash
+brew services stop dimentium/autoraise/autoraise
 ```

@@ -1,0 +1,10 @@
+# Focus and raise after briefly hovering a window; never warp the cursor.
+pollMillis=50
+delay=4
+requireMouseStop=true
+warpX=0
+warpY=0
+# Hold Control to temporarily suspend hover focus.
+disableKey=control
+# Do not steal focus during authentication or screenshot selection.
+stayFocusedBundleIds="com.apple.SecurityAgent,com.apple.screencaptureui"
