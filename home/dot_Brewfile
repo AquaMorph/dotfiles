@@ -12,6 +12,9 @@ brew "gnupg"
 # Web browser
 cask "brave-browser"
 
+# Nextcloud file sync
+cask "nextcloud"
+
 # Terminal and font used by the shared Alacritty configuration
 cask "alacritty"
 cask "font-inconsolata"
