@@ -1,0 +1,2 @@
+# Host entries are managed in a separately encrypted file.
+Include ~/.ssh/config.private
