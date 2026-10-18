@@ -21,6 +21,10 @@ cask "steam"
 # 3D printing
 cask "orcaslicer"
 
+# CAD
+cask "freecad"
+cask "autodesk-fusion"
+
 # Logitech mouse configuration
 cask "logi-options+"
 
