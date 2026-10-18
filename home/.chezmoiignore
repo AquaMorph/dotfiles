@@ -49,6 +49,9 @@ bin/video/cr3todng.sh
 {{ else -}}
 # Homebrew dependencies are only managed on macOS.
 .brewfile
+
+# macOS OrcaSlicer uses a symlink to the shared Linux-style profile directory.
+Library/Application Support/OrcaSlicer
 {{ end -}}
 
 {{ if ne .chezmoi.os "darwin" -}}
