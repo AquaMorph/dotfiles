@@ -15,6 +15,9 @@ cask "brave-browser"
 # Nextcloud file sync
 cask "nextcloud"
 
+# Logitech mouse configuration
+cask "logi-options+"
+
 # Terminal and font used by the shared Alacritty configuration
 cask "alacritty"
 cask "font-inconsolata"
