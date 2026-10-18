@@ -15,6 +15,9 @@ cask "brave-browser"
 # Nextcloud file sync
 cask "nextcloud"
 
+# Gaming
+cask "steam"
+
 # Logitech mouse configuration
 cask "logi-options+"
 

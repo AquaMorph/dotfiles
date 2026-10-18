@@ -24,7 +24,7 @@ chezmoi init --apply git@github.com:AquaMorph/dotfiles.git
    ```
 
     The Brewfile includes chezmoi, Git, Emacs, Python, jq, pass, GnuPG, Brave Browser,
-    Nextcloud, Alacritty, Inconsolata, and AutoRaise. FFmpeg and Ollama are optional; install them separately
+    Nextcloud, Steam, Alacritty, Inconsolata, and AutoRaise. FFmpeg and Ollama are optional; install them separately
     if needed.
 
 3. Restore your password store to `~/.password-store` and import its GPG private
