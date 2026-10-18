@@ -12,20 +12,15 @@ chezmoi init --apply git@github.com:AquaMorph/dotfiles.git
 
 1. Install the Xcode Command Line Tools with `xcode-select --install`, then
    install [Homebrew](https://brew.sh/) and follow its `brew shellenv`
-   instructions. Its default prefix is `/opt/homebrew` on Apple Silicon and
-   `/usr/local` on Intel Macs.
+   instructions.
 
 2. Download the dotfiles without applying them, then install dependencies:
 
    ```bash
    brew install chezmoi
    chezmoi init git@github.com:AquaMorph/dotfiles.git
-    brew bundle --file="$(chezmoi source-path ~/.brewfile)"
+   brew bundle --file="$(chezmoi source-path ~/.brewfile)"
    ```
-
-    The Brewfile includes chezmoi, Git, Emacs, Python, jq, pass, GnuPG, Brave Browser,
-    Nextcloud, Steam, Alacritty, Inconsolata, and AutoRaise. FFmpeg and Ollama are optional; install them separately
-    if needed.
 
 3. Restore your password store to `~/.password-store` and import its GPG private
    key from a secure backup before applying the dotfiles:
@@ -54,9 +49,7 @@ chezmoi init --apply git@github.com:AquaMorph/dotfiles.git
    chezmoi apply
    ```
 
-   The generated `~/.config/settings.conf` is private (mode `0600`) and its
-   values are shell-quoted. Linux-only configuration and scripts are ignored on
-   macOS; shared shell, Git, and terminal configuration remains managed.
+   Linux-only configuration and scripts are automatically ignored on macOS.
 
 To install newly added macOS dependencies later:
 
@@ -64,9 +57,9 @@ To install newly added macOS dependencies later:
 brew bundle --file="$(chezmoi source-path ~/.brewfile)"
 ```
 
-### macOS system preferences
+### System preferences
 
-After applying the dotfiles, review and run the optional setup script as your
+Close System Settings, then review and run the optional setup script as your
 normal user (not with `sudo`):
 
 ```bash
@@ -74,24 +67,19 @@ normal user (not with `sudo`):
 ~/bin/setup-macos.sh
 ```
 
-It enables dark mode and Dock auto-hide; disables natural
-scrolling and swipe-to-navigate; and removes window-tiling margins (macOS Sequoia
-and later). It does not change animation settings: macOS does not provide a
-supported speed control for desktop-switching animations.
+It enables dark mode and Dock auto-hide, disables natural scrolling and
+swipe-to-navigate, and removes window-tiling margins (macOS Sequoia and later).
+Animation settings and machine-specific state, such as Dock contents and
+monitor/Spaces layouts, are left unchanged.
 
-These are curated preferences observed on the existing Mac, not an exhaustive
-comparison against factory defaults.
-App history, Dock contents, monitor/Spaces layouts, and other machine-specific
-state are deliberately excluded. The script is safe to rerun but does not back
-up previous values or run automatically during `chezmoi apply`.
+The script is safe to rerun but does not back up previous values or run
+automatically during `chezmoi apply`. Log out and back in if changes are not
+visible.
 
-Close System Settings before running it. Log out and back in if changes are not
-visible; the script does not restart apps or your session.
+### Hover window focus
 
-### Hover window focus on macOS
-
-AutoRaise focuses and brings a window to the front on hover without an intentional delay or
-moving the cursor. Its settings are managed in `~/.config/AutoRaise/config`.
+AutoRaise focuses and raises windows on hover. Its settings are managed in
+`~/.config/AutoRaise/config`.
 
 After installing dependencies and applying the dotfiles, enable it at login:
 
