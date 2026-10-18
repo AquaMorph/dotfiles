@@ -64,6 +64,30 @@ To install newly added macOS dependencies later:
 brew bundle --file="$(chezmoi source-path ~/.brewfile)"
 ```
 
+### macOS system preferences
+
+After applying the dotfiles, review and run the optional setup script as your
+normal user (not with `sudo`):
+
+```bash
+~/bin/setup-macos.sh --dry-run
+~/bin/setup-macos.sh
+```
+
+It enables dark mode and Dock auto-hide; disables natural
+scrolling and swipe-to-navigate; and removes window-tiling margins (macOS Sequoia
+and later). It does not change animation settings: macOS does not provide a
+supported speed control for desktop-switching animations.
+
+These are curated preferences observed on the existing Mac, not an exhaustive
+comparison against factory defaults.
+App history, Dock contents, monitor/Spaces layouts, and other machine-specific
+state are deliberately excluded. The script is safe to rerun but does not back
+up previous values or run automatically during `chezmoi apply`.
+
+Close System Settings before running it. Log out and back in if changes are not
+visible; the script does not restart apps or your session.
+
 ### Hover window focus on macOS
 
 AutoRaise focuses and brings a window to the front on hover without an intentional delay or
