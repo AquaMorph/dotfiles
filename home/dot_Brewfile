@@ -18,6 +18,9 @@ cask "nextcloud"
 # Gaming
 cask "steam"
 
+# 3D printing
+cask "orcaslicer"
+
 # Logitech mouse configuration
 cask "logi-options+"
 
