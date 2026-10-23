@@ -28,6 +28,10 @@ cask "autodesk-fusion"
 # Logitech mouse configuration
 cask "logi-options+"
 
+# Audio interface control on the Mac Studio only
+require "socket"
+cask "focusrite-control-2" if Socket.gethostname.split(".").first == "mac-studio-m5"
+
 # Terminal and font used by the shared Alacritty configuration
 cask "alacritty"
 cask "font-inconsolata"
