@@ -5,6 +5,9 @@ brew "emacs"
 brew "python"
 brew "jq"
 
+# OpenAI Codex CLI
+cask "codex"
+
 # Password-store secrets used by chezmoi templates
 brew "pass"
 brew "gnupg"
