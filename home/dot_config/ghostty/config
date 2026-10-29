@@ -15,6 +15,8 @@ keybind = super++=increase_font_size:1
 keybind = super+shift+==increase_font_size:1
 keybind = super+-=decrease_font_size:1
 
+keybind = ctrl+shift+c=copy_to_clipboard
+keybind = super+shift+c=copy_to_clipboard
 keybind = ctrl+shift+v=paste_from_clipboard
 keybind = super+shift+v=paste_from_clipboard
 

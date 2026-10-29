@@ -6,7 +6,11 @@
 function chezmoiUpdate {
     if command -v chezmoi &> /dev/null; then
 	echo Updating chezmoi dotfiles...
-	chezmoi update
+	chezmoi update || return $?
+        if [[ "$(uname -s)" == "Darwin" ]]; then
+          # SIGUSR2 reloads Ghostty's config without terminating it; ignore if not running.
+          pkill -USR2 -x ghostty || [[ $? -eq 1 ]]
+        fi
     fi
 }
 
