@@ -12,6 +12,9 @@ keybind = super++=increase_font_size:1
 keybind = super+shift+==increase_font_size:1
 keybind = super+-=decrease_font_size:1
 
+keybind = ctrl+shift+v=paste_from_clipboard
+keybind = super+shift+v=paste_from_clipboard
+
 background = #000000
 foreground = #0288d1
 background-opacity = 0.8
