@@ -132,8 +132,9 @@ python3 -m py_compile ./home/bin/homeassistant.py
 
 ## Common Pitfalls
 
-- **Physical keys are not necessarily logical modifiers on macOS.** The physical Control key is mapped to Command in this setup, so Ghostty shortcuts using that key need `super`, not `ctrl`. Do not assume the user means Caps Lock when they ask for Control-key shortcuts.
+- **Physical keys are not necessarily logical modifiers on macOS.** Saved mappings include physical Control → Command for one keyboard, but this is not universal or proof of what Ghostty receives. Do not assume the user means Caps Lock when they ask for Control-key shortcuts. Ghostty uses `super` for Command; support both `ctrl` and `super` for font resizing across keyboards.
 - Before changing keyboard shortcuts, inspect the active mappings with `defaults -currentHost read -g` (look for `com.apple.keyboard.modifiermapping.*`) and `~/.config/karabiner/karabiner.json`. Mappings can vary by keyboard; verify locally instead of asking the user to identify them or relying only on repository presets.
+- Config validation checks syntax, not whether a shortcut matches actual key events. If Ghostty prints escape sequences instead of resizing, inspect its keyboard events with the Ghostty inspector; extended keyboard sequences containing `;5u` indicate Control, not Command.
 
 ## Development Notes
 
