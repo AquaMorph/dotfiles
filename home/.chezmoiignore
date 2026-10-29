@@ -55,6 +55,7 @@ Library/Application Support/OrcaSlicer
 {{ end -}}
 
 {{ if ne .chezmoi.os "darwin" -}}
+.config/aerospace
 .config/karabiner
 .config/AutoRaise
 bin/setup-macos.sh

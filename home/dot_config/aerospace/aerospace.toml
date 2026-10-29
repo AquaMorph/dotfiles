@@ -1,0 +1,82 @@
+# Hyprland-style bindings from ../hypr/bind-all.lua.
+# Holding Caps Lock sends Command via Karabiner; tapping it sends Escape.
+# Command bindings also affect the physical Command key and translated Ctrl shortcuts.
+config-version = 2
+auto-reload-config = true
+
+# AeroSpace uses tree tiling, not Hyprland's automatic dwindle layout.
+default-root-container-layout = 'tiles'
+default-root-container-orientation = 'auto'
+enable-normalization-flatten-containers = true
+enable-normalization-opposite-orientation-for-nested-containers = true
+focus-follows-mouse.enabled = true
+key-mapping.preset = 'qwerty'
+persistent-workspaces = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
+
+# Match Hyprland's five-pixel inner and outer gaps.
+gaps.inner.horizontal = 5
+gaps.inner.vertical = 5
+gaps.outer.left = 5
+gaps.outer.right = 5
+gaps.outer.top = 5
+gaps.outer.bottom = 5
+
+# Match Hyprland's Signal workspace rule (0 selects workspace 10).
+[[on-window-detected]]
+if = 'test %{app-bundle-id} = org.whispersystems.signal-desktop'
+run = 'move-node-to-workspace 10'
+
+[mode.main.binding]
+  # macOS equivalents of terminal, Dolphin, Rofi, and hyprlock.
+  cmd-enter = 'exec-and-forget open -na Terminal'
+  cmd-q = 'close'
+  cmd-e = 'exec-and-forget open -a Finder'
+  cmd-d = 'exec-and-forget open -a Spotlight'
+  # System Events may request Automation permission for the lock shortcut.
+  cmd-l = '''exec-and-forget osascript -e 'tell application "System Events" to keystroke "q" using {command down, control down}' '''
+  cmd-esc = '''exec-and-forget osascript -e 'tell application "System Events" to keystroke "q" using {command down, control down}' '''
+
+  cmd-v = 'layout floating tiling'
+  cmd-j = 'layout tiles horizontal vertical'
+  cmd-f = 'fullscreen'
+  # Hyprland's pseudo-tiling (Super+P) has no direct equivalent.
+
+  cmd-left = 'focus left'
+  cmd-right = 'focus right'
+  cmd-up = 'focus up'
+  cmd-down = 'focus down'
+
+  cmd-1 = 'workspace 1'
+  cmd-2 = 'workspace 2'
+  cmd-3 = 'workspace 3'
+  cmd-4 = 'workspace 4'
+  cmd-5 = 'workspace 5'
+  cmd-6 = 'workspace 6'
+  cmd-7 = 'workspace 7'
+  cmd-8 = 'workspace 8'
+  cmd-9 = 'workspace 9'
+  cmd-0 = 'workspace 10'
+
+  cmd-shift-1 = 'move-node-to-workspace 1'
+  cmd-shift-2 = 'move-node-to-workspace 2'
+  cmd-shift-3 = 'move-node-to-workspace 3'
+  cmd-shift-4 = 'move-node-to-workspace 4'
+  cmd-shift-5 = 'move-node-to-workspace 5'
+  cmd-shift-6 = 'move-node-to-workspace 6'
+  cmd-shift-7 = 'move-node-to-workspace 7'
+  cmd-shift-8 = 'move-node-to-workspace 8'
+  cmd-shift-9 = 'move-node-to-workspace 9'
+  cmd-shift-0 = 'move-node-to-workspace 10'
+
+  # Keyboard substitutes for Hyprland's modifier+mouse move/resize/scroll.
+  cmd-shift-left = 'move left'
+  cmd-shift-right = 'move right'
+  cmd-shift-up = 'move up'
+  cmd-shift-down = 'move down'
+  cmd-minus = 'resize smart -50'
+  cmd-equal = 'resize smart +50'
+  cmd-pageDown = 'workspace --wrap-around next'
+  cmd-pageUp = 'workspace --wrap-around prev'
+
+  # Escape hatch: suspend AeroSpace and release its shortcuts.
+  cmd-alt-shift-esc = 'enable off'
