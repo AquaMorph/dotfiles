@@ -2,6 +2,9 @@
 font-family = Inconsolata
 font-size = 16
 
+# Install terminfo over SSH, falling back when the remote host lacks tic.
+shell-integration-features = ssh-env,ssh-terminfo
+
 # Support Control and Command across keyboard-specific macOS remappings.
 keybind = ctrl+==increase_font_size:1
 keybind = ctrl++=increase_font_size:1
