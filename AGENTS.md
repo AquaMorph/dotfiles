@@ -130,6 +130,11 @@ python3 -m py_compile ./home/bin/homeassistant.py
 - **requests** - HTTP library
 - **dateutil** - Date utilities
 
+## Common Pitfalls
+
+- **Physical keys are not necessarily logical modifiers on macOS.** The physical Control key is mapped to Command in this setup, so Ghostty shortcuts using that key need `super`, not `ctrl`. Do not assume the user means Caps Lock when they ask for Control-key shortcuts.
+- Before changing keyboard shortcuts, inspect the active mappings with `defaults -currentHost read -g` (look for `com.apple.keyboard.modifiermapping.*`) and `~/.config/karabiner/karabiner.json`. Mappings can vary by keyboard; verify locally instead of asking the user to identify them or relying only on repository presets.
+
 ## Development Notes
 
 - This is a personal configuration repository, not a library
