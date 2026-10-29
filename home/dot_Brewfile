@@ -35,8 +35,9 @@ cask "logi-options+"
 require "socket"
 cask "focusrite-control-2" if Socket.gethostname.split(".").first == "mac-studio-m5"
 
-# Terminal and font used by the shared Alacritty configuration
+# Terminals and font used by the shared Alacritty configuration
 cask "alacritty"
+cask "ghostty"
 cask "font-inconsolata"
 
 # Focus and raise windows when hovering
