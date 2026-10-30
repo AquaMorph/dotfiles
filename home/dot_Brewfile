@@ -44,6 +44,9 @@ cask "font-inconsolata"
 tap "dimentium/autoraise"
 brew "dimentium/autoraise/autoraise"
 
+# Save and automatically restore window layouts
+cask "hammerspoon"
+
 # Optional tools for audio conversion and local AI
 # brew "ffmpeg"
 # brew "ollama"

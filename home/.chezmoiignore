@@ -58,5 +58,6 @@ Library/Application Support/OrcaSlicer
 .config/aerospace
 .config/karabiner
 .config/AutoRaise
+.hammerspoon
 bin/setup-macos.sh
 {{ end -}}
