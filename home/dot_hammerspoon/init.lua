@@ -24,7 +24,7 @@ local rules = {
         frame = {0, 1695 / 3360, 1, 1665 / 3360}, singleOccupancy = true},
     -- Other browser windows start on the right; a later YouTube title moves them.
     {app = "com.brave.Browser", monitor = "right", desktop = 1,
-        frame = {0, 30 / 1080, 1, 1050 / 1080}},
+        frame = {0, 30 / 1080, 1, 1050 / 1080}, singleOccupancy = true},
     -- Steam's library is owned by Steam Helper, not the launcher process.
     {app = "com.valvesoftware.steam", monitor = "main", desktop = 5,
         frame = {0, 0, 1, 1}},
@@ -56,7 +56,7 @@ local function spotOccupied(window, rule)
         local app, screen = other:application(), other:screen()
         if other:id() ~= window:id() and app and app:bundleID() == rule.app
             and other:isStandard() and not other:isMinimized() and not other:isFullScreen()
-            and other:title():find(rule.title, 1, true)
+            and (not rule.title or other:title():find(rule.title, 1, true))
             and screen and screen:getUUID() == monitors[rule.monitor] then
             local desktops = {}
             for _, space in ipairs(spaces.spacesForScreen(screen) or {}) do
