@@ -1,5 +1,6 @@
 -- Placement rules inferred from the running windows on this Mac.
 require("hs.ipc")
+local clickthrough = require("clickthrough")
 
 local spaces = require("hs.spaces")
 local log = hs.logger.new("placement", "info")
@@ -190,6 +191,7 @@ windowPlacement = {
 }
 windowPlacement.menu:setTitle("Windows")
 windowPlacement.menu:setMenu({
+    {title = "Toggle single-click window activation", fn = clickthrough.toggle},
     {title = "Reapply placement rules", fn = restore},
     {title = "Reload configuration", fn = hs.reload},
     {title = "Open Console", fn = hs.openConsole},

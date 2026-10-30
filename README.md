@@ -76,24 +76,20 @@ The script is safe to rerun but does not back up previous values or run
 automatically during `chezmoi apply`. Log out and back in if changes are not
 visible.
 
-### Hover window focus
+### Window focus
 
-AutoRaise focuses and raises windows on hover. Its settings are managed in
-`~/.config/AutoRaise/config`.
-
-After installing dependencies and applying the dotfiles, enable it at login:
-
-```bash
-brew services start dimentium/autoraise/autoraise
-```
-
-Grant AutoRaise access in **System Settings → Privacy & Security → Accessibility**.
-If it is not listed, use **+**, press **Cmd+Shift+G**, and enter the path printed by
-`echo "$(brew --prefix autoraise)/bin/AutoRaise"`. Then restart it with
-`brew services restart dimentium/autoraise/autoraise`.
-
-Hold **Control** to temporarily suspend hover focus. To turn it off entirely:
+Hover focus is disabled in AeroSpace. Leave AutoRaise stopped so moving the
+pointer does not focus or raise windows:
 
 ```bash
 brew services stop dimentium/autoraise/autoraise
 ```
+
+Hammerspoon's `~/.hammerspoon/clickthrough.lua` focuses inactive windows on
+mouse-down before passing through the original click, so the same click can
+activate the clicked control. This is a workaround, not a native macOS setting;
+some apps may still consume the first click. Modified clicks are left unchanged.
+Use **Windows → Toggle single-click window activation** to disable it if an app
+misbehaves. Hammerspoon needs Accessibility access and must be running.
+
+Optional AutoRaise settings remain in `~/.config/AutoRaise/config`.
