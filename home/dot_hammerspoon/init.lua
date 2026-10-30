@@ -25,10 +25,10 @@ local rules = {
     {app = "com.brave.Browser", monitor = "right", desktop = 1,
         frame = {0, 30 / 1080, 1, 1050 / 1080}},
     -- Steam's library is owned by Steam Helper, not the launcher process.
-    {app = "com.valvesoftware.steam", monitor = "right", desktop = 1,
-        frame = {267 / 1920, 163 / 1080, 1010 / 1920, 1050 / 1080}},
-    {name = "Steam Helper", monitor = "right", desktop = 1,
-        frame = {267 / 1920, 163 / 1080, 1010 / 1920, 1050 / 1080}},
+    {app = "com.valvesoftware.steam", monitor = "main", desktop = 5,
+        frame = {0, 0, 1, 1}},
+    {name = "Steam Helper", monitor = "main", desktop = 5,
+        frame = {0, 0, 1, 1}},
 }
 
 local applied, pending = {}, {}
@@ -106,6 +106,13 @@ local function place(window, force)
         bounds.x + frame[1] * bounds.w, bounds.y + frame[2] * bounds.h,
         frame[3] * bounds.w, frame[4] * bounds.h
     ), 0)
+    -- On newer macOS versions moveWindowToSpace can silently do nothing.
+    local actual = spaces.windowSpaces(window) or {}
+    if #actual ~= 1 or actual[1] ~= target then
+        log.w("Desktop placement did not take effect for " .. window:title()
+            .. " (target Space " .. tostring(target) .. ")")
+        return
+    end
     applied[id] = index
 end
 
