@@ -20,7 +20,7 @@ local rules = {
         frame = {0, 30 / 1080, 1, 1050 / 1080}},
     -- Match specialized browser windows; general browsing uses the fallback below.
     {app = "com.brave.Browser", title = "YouTube", monitor = "portrait", desktop = 1,
-        frame = {0, 1695 / 3360, 1, 1665 / 3360}},
+        frame = {0, 1695 / 3360, 1, 1665 / 3360}, singleOccupancy = true},
     -- Other browser windows start on the right; a later YouTube title moves them.
     {app = "com.brave.Browser", monitor = "right", desktop = 1,
         frame = {0, 30 / 1080, 1, 1050 / 1080}},
@@ -32,6 +32,33 @@ local rules = {
 }
 
 local applied, pending = {}, {}
+local filter
+
+local function spotOccupied(window, rule)
+    if not rule.singleOccupancy or not filter then return false end
+    for _, other in ipairs(filter:getWindows()) do
+        local app, screen = other:application(), other:screen()
+        if other:id() ~= window:id() and app and app:bundleID() == rule.app
+            and other:isStandard() and not other:isMinimized() and not other:isFullScreen()
+            and other:title():find(rule.title, 1, true)
+            and screen and screen:getUUID() == monitors[rule.monitor] then
+            local desktops = {}
+            for _, space in ipairs(spaces.spacesForScreen(screen) or {}) do
+                if spaces.spaceType(space) == "user" then table.insert(desktops, space) end
+            end
+            local current = spaces.windowSpaces(other) or {}
+            local bounds, frame, actual = screen:fullFrame(), rule.frame, other:frame()
+            if #current == 1 and current[1] == desktops[rule.desktop]
+                and math.abs(actual.x - (bounds.x + frame[1] * bounds.w)) < 20
+                and math.abs(actual.y - (bounds.y + frame[2] * bounds.h)) < 20
+                and math.abs(actual.w - frame[3] * bounds.w) < 20
+                and math.abs(actual.h - frame[4] * bounds.h) < 20 then
+                return true
+            end
+        end
+    end
+    return false
+end
 
 local function ruleFor(window)
     local app = window:application()
@@ -42,7 +69,8 @@ local function ruleFor(window)
     for index, rule in ipairs(rules) do
         if ((rule.app and app:bundleID() == rule.app)
             or (rule.name and app:name() == rule.name))
-            and (not rule.title or window:title():find(rule.title, 1, true)) then
+            and (not rule.title or window:title():find(rule.title, 1, true))
+            and not spotOccupied(window, rule) then
             return rule, index
         end
     end
@@ -81,7 +109,7 @@ local function place(window, force)
     applied[id] = index
 end
 
-local filter = hs.window.filter.new(true):setOverrideFilter({
+filter = hs.window.filter.new(true):setOverrideFilter({
     allowRoles = "AXStandardWindow", fullscreen = false,
 })
 
