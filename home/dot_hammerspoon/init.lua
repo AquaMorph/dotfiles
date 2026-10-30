@@ -21,8 +21,6 @@ local rules = {
     -- Match specialized browser windows; general browsing uses the fallback below.
     {app = "com.brave.Browser", title = "YouTube", monitor = "portrait", desktop = 1,
         frame = {0, 1695 / 3360, 1, 1665 / 3360}},
-    {app = "com.brave.Browser", title = "Proxmox Console", monitor = "right", desktop = 1,
-        frame = {0, 30 / 1080, 800 / 1920, 484 / 1080}},
     -- Other browser windows start on the right; a later YouTube title moves them.
     {app = "com.brave.Browser", monitor = "right", desktop = 1,
         frame = {0, 30 / 1080, 1, 1050 / 1080}},
