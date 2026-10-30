@@ -152,9 +152,9 @@ end
 filter:subscribe({hs.window.filter.windowCreated, hs.window.filter.windowTitleChanged}, function(window)
     local id = window:id()
     if not id then return end
-    if pending[id] then pending[id]:stop() end
-    -- Wait for apps to finish their own initial resize and browser page loading.
-    pending[id] = hs.timer.doAfter(1, function()
+    if pending[id] then return end
+    -- Briefly let new windows settle without title changes delaying placement.
+    pending[id] = hs.timer.doAfter(0.15, function()
         pending[id] = nil
         if window:id() then
             place(window, false)
