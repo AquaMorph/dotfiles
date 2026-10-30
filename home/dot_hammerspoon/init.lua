@@ -34,6 +34,21 @@ local rules = {
 local applied, pending = {}, {}
 local filter
 
+local function ghosttyWindows()
+    local windows = {}
+    for _, window in ipairs(filter:getWindows()) do
+        local app = window:application()
+        if app and app:bundleID() == "com.mitchellh.ghostty"
+            and window:isStandard() and not window:isMinimized()
+            and not window:isFullScreen() and window:id() then
+            table.insert(windows, window)
+        end
+    end
+    -- Window IDs keep the older window on the left, regardless of focus order.
+    table.sort(windows, function(a, b) return a:id() < b:id() end)
+    return windows
+end
+
 local function spotOccupied(window, rule)
     if not rule.singleOccupancy or not filter then return false end
     for _, other in ipairs(filter:getWindows()) do
@@ -79,7 +94,17 @@ end
 local function place(window, force)
     local rule, index = ruleFor(window)
     local id = window:id()
-    if not rule or not id or (not force and applied[id] == index) then return end
+    if not rule or not id then return end
+    local frame, placement = rule.frame, index
+    if rule.app == "com.mitchellh.ghostty" then
+        local windows = ghosttyWindows()
+        if #windows == 2 then
+            local left = windows[1]:id() == id
+            frame = {left and 0 or 0.5, frame[2], 0.5, frame[4]}
+            placement = tostring(index) .. (left and ":left" or ":right")
+        end
+    end
+    if not force and applied[id] == placement then return end
     local screen
     for _, candidate in ipairs(hs.screen.allScreens()) do
         if candidate:getUUID() == monitors[rule.monitor] then screen = candidate; break end
@@ -101,7 +126,7 @@ local function place(window, force)
             return
         end
     end
-    local bounds, frame = screen:fullFrame(), rule.frame
+    local bounds = screen:fullFrame()
     window:setFrame(hs.geometry.rect(
         bounds.x + frame[1] * bounds.w, bounds.y + frame[2] * bounds.h,
         frame[3] * bounds.w, frame[4] * bounds.h
@@ -113,7 +138,7 @@ local function place(window, force)
             .. " (target Space " .. tostring(target) .. ")")
         return
     end
-    applied[id] = index
+    applied[id] = placement
 end
 
 filter = hs.window.filter.new(true):setOverrideFilter({
@@ -131,7 +156,13 @@ filter:subscribe({hs.window.filter.windowCreated, hs.window.filter.windowTitleCh
     -- Wait for apps to finish their own initial resize and browser page loading.
     pending[id] = hs.timer.doAfter(1, function()
         pending[id] = nil
-        if window:id() then place(window, false) end
+        if window:id() then
+            place(window, false)
+            local app = window:application()
+            if app and app:bundleID() == "com.mitchellh.ghostty" then
+                for _, other in ipairs(ghosttyWindows()) do place(other, false) end
+            end
+        end
     end)
 end)
 filter:subscribe(hs.window.filter.windowDestroyed, function(window)
@@ -140,6 +171,11 @@ filter:subscribe(hs.window.filter.windowDestroyed, function(window)
         applied[id] = nil
         if pending[id] then pending[id]:stop(); pending[id] = nil end
     end
+    -- Let the filter remove the closed window before checking the remaining one.
+    hs.timer.doAfter(0.2, function()
+        local windows = ghosttyWindows()
+        if #windows == 1 then place(windows[1], false) end
+    end)
 end)
 
 -- Retain the filter, watchers and menu for the lifetime of the configuration.
