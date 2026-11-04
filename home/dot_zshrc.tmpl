@@ -49,12 +49,12 @@ alias e="${EDITOR}"
 alias g='grep -Irn'
 
 # Dotfiles
-alias dot='cd ~/.local/share/chezmoi'
 export DOT_PROGRAM='chezmoi'
+alias dot='cd ~/.local/share/chezmoi'
 alias dota="${DOT_PROGRAM} add"
 alias dotd="${DOT_PROGRAM} diff"
 alias dote="${DOT_PROGRAM} edit --apply"
-alias dotu="${DOT_PROGRAM} update"
+alias dotu="${DOT_PROGRAM} update && source ~/.zshrc"
 
 # Other
 {{ if eq .chezmoi.os "darwin" -}}
