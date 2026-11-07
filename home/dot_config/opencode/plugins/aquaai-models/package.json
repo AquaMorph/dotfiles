@@ -1,0 +1,15 @@
+{
+  "name": "opencode-aquaai-models",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./index.js"
+  },
+  "scripts": {
+    "test": "node --test core.test.mjs"
+  },
+  "dependencies": {
+    "@opencode/plugin": "2.2.6"
+  }
+}
