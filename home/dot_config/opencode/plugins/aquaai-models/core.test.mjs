@@ -46,6 +46,46 @@ test("copies only safe metadata from an unambiguous exact catalog match", () => 
   assert.equal(ambiguous.capabilities.tools, false)
 })
 
+test("ChatGPT gateway routes inherit OpenAI metadata without changing routing", () => {
+  const source = record("AquaAI")
+  const upstream = {
+    ...createModel("openai", "gpt-6.1-sol"), name: "GPT-6.1 Sol", type: "chat",
+    capabilities: { tools: true, input: ["text", "image"], output: ["text"] },
+    limit: { context: 200000, output: 32000 }, settings: { apiKey: "not-for-gateway" },
+  }
+  const [model] = mergeInventory(source, [source, record("openai", [upstream])],
+    ["chatgpt/gpt-6.1-sol"], createModel)
+  assert.equal(model.id, "chatgpt/gpt-6.1-sol")
+  assert.equal(model.modelID, "chatgpt/gpt-6.1-sol")
+  assert.equal(model.providerID, "AquaAI")
+  assert.equal(model.name, upstream.name)
+  assert.equal(model.type, "chat")
+  assert.deepEqual(model.capabilities, upstream.capabilities)
+  assert.deepEqual(model.limit, upstream.limit)
+  assert.equal(model.settings, undefined)
+  const [unknown] = mergeInventory(source, [record("other", [{ ...upstream, providerID: "other" }])],
+    ["chatgpt/unknown"], createModel)
+  assert.equal(unknown.capabilities.tools, false)
+  const exact = { ...upstream, id: "chatgpt/gpt-6.1-sol", name: "Exact gateway match" }
+  const [preferred] = mergeInventory(source, [record("openai", [upstream]), record("other", [exact])],
+    ["chatgpt/gpt-6.1-sol"], createModel)
+  assert.equal(preferred.name, "Exact gateway match")
+})
+
+test("known ChatGPT routes are session-selectable without config models or an OpenAI catalog", () => {
+  const source = record("AquaAI")
+  const models = mergeInventory(source, [source],
+    ["chatgpt/gpt-6.1-sol", "chatgpt/gpt-6-luna"], createModel)
+  assert.deepEqual(models.map((model) => model.name), ["GPT-6.1 Sol", "GPT-6 Luna"])
+  for (const model of models) {
+    assert.equal(model.type, "chat")
+    assert.equal(model.capabilities.tools, true)
+    assert.equal(model.modelID, model.id)
+    assert.equal(model.providerID, "AquaAI")
+    assert.deepEqual(model.limit, { context: 200000, output: 32000 })
+  }
+})
+
 function harness({ cached, responses = [] } = {}) {
   const source = record("AquaAI", [createModel("AquaAI", "pinned")])
   let transform
@@ -89,7 +129,7 @@ function harness({ cached, responses = [] } = {}) {
     warn: (message) => warnings.push(message),
   }
   return {
-    ctx, runtime, requests, writes, warnings,
+    ctx, runtime, requests, writes, warnings, source,
     ids: () => [...current.models.keys()],
     tick: async () => { scheduled(); await new Promise(setImmediate) },
     cancelled: () => cancelled,
@@ -132,6 +172,21 @@ test("rejects invalid refresh configuration", async () => {
   const h = harness()
   h.ctx.options.refreshIntervalMs = 0
   await assert.rejects(setupDiscovery(h.ctx, createModel, h.runtime))
+})
+
+test("removing a configured alias restores discovery even when inventory is unchanged", async () => {
+  const inventory = { data: [{ id: "chatgpt/gpt-6.1-sol" }] }
+  const h = harness({ responses: [inventory, inventory] })
+  h.source.models.set("sol", {
+    ...createModel("AquaAI", "sol"), modelID: "chatgpt/gpt-6.1-sol",
+  })
+  const cleanup = await setupDiscovery(h.ctx, createModel, h.runtime)
+  await h.tick()
+  assert.deepEqual(h.ids(), ["pinned", "sol"])
+  h.source.models.delete("sol")
+  await h.tick()
+  assert.deepEqual(h.ids(), ["pinned", "chatgpt/gpt-6.1-sol"])
+  cleanup()
 })
 
 test("retries when config registers the provider after plugin setup", async () => {

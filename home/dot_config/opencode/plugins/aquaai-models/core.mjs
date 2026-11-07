@@ -1,5 +1,17 @@
 import { createHash } from "node:crypto"
 
+// Disabled providers may be absent from source records. Keep known gateway chat
+// profiles usable without requiring per-model entries in the user's config.
+const CHATGPT_PROFILES = new Map([
+  ["chatgpt/gpt-6.1-sol", { name: "GPT-6.1 Sol" }],
+  ["chatgpt/gpt-6-luna", { name: "GPT-6 Luna" }],
+].map(([id, metadata]) => [id, {
+  ...metadata,
+  type: "chat",
+  capabilities: { tools: true, input: ["text", "image"], output: ["text"] },
+  limit: { context: 200000, output: 32000 },
+}]))
+
 export function parseInventory(payload) {
   if (!payload || !Array.isArray(payload.data)) {
     throw new Error("Expected a models data array")
@@ -21,8 +33,15 @@ export function mergeInventory(record, records, ids, createModel) {
 
   for (const id of ids) {
     if (represented.has(id)) continue
-    const matches = catalog.filter((model) => model.id === id || model.modelID === id)
-    const metadata = matches.length === 1 ? matches[0] : undefined
+    let matches = catalog.filter((model) => model.id === id || model.modelID === id)
+    // LiteLLM's ChatGPT route uses OpenAI catalog IDs behind a gateway prefix.
+    if (!matches.length && id.startsWith("chatgpt/")) {
+      const upstreamID = id.slice("chatgpt/".length)
+      matches = catalog.filter((model) => model.providerID === "openai" &&
+        (model.id === upstreamID || model.modelID === upstreamID))
+    }
+    const metadata = matches.length === 1 ? matches[0] :
+      matches.length === 0 ? CHATGPT_PROFILES.get(id) : undefined
     const model = createModel(record.provider.id, id)
     if (metadata) {
       // Copy descriptive metadata, never another provider's routing or request settings.
@@ -92,9 +111,13 @@ export async function setupDiscovery(ctx, createModel, runtime = {}) {
       }
       // Config providers may register after this plugin's setup has completed.
       const snapshot = await ctx.model.list()
-      aliases = new Set((snapshot.data ?? []).filter((model) =>
+      const nextAliases = new Set((snapshot.data ?? []).filter((model) =>
         model.providerID === providerID && model.id !== model.modelID,
       ).map((model) => model.modelID))
+      const aliasesChanged = aliases.size !== nextAliases.size ||
+        [...aliases].some((id) => !nextAliases.has(id))
+      aliases = nextAliases
+      if (aliasesChanged) await ctx.model.reload()
       if (!provider) throw new Error("Configured provider is not registered yet")
       const request = requestSettings(provider, ctx.options.apiKeyEnv ?? "AQUAAI_KEY")
       if (cacheKey !== request.key) {

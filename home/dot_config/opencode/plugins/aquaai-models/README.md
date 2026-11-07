@@ -7,7 +7,8 @@ Requires the OpenCode 2.2.6 plugin API.
 Discovery starts after plugin setup and retries every second until the configured
 provider is registered. Models are added through a model transform, and alias
 deduplication also checks the fully resolved model snapshot because OpenCode's
-config overrides can run after plugin source transforms.
+config overrides can run after plugin source transforms. Changes to those aliases
+invalidate the discovered models even when the endpoint inventory is unchanged.
 
 The global config loads `./plugins/aquaai-models` with these options:
 
@@ -27,7 +28,13 @@ OpenCode's plugin storage caches model IDs across launches, scoped to endpoint
 and credentials. A first launch offline has only the configured models.
 
 Unique exact model-ID matches in other provider catalogs supply names,
-capabilities, and token limits. Routing, pricing, variants, and request settings
+capabilities, and token limits. Gateway IDs prefixed with `chatgpt/` also match
+the unprefixed ID in the OpenAI source catalog (even when that provider is
+inactive but still present in source records). If OpenAI is absent, built-in
+profiles for `chatgpt/gpt-6.1-sol` and `chatgpt/gpt-6-luna` provide the chat type,
+tool and image support, 200000-token context, and 32000-token output limit.
+Configured overrides still win. The gateway ID is kept for requests.
+Routing, pricing, variants, and request settings
 are not copied: they may differ on this gateway. Unknown/ambiguous models use
 text-only input, no tools, a 32768-token context, and 4096-token output limit.
 Add provider model overrides for correct limits and capabilities, for example:
