@@ -150,6 +150,22 @@ local function restore()
     for _, window in ipairs(filter:getWindows()) do place(window, true) end
 end
 
+local restoreTimers = {}
+
+local function cancelRestore()
+    for _, timer in ipairs(restoreTimers) do timer:stop() end
+    restoreTimers = {}
+end
+
+local function scheduleRestore()
+    cancelRestore()
+    -- Displays, Spaces and restored app windows can arrive well after login.
+    -- Stop retrying once startup settles so manual placement stays possible.
+    for _, delay in ipairs({3, 8, 15, 30}) do
+        table.insert(restoreTimers, hs.timer.doAfter(delay, restore))
+    end
+end
+
 filter:subscribe({hs.window.filter.windowCreated, hs.window.filter.windowTitleChanged}, function(window)
     local id = window:id()
     if not id then return end
@@ -183,10 +199,19 @@ end)
 windowPlacement = {
     rules = rules,
     restore = restore,
+    scheduleRestore = scheduleRestore,
     filter = filter,
     menu = hs.menubar.new(),
-    screenWatcher = hs.screen.watcher.new(function()
-        hs.timer.doAfter(3, restore)
+    screenWatcher = hs.screen.watcher.new(scheduleRestore):start(),
+    sessionWatcher = hs.caffeinate.watcher.new(function(event)
+        local watcher = hs.caffeinate.watcher
+        if event == watcher.screensDidUnlock or event == watcher.systemDidWake
+            or event == watcher.sessionDidBecomeActive then
+            scheduleRestore()
+        elseif event == watcher.screensDidLock or event == watcher.systemWillSleep
+            or event == watcher.sessionDidResignActive then
+            cancelRestore()
+        end
     end):start(),
 }
 windowPlacement.menu:setTitle("Windows")
@@ -198,4 +223,4 @@ windowPlacement.menu:setMenu({
 })
 
 hs.autoLaunch(true)
-if hs.accessibilityState(true) then hs.timer.doAfter(3, restore) end
+if hs.accessibilityState(true) then scheduleRestore() end
