@@ -21,7 +21,7 @@
       "name": "AquaAI",
       "package": "@opencode/ai/providers/openai-compatible",
       "settings": {
-        "apiKey": {{ pass "self-host/token/litellm-opencode" | toJson }},
+        "apiKey": {{ if env "OPENCODE_API_KEY_FILE" }}{{ printf "{file:%s}" (env "OPENCODE_API_KEY_FILE") | toJson }}{{ else }}{{ pass "self-host/token/litellm-opencode" | toJson }}{{ end }},
         "baseURL": "https://litellm.aquamorph.com/v1"
       }
     }
