@@ -37,15 +37,24 @@ local filter
 
 local function ghosttyWindows()
     local windows = {}
-    for _, window in ipairs(filter:getWindows()) do
-        local app = window:application()
-        if app and app:bundleID() == "com.mitchellh.ghostty"
-            and window:isStandard() and not window:isMinimized()
+    local app = hs.application.get("com.mitchellh.ghostty")
+    -- The filter caches inactive native tabs as windows; AXWindows only lists
+    -- the selected tab in each real window. isVisible() also includes old tabs.
+    for _, window in ipairs(app and app:allWindows() or {}) do
+        if window:isStandard() and not window:isMinimized()
             and not window:isFullScreen() and window:id() then
             table.insert(windows, window)
         end
     end
-    -- Window IDs keep the older window on the left, regardless of focus order.
+    -- Preserve an existing split when selecting a tab changes its window ID.
+    if #windows == 2 then
+        local a, b = windows[1]:frame(), windows[2]:frame()
+        if math.abs(a.y - b.y) < 20 and math.abs(a.w - b.w) < 20
+            and math.abs(math.abs(a.x - b.x) - a.w) < 20 then
+            table.sort(windows, function(left, right) return left:frame().x < right:frame().x end)
+            return windows
+        end
+    end
     table.sort(windows, function(a, b) return a:id() < b:id() end)
     return windows
 end
@@ -99,6 +108,11 @@ local function place(window, force)
     local frame, placement = rule.frame, index
     if rule.app == "com.mitchellh.ghostty" then
         local windows = ghosttyWindows()
+        local selected = false
+        for _, candidate in ipairs(windows) do
+            if candidate:id() == id then selected = true; break end
+        end
+        if not selected then return end
         if #windows == 2 then
             local left = windows[1]:id() == id
             frame = {left and 0 or 0.5, frame[2], 0.5, frame[4]}
@@ -166,19 +180,22 @@ local function scheduleRestore()
     end
 end
 
-filter:subscribe({hs.window.filter.windowCreated, hs.window.filter.windowTitleChanged}, function(window)
+filter:subscribe({hs.window.filter.windowCreated, hs.window.filter.windowTitleChanged,
+    hs.window.filter.windowFocused, hs.window.filter.windowVisible,
+    hs.window.filter.windowNotVisible}, function(window, appName, event)
+    local app = window:application()
+    if event ~= hs.window.filter.windowCreated
+        and event ~= hs.window.filter.windowTitleChanged
+        and (not app or app:bundleID() ~= "com.mitchellh.ghostty") then return end
     local id = window:id()
     if not id then return end
     if pending[id] then return end
     -- Briefly let new windows settle without title changes delaying placement.
     pending[id] = hs.timer.doAfter(0.15, function()
         pending[id] = nil
-        if window:id() then
-            place(window, false)
-            local app = window:application()
-            if app and app:bundleID() == "com.mitchellh.ghostty" then
-                for _, other in ipairs(ghosttyWindows()) do place(other, false) end
-            end
+        if window:id() then place(window, false) end
+        if app and app:bundleID() == "com.mitchellh.ghostty" then
+            for _, other in ipairs(ghosttyWindows()) do place(other, false) end
         end
     end)
 end)
@@ -190,8 +207,7 @@ filter:subscribe(hs.window.filter.windowDestroyed, function(window)
     end
     -- Let the filter remove the closed window before checking the remaining one.
     hs.timer.doAfter(0.2, function()
-        local windows = ghosttyWindows()
-        if #windows == 1 then place(windows[1], false) end
+        for _, other in ipairs(ghosttyWindows()) do place(other, false) end
     end)
 end)
 
