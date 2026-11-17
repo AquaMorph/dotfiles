@@ -40,8 +40,7 @@ export function mergeInventory(record, records, ids, createModel) {
       matches = catalog.filter((model) => model.providerID === "openai" &&
         (model.id === upstreamID || model.modelID === upstreamID))
     }
-    const metadata = matches.length === 1 ? matches[0] :
-      matches.length === 0 ? CHATGPT_PROFILES.get(id) : undefined
+    const metadata = matches.length === 1 ? matches[0] : CHATGPT_PROFILES.get(id)
     const model = createModel(record.provider.id, id)
     if (metadata) {
       // Copy descriptive metadata, never another provider's routing or request settings.

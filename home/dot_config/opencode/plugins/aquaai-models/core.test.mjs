@@ -72,6 +72,24 @@ test("ChatGPT gateway routes inherit OpenAI metadata without changing routing", 
   assert.equal(preferred.name, "Exact gateway match")
 })
 
+test("known ChatGPT routes retain their profiles when catalog matches are ambiguous", () => {
+  const source = record("AquaAI")
+  for (const id of ["chatgpt/gpt-6.1-sol", "chatgpt/gpt-6-luna"]) {
+    for (const catalogID of [id, id.slice("chatgpt/".length)]) {
+      const catalogs = ["openai", "other"].map((providerID) => record(providerID, [
+        createModel(providerID, catalogID),
+        { ...createModel(providerID, `${catalogID}-alias`), modelID: catalogID },
+      ]))
+      const [model] = mergeInventory(source, [source, ...catalogs], [id], createModel)
+      assert.equal(model.id, id)
+      assert.equal(model.modelID, id)
+      assert.equal(model.type, "chat")
+      assert.equal(model.capabilities.tools, true)
+      assert.deepEqual(model.limit, { context: 200000, output: 32000 })
+    }
+  }
+})
+
 test("known ChatGPT routes are session-selectable without config models or an OpenAI catalog", () => {
   const source = record("AquaAI")
   const models = mergeInventory(source, [source],

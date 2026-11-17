@@ -30,7 +30,7 @@ and credentials. A first launch offline has only the configured models.
 Unique exact model-ID matches in other provider catalogs supply names,
 capabilities, and token limits. Gateway IDs prefixed with `chatgpt/` also match
 the unprefixed ID in the OpenAI source catalog (even when that provider is
-inactive but still present in source records). If OpenAI is absent, built-in
+inactive but still present in source records). If catalog matches are absent or ambiguous, built-in
 profiles for `chatgpt/gpt-6.1-sol` and `chatgpt/gpt-6-luna` provide the chat type,
 tool and image support, 200000-token context, and 32000-token output limit.
 Configured overrides still win. The gateway ID is kept for requests.
