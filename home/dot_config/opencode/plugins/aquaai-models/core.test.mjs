@@ -1,6 +1,6 @@
 import assert from "node:assert/strict"
 import { test } from "node:test"
-import { mergeInventory, parseInventory, setupDiscovery } from "./core.mjs"
+import { mergeInventory, parseInventory, parseModelInfo, setupDiscovery } from "./core.mjs"
 
 const createModel = (providerID, id) => ({ providerID, id, modelID: id, name: id })
 const record = (id, models = []) => ({
@@ -104,7 +104,31 @@ test("known ChatGPT routes are session-selectable without config models or an Op
   }
 })
 
-function harness({ cached, responses = [] } = {}) {
+test("LiteLLM limits override catalog guesses without adding input and output maxima", () => {
+  const id = "chatgpt/gpt-6.1-sol"
+  const limits = parseModelInfo({ data: [{ model_name: id, model_info: {
+    max_tokens: null, max_input_tokens: 922000, max_output_tokens: 128000,
+  } }] })
+  const source = record("AquaAI")
+  const [model] = mergeInventory(source, [source], [id], createModel, limits)
+  assert.deepEqual(model.limit, { context: 922000, input: 922000, output: 128000 })
+  const override = { ...createModel("AquaAI", id), limit: { context: 100000, output: 10000 } }
+  const configured = record("AquaAI", [override])
+  assert.equal(mergeInventory(configured, [configured], [id], createModel, limits)[0], override)
+})
+
+test("model information validates limits and conservatively combines deployments", () => {
+  assert.throws(() => parseModelInfo({}))
+  const limits = parseModelInfo({ data: [
+    { model_name: "a", model_info: { max_input_tokens: 100000, max_output_tokens: 10000 } },
+    { model_name: "a", model_info: { max_input_tokens: 80000, max_output_tokens: 20000 } },
+    { model_name: "invalid", model_info: { max_tokens: 12345, max_input_tokens: "1000", max_output_tokens: -1 } },
+    null,
+  ] })
+  assert.deepEqual(limits, { a: { context: 80000, input: 80000, output: 10000 } })
+})
+
+function harness({ cached, responses = [], infoResponses = [] } = {}) {
   const source = record("AquaAI", [createModel("AquaAI", "pinned")])
   let transform
   let current = source
@@ -138,7 +162,7 @@ function harness({ cached, responses = [] } = {}) {
   const runtime = {
     fetch: async (url, options) => {
       requests.push({ url, options })
-      const response = responses.shift()
+      const response = url.pathname.endsWith("/model/info") ? infoResponses.shift() : responses.shift()
       if (response instanceof Error || response === undefined) throw response ?? new Error("offline")
       return { ok: true, json: async () => response }
     },
@@ -149,13 +173,14 @@ function harness({ cached, responses = [] } = {}) {
   return {
     ctx, runtime, requests, writes, warnings, source,
     ids: () => [...current.models.keys()],
+    model: (id) => current.models.get(id),
     tick: async () => { scheduled(); await new Promise(setImmediate) },
     cancelled: () => cancelled,
     available: (value) => { available = value },
   }
 }
 
-test("refreshes, removes stale discoveries, preserves overrides and caches IDs only", async () => {
+test("refreshes, removes stale discoveries, preserves overrides and caches sanitized inventory", async () => {
   const h = harness({ responses: [{ data: [{ id: "old" }] }, { data: [{ id: "new" }] }, { data: [] }] })
   const cleanup = await setupDiscovery(h.ctx, createModel, h.runtime)
   await h.tick()
@@ -163,7 +188,7 @@ test("refreshes, removes stale discoveries, preserves overrides and caches IDs o
   assert.equal(h.requests[0].url.href, "https://example.test/v1/models")
   assert.equal(h.requests[0].options.headers.get("Authorization"), "Bearer test-secret")
   assert.equal(h.requests[0].options.redirect, "error")
-  assert.deepEqual(h.writes[0][1], ["old"])
+  assert.deepEqual(h.writes[0][1], { ids: ["old"], info: { data: [] } })
   assert.ok(!h.writes[0][0].includes("test-secret"))
   await h.tick()
   assert.deepEqual(h.ids(), ["pinned", "new"])
@@ -184,6 +209,33 @@ test("offline startup uses cache and subsequent malformed responses do not erase
   assert.equal(h.writes.length, 0)
   assert.ok(!h.warnings.join().includes("secret error"))
   cleanup()
+})
+
+test("refreshes LiteLLM limits even when IDs are unchanged and caches no raw metadata", async () => {
+  const inventory = { data: [{ id: "chatgpt/gpt-6.1-sol" }] }
+  const info = (input) => ({ data: [{ model_name: "chatgpt/gpt-6.1-sol",
+    litellm_params: { api_key: "never-cache-this" },
+    model_info: { max_input_tokens: input, max_output_tokens: 128000 },
+  }] })
+  const h = harness({ responses: [inventory, inventory, inventory],
+    infoResponses: [info(922000), info(900000), new Error("unauthorized")] })
+  const cleanup = await setupDiscovery(h.ctx, createModel, h.runtime)
+  await h.tick()
+  assert.equal(h.requests[1].url.href, "https://example.test/model/info")
+  assert.equal(h.requests[1].options.headers.get("Authorization"), "Bearer test-secret")
+  assert.equal(h.model("chatgpt/gpt-6.1-sol").limit.context, 922000)
+  assert.ok(!JSON.stringify(h.writes).includes("never-cache-this"))
+  const cached = h.writes[0][1]
+  await h.tick()
+  assert.equal(h.model("chatgpt/gpt-6.1-sol").limit.context, 900000)
+  await h.tick()
+  assert.equal(h.model("chatgpt/gpt-6.1-sol").limit.context, 900000)
+  cleanup()
+  const offline = harness({ cached })
+  const offlineCleanup = await setupDiscovery(offline.ctx, createModel, offline.runtime)
+  await offline.tick()
+  assert.equal(offline.model("chatgpt/gpt-6.1-sol").limit.context, 922000)
+  offlineCleanup()
 })
 
 test("rejects invalid refresh configuration", async () => {

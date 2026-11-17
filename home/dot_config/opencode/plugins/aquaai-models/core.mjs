@@ -25,7 +25,33 @@ export function parseInventory(payload) {
   return [...new Set(ids)].sort()
 }
 
-export function mergeInventory(record, records, ids, createModel) {
+export function parseModelInfo(payload) {
+  if (!payload || !Array.isArray(payload.data)) throw new Error("Invalid model information")
+  const limits = {}
+  const positive = (value) => Number.isSafeInteger(value) && value > 0
+  for (const entry of payload.data) {
+    if (typeof entry?.model_name !== "string" || !entry.model_name.trim()) continue
+    const info = entry.model_info
+    if (!info || typeof info !== "object") continue
+    const limit = {}
+    if (positive(info.max_input_tokens)) {
+      limit.input = info.max_input_tokens
+      // Input and output maxima do not establish a shared total context window.
+      limit.context = info.max_input_tokens
+    }
+    if (positive(info.max_output_tokens)) limit.output = info.max_output_tokens
+    if (!Object.keys(limit).length) continue
+    // Multiple deployments under one name must fit the smallest reported limits.
+    const previous = Object.hasOwn(limits, entry.model_name) ? limits[entry.model_name] : {}
+    for (const [key, value] of Object.entries(limit)) {
+      previous[key] = Math.min(previous[key] ?? value, value)
+    }
+    Object.defineProperty(limits, entry.model_name, { value: previous, enumerable: true, configurable: true })
+  }
+  return limits
+}
+
+export function mergeInventory(record, records, ids, createModel, limits = {}) {
   const models = new Map(record.models)
   const represented = new Set([...models.values()].flatMap((model) => [model.id, model.modelID]))
   const catalog = records.filter((item) => item.provider.id !== record.provider.id)
@@ -51,6 +77,13 @@ export function mergeInventory(record, records, ids, createModel) {
       model.capabilities = { tools: false, input: ["text"], output: ["text"] }
       model.limit = { context: 32768, output: 4096 }
     }
+    if (Object.hasOwn(limits, id)) {
+      model.limit = { ...model.limit, ...limits[id] }
+      model.limit.output = Math.min(model.limit.output, model.limit.context)
+      if (model.limit.input !== undefined) {
+        model.limit.input = Math.min(model.limit.input, model.limit.context)
+      }
+    }
     models.set(id, model)
   }
   return [...models.values()]
@@ -67,7 +100,12 @@ function requestSettings(provider, apiKeyEnv) {
   if (apiKey) headers.set("Authorization", `Bearer ${apiKey}`)
   // Scope cached inventories to the endpoint and credentials without persisting secrets.
   const key = createHash("sha256").update(JSON.stringify([provider.id, url.href, [...headers]])).digest("hex")
-  return { url, headers, key: `inventory/${key}` }
+  const infoURL = new URL(url)
+  infoURL.pathname = infoURL.pathname.replace(/\/v1\/models\/?$/, "/model/info")
+  if (infoURL.pathname === url.pathname) {
+    infoURL.pathname = infoURL.pathname.replace(/\/models\/?$/, "/model/info")
+  }
+  return { url, infoURL, headers, key: `inventory/${key}` }
 }
 
 export async function setupDiscovery(ctx, createModel, runtime = {}) {
@@ -84,6 +122,7 @@ export async function setupDiscovery(ctx, createModel, runtime = {}) {
 
   let provider
   let inventory = null
+  let limits = {}
   let stopped = false
   let timer
   let cacheKey
@@ -94,7 +133,7 @@ export async function setupDiscovery(ctx, createModel, runtime = {}) {
     provider = record?.provider
     if (record && inventory !== null) {
       const represented = new Set(editor.list(providerID).flatMap((model) => [model.id, model.modelID]))
-      for (const model of mergeInventory(record, editor.provider.list(), inventory, createModel)) {
+      for (const model of mergeInventory(record, editor.provider.list(), inventory, createModel, limits)) {
         if (!record.models.has(model.id) && !represented.has(model.modelID) && !aliases.has(model.id)) {
           editor.update(providerID, model.id, (draft) => Object.assign(draft, model))
         }
@@ -121,10 +160,15 @@ export async function setupDiscovery(ctx, createModel, runtime = {}) {
       const request = requestSettings(provider, ctx.options.apiKeyEnv ?? "AQUAAI_KEY")
       if (cacheKey !== request.key) {
         inventory = null
+        limits = {}
         cacheKey = request.key
         try {
           const cached = await ctx.storage.get(request.key)
-          if (cached !== undefined) inventory = parseInventory({ data: cached.map((id) => ({ id })) })
+          if (cached !== undefined) {
+            const ids = Array.isArray(cached) ? cached : cached.ids
+            inventory = parseInventory({ data: ids.map((id) => ({ id })) })
+            if (!Array.isArray(cached)) limits = parseModelInfo(cached.info)
+          }
         } catch {
           warn("Could not load cached inventory; trying the endpoint.")
         }
@@ -137,12 +181,31 @@ export async function setupDiscovery(ctx, createModel, runtime = {}) {
       })
       if (!response.ok) throw new Error("Model endpoint failed")
       const next = parseInventory(await response.json())
-      if (stopped) return
-      const previous = inventory
-      inventory = next
-      if (JSON.stringify(previous) !== JSON.stringify(next)) await ctx.model.reload()
+      let nextLimits = limits
       try {
-        await ctx.storage.set(request.key, next)
+        const infoResponse = await fetchModels(request.infoURL, {
+          headers: request.headers,
+          redirect: "error",
+          signal: AbortSignal.any([controller.signal, AbortSignal.timeout(15000)]),
+        })
+        if (!infoResponse.ok) throw new Error("Model information endpoint failed")
+        nextLimits = parseModelInfo(await infoResponse.json())
+      } catch {
+        if (!stopped) warn("Model information unavailable; retaining cached limits or catalog defaults.")
+      }
+      if (stopped) return
+      const changed = JSON.stringify(inventory) !== JSON.stringify(next) ||
+        JSON.stringify(limits) !== JSON.stringify(nextLimits)
+      inventory = next
+      limits = Object.fromEntries(next.filter((id) => Object.hasOwn(nextLimits, id))
+        .map((id) => [id, nextLimits[id]]))
+      if (changed) await ctx.model.reload()
+      try {
+        const info = { data: Object.entries(limits).map(([model_name, limit]) => ({
+          model_name,
+          model_info: { max_input_tokens: limit.input, max_output_tokens: limit.output },
+        })) }
+        await ctx.storage.set(request.key, { ids: next, info })
       } catch {
         warn("Models refreshed, but the inventory could not be cached.")
       }
