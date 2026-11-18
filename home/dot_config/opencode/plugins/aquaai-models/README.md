@@ -26,7 +26,7 @@ endpoint response bodies. It does not resolve OAuth credentials.
 Configured models always win and remain available, including aliases whose
 `modelID` differs from their config key. Other models follow the latest successful
 inventory, including removals. Failed requests preserve the previous inventory;
-OpenCode's plugin storage caches model IDs and sanitized limits across launches,
+OpenCode's plugin storage caches model IDs, token limits, and vision flags across launches,
 scoped to endpoint and credentials. Old ID-only caches remain supported. A first
 launch offline has only the configured models.
 
@@ -38,8 +38,13 @@ used as a conservative context budget. `max_tokens` is not treated as a total
 context limit. Multiple deployments with the same name use the smallest reported
 limits. Output and input limits are capped to the context budget.
 
+An explicit boolean `model_info.supports_vision` adds or removes `image` from
+the discovered model's input types without changing other capabilities. When
+deployments share a name, any explicit `false` wins. Missing or invalid flags
+leave catalog/profile capabilities or fallback defaults unchanged.
+
 If `/model/info` is unauthorized, missing or malformed, discovery continues using
-cached limits or catalog defaults and logs a credential-free warning. Successful
+cached metadata or catalog defaults and logs a credential-free warning. Successful
 metadata changes trigger a reload even when model IDs have not changed. Raw
 LiteLLM entries (which may contain credentials) are never cached.
 
@@ -51,8 +56,9 @@ profiles for `chatgpt/gpt-6.1-sol` and `chatgpt/gpt-6-luna` provide the chat typ
 tool and image support, 200000-token context, and 32000-token output limit.
 Configured overrides still win. The gateway ID is kept for requests.
 Routing, pricing, variants, and request settings
-are not copied: they may differ on this gateway. Unknown/ambiguous models use
-text-only input, no tools, a 32768-token context, and 4096-token output limit.
+are not copied: they may differ on this gateway. Without metadata, unknown or
+ambiguous models use text-only input, no tools, a 32768-token context, and a
+4096-token output limit.
 Add provider model overrides for correct limits and capabilities, for example:
 
 ```json

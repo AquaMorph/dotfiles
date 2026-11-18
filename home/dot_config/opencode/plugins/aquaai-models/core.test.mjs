@@ -106,26 +106,48 @@ test("known ChatGPT routes are session-selectable without config models or an Op
 
 test("LiteLLM limits override catalog guesses without adding input and output maxima", () => {
   const id = "chatgpt/gpt-6.1-sol"
-  const limits = parseModelInfo({ data: [{ model_name: id, model_info: {
+  const info = parseModelInfo({ data: [{ model_name: id, model_info: {
     max_tokens: null, max_input_tokens: 922000, max_output_tokens: 128000,
   } }] })
   const source = record("AquaAI")
-  const [model] = mergeInventory(source, [source], [id], createModel, limits)
+  const [model] = mergeInventory(source, [source], [id], createModel, info)
   assert.deepEqual(model.limit, { context: 922000, input: 922000, output: 128000 })
   const override = { ...createModel("AquaAI", id), limit: { context: 100000, output: 10000 } }
   const configured = record("AquaAI", [override])
-  assert.equal(mergeInventory(configured, [configured], [id], createModel, limits)[0], override)
+  assert.equal(mergeInventory(configured, [configured], [id], createModel, info)[0], override)
 })
 
 test("model information validates limits and conservatively combines deployments", () => {
   assert.throws(() => parseModelInfo({}))
-  const limits = parseModelInfo({ data: [
+  const info = parseModelInfo({ data: [
     { model_name: "a", model_info: { max_input_tokens: 100000, max_output_tokens: 10000 } },
     { model_name: "a", model_info: { max_input_tokens: 80000, max_output_tokens: 20000 } },
     { model_name: "invalid", model_info: { max_tokens: 12345, max_input_tokens: "1000", max_output_tokens: -1 } },
     null,
   ] })
-  assert.deepEqual(limits, { a: { context: 80000, input: 80000, output: 10000 } })
+  assert.deepEqual(info, { a: { limit: { context: 80000, input: 80000, output: 10000 } } })
+})
+
+test("applies explicit vision flags without changing other modalities or configured models", () => {
+  const source = record("AquaAI", [{ ...createModel("AquaAI", "pinned"), capabilities: { input: ["text", "image"] } }])
+  const catalogModel = {
+    ...createModel("other", "catalog"),
+    capabilities: { tools: true, input: ["text", "image", "video"], output: ["text"] },
+  }
+  const info = parseModelInfo({ data: [
+    { model_name: "new", model_info: { supports_vision: true } },
+    { model_name: "new", model_info: {} },
+    { model_name: "catalog", model_info: { supports_vision: false } },
+    { model_name: "catalog", model_info: { supports_vision: true } },
+    { model_name: "pinned", model_info: { supports_vision: false } },
+    { model_name: "chatgpt/gpt-6.1-sol", model_info: { supports_vision: "false" } },
+  ] })
+  const models = mergeInventory(source, [source, record("other", [catalogModel])],
+    ["pinned", "new", "catalog", "chatgpt/gpt-6.1-sol"], createModel, info)
+  assert.deepEqual(models.map((model) => model.capabilities.input),
+    [["text", "image"], ["text", "image"], ["text", "video"], ["text", "image"]])
+  assert.equal(models[2].capabilities.tools, true)
+  assert.deepEqual(catalogModel.capabilities.input, ["text", "image", "video"])
 })
 
 function harness({ cached, responses = [], infoResponses = [] } = {}) {
@@ -242,6 +264,29 @@ test("rejects invalid refresh configuration", async () => {
   const h = harness()
   h.ctx.options.refreshIntervalMs = 0
   await assert.rejects(setupDiscovery(h.ctx, createModel, h.runtime))
+})
+
+test("vision-only changes refresh unchanged IDs and survive offline startup", async () => {
+  const id = "chatgpt/gpt-6.2-sol"
+  const inventory = { data: [{ id }] }
+  const info = (supports_vision) => ({ data: [{ model_name: id, model_info: { supports_vision } }] })
+  const h = harness({ responses: [inventory, inventory, inventory],
+    infoResponses: [info(false), info(true), new Error("offline")] })
+  const cleanup = await setupDiscovery(h.ctx, createModel, h.runtime)
+  await h.tick()
+  assert.deepEqual(h.model(id).capabilities.input, ["text"])
+  assert.deepEqual(h.writes[0][1].info, info(false))
+  await h.tick()
+  assert.deepEqual(h.model(id).capabilities.input, ["text", "image"])
+  assert.deepEqual(h.writes[1][1].info, info(true))
+  await h.tick()
+  assert.deepEqual(h.model(id).capabilities.input, ["text", "image"])
+  cleanup()
+  const offline = harness({ cached: h.writes[1][1] })
+  const offlineCleanup = await setupDiscovery(offline.ctx, createModel, offline.runtime)
+  await offline.tick()
+  assert.deepEqual(offline.model(id).capabilities.input, ["text", "image"])
+  offlineCleanup()
 })
 
 test("removing a configured alias restores discovery even when inventory is unchanged", async () => {
