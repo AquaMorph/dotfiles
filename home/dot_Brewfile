@@ -5,6 +5,9 @@ brew "emacs"
 brew "python"
 brew "jq"
 
+# Android debugging tools (adb and fastboot)
+cask "android-platform-tools"
+
 # OpenAI Codex CLI
 cask "codex"
 
