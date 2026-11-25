@@ -2,11 +2,16 @@
 description: Commit currently staged code in git
 mode: all
 model: {{ template "models/small-brain" }}
-temperature: 0.1
-tools:
-  write: false
-  edit: false
-  bash: true
+permissions:
+  - action: edit
+    resource: "*"
+    effect: deny
+  - action: shell
+    resource: "*"
+    effect: allow
+  - action: subagent
+    resource: "*"
+    effect: deny
 ---
 
 {{ template "prompts/name" . }}
@@ -24,6 +29,7 @@ Focus on:
 Never:
 - Never mention specific files or what files changed.
 - Never add files to the staging.
+- Never use a subagent.
 
 Use the following command to look at the changes:
 ```sh
