@@ -12,6 +12,8 @@ const CHATGPT_PROFILES = new Map([
   limit: { context: 200000, output: 32000 },
 }]))
 
+const INVENTORY_PREFIX = "inventory/"
+
 export function parseInventory(payload) {
   if (!payload || !Array.isArray(payload.data)) {
     throw new Error("Expected a models data array")
@@ -115,7 +117,15 @@ function requestSettings(provider, apiKeyEnv) {
   if (infoURL.pathname === url.pathname) {
     infoURL.pathname = infoURL.pathname.replace(/\/models\/?$/, "/model/info")
   }
-  return { url, infoURL, headers, key: `inventory/${key}` }
+  return { url, infoURL, headers, key: `${INVENTORY_PREFIX}${key}` }
+}
+
+function parseCachedInventory(cached) {
+  const ids = Array.isArray(cached) ? cached : cached.ids
+  return {
+    ids: parseInventory({ data: ids.map((id) => ({ id })) }),
+    info: Array.isArray(cached) || cached.info === undefined ? {} : parseModelInfo(cached.info),
+  }
 }
 
 export async function setupDiscovery(ctx, createModel, runtime = {}) {
@@ -130,9 +140,28 @@ export async function setupDiscovery(ctx, createModel, runtime = {}) {
     throw new Error("Invalid AquaAI discovery options")
   }
 
+  const apiKeyEnv = ctx.options.apiKeyEnv ?? "AQUAAI_KEY"
+  const inventories = new Map()
+  // The provider can register after setup. Preload keyed snapshots so the first
+  // registry rebuild can restore the matching inventory without waiting on a timer.
+  try {
+    let after
+    do {
+      const page = await ctx.storage.scan({ prefix: INVENTORY_PREFIX, after })
+      for (const { key, value } of page.entries) {
+        try {
+          inventories.set(key, parseCachedInventory(value))
+        } catch {
+          warn("Skipping an invalid cached inventory.")
+        }
+      }
+      after = page.next
+    } while (after !== undefined)
+  } catch {
+    warn("Could not preload cached inventories; trying discovery in the background.")
+  }
+
   let provider
-  let inventory = null
-  let modelInfo = {}
   let stopped = false
   let timer
   let cacheKey
@@ -141,22 +170,24 @@ export async function setupDiscovery(ctx, createModel, runtime = {}) {
   const transform = (editor) => {
     const record = editor.provider.get(providerID)
     provider = record?.provider
-    if (record && inventory !== null) {
-      const represented = new Set(editor.list(providerID).flatMap((model) => [model.id, model.modelID]))
-      for (const model of mergeInventory(record, editor.provider.list(), inventory, createModel, modelInfo)) {
-        if (!record.models.has(model.id) && !represented.has(model.modelID) && !aliases.has(model.id)) {
-          editor.update(providerID, model.id, (draft) => Object.assign(draft, model))
-        }
+    if (!record) return
+    let snapshot
+    try {
+      snapshot = inventories.get(requestSettings(provider, apiKeyEnv).key)
+    } catch {
+      return // The background refresh reports invalid request settings.
+    }
+    if (!snapshot) return
+    const represented = new Set(editor.list(providerID).flatMap((model) => [model.id, model.modelID]))
+    for (const model of mergeInventory(record, editor.provider.list(), snapshot.ids, createModel, snapshot.info)) {
+      if (!record.models.has(model.id) && !represented.has(model.modelID) && !aliases.has(model.id)) {
+        editor.update(providerID, model.id, (draft) => Object.assign(draft, model))
       }
     }
   }
-  let registered = false
+  await ctx.model.transform(transform)
   const refresh = async () => {
     try {
-      if (!registered) {
-        await ctx.model.transform(transform)
-        registered = true
-      }
       // Config providers may register after this plugin's setup has completed.
       const snapshot = await ctx.model.list()
       const nextAliases = new Set((snapshot.data ?? []).filter((model) =>
@@ -167,23 +198,25 @@ export async function setupDiscovery(ctx, createModel, runtime = {}) {
       aliases = nextAliases
       if (aliasesChanged) await ctx.model.reload()
       if (!provider) throw new Error("Configured provider is not registered yet")
-      const request = requestSettings(provider, ctx.options.apiKeyEnv ?? "AQUAAI_KEY")
+      const request = requestSettings(provider, apiKeyEnv)
       if (cacheKey !== request.key) {
-        inventory = null
-        modelInfo = {}
         cacheKey = request.key
         try {
+          // Another location may have populated the cache since this one loaded.
           const cached = await ctx.storage.get(request.key)
           if (cached !== undefined) {
-            const ids = Array.isArray(cached) ? cached : cached.ids
-            inventory = parseInventory({ data: ids.map((id) => ({ id })) })
-            if (!Array.isArray(cached)) modelInfo = parseModelInfo(cached.info)
+            const restored = parseCachedInventory(cached)
+            if (JSON.stringify(inventories.get(request.key)) !== JSON.stringify(restored)) {
+              inventories.set(request.key, restored)
+              await ctx.model.reload()
+            }
           }
         } catch {
           warn("Could not load cached inventory; trying the endpoint.")
         }
-        await ctx.model.reload()
       }
+      if (stopped) return
+      const previous = inventories.get(request.key)
       const response = await fetchModels(request.url, {
         headers: request.headers,
         redirect: "error",
@@ -191,7 +224,7 @@ export async function setupDiscovery(ctx, createModel, runtime = {}) {
       })
       if (!response.ok) throw new Error("Model endpoint failed")
       const next = parseInventory(await response.json())
-      let nextInfo = modelInfo
+      let nextInfo = previous?.info ?? {}
       try {
         const infoResponse = await fetchModels(request.infoURL, {
           headers: request.headers,
@@ -206,13 +239,13 @@ export async function setupDiscovery(ctx, createModel, runtime = {}) {
       if (stopped) return
       nextInfo = Object.fromEntries(next.filter((id) => Object.hasOwn(nextInfo, id))
         .map((id) => [id, nextInfo[id]]))
-      const changed = JSON.stringify(inventory) !== JSON.stringify(next) ||
-        JSON.stringify(modelInfo) !== JSON.stringify(nextInfo)
-      inventory = next
-      modelInfo = nextInfo
-      if (changed) await ctx.model.reload()
+      const updated = { ids: next, info: nextInfo }
+      if (JSON.stringify(previous) !== JSON.stringify(updated)) {
+        inventories.set(request.key, updated)
+        await ctx.model.reload()
+      }
       try {
-        const info = { data: Object.entries(modelInfo).map(([model_name, { limit, vision }]) => ({
+        const info = { data: Object.entries(nextInfo).map(([model_name, { limit, vision }]) => ({
           model_name,
           model_info: {
             ...(limit.input !== undefined ? { max_input_tokens: limit.input } : {}),

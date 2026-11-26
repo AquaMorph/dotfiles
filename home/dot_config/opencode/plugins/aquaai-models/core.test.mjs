@@ -1,4 +1,5 @@
 import assert from "node:assert/strict"
+import { createHash } from "node:crypto"
 import { test } from "node:test"
 import { mergeInventory, parseInventory, parseModelInfo, setupDiscovery } from "./core.mjs"
 
@@ -7,6 +8,9 @@ const record = (id, models = []) => ({
   provider: { id, settings: { baseURL: "https://example.test/v1", apiKey: "test-secret" } },
   models: new Map(models.map((model) => [model.id, model])),
 })
+const inventoryKey = (apiKey) => "inventory/" + createHash("sha256").update(JSON.stringify([
+  "AquaAI", "https://example.test/v1/models", [["accept", "application/json"], ["authorization", `Bearer ${apiKey}`]],
+])).digest("hex")
 
 test("validates the whole inventory and deduplicates IDs", () => {
   assert.deepEqual(parseInventory({ data: [{ id: "b" }, { id: "a" }, { id: "b" }] }), ["a", "b"])
@@ -179,7 +183,11 @@ function harness({ cached, responses = [], infoResponses = [] } = {}) {
       list: async () => { rebuild(); return { data: [...current.models.values()] } },
       reload: async () => rebuild(),
     },
-    storage: { get: async () => cached, set: async (...args) => { writes.push(args) } },
+    storage: {
+      scan: async () => ({ entries: cached === undefined ? [] : [{ key: inventoryKey("test-secret"), value: cached }] }),
+      get: async () => cached,
+      set: async (...args) => { writes.push(args) },
+    },
   }
   const runtime = {
     fetch: async (url, options) => {
@@ -230,6 +238,32 @@ test("offline startup uses cache and subsequent malformed responses do not erase
   assert.deepEqual(h.ids(), ["pinned", "cached"])
   assert.equal(h.writes.length, 0)
   assert.ok(!h.warnings.join().includes("secret error"))
+  cleanup()
+})
+
+test("first model lookup restores only the matching cache before background discovery", async () => {
+  const h = harness()
+  const id = "chatgpt/gpt-6.2-sol"
+  h.available(false)
+  h.ctx.storage.scan = async ({ prefix, after }) => {
+    assert.equal(prefix, "inventory/")
+    if (after === undefined) {
+      return { entries: [{ key: inventoryKey("other-secret"), value: ["other-account-model"] }], next: "page-2" }
+    }
+    assert.equal(after, "page-2")
+    return { entries: [{ key: inventoryKey("test-secret"), value: {
+      ids: [id], info: { data: [{ model_name: id, model_info: { supports_vision: true } }] },
+    } }] }
+  }
+  const cleanup = await setupDiscovery(h.ctx, createModel, h.runtime)
+  h.available(true) // Config registers the provider after plugin setup.
+  await h.ctx.model.list()
+  assert.deepEqual(h.ids(), ["pinned", id])
+  assert.deepEqual(h.model(id).capabilities.input, ["text", "image"])
+  h.source.provider.settings.apiKey = "uncached-secret"
+  await h.ctx.model.list()
+  assert.deepEqual(h.ids(), ["pinned"])
+  assert.equal(h.requests.length, 0)
   cleanup()
 })
 

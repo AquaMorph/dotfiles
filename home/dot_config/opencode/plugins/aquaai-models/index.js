@@ -1,5 +1,5 @@
 import { Model, Plugin, Provider } from "@opencode/plugin"
-import { setupDiscovery } from "./core.mjs?v=7"
+import { setupDiscovery } from "./core.mjs?v=8"
 
 export default Plugin.define({
   id: "aquaai.models",

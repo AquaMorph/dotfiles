@@ -6,7 +6,9 @@ rewriting the configuration. A `/v1` suffix is removed for the model-info reques
 other endpoint path prefixes are preserved.
 Requires the OpenCode 2.2.6 plugin API.
 
-Discovery starts after plugin setup and retries every second until the configured
+Plugin setup preloads cached inventories so the first model lookup can use the
+matching cache as soon as the provider is registered, without a gateway request.
+Background discovery starts after setup and retries every second until the configured
 provider is registered. Models are added through a model transform, and alias
 deduplication also checks the fully resolved model snapshot because OpenCode's
 config overrides can run after plugin source transforms. Changes to those aliases
