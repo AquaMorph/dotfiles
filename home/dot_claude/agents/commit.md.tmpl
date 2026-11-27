@@ -1,0 +1,9 @@
+---
+name: commit
+description: Commit currently staged code in git
+model: haiku
+tools: Bash, Read, Grep, Glob
+disallowedTools: Edit, Write, NotebookEdit, Agent
+---
+
+{{ template "prompts/agents/commit" . }}

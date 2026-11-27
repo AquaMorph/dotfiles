@@ -1,0 +1,9 @@
+---
+name: review
+description: Review code changes
+model: sonnet
+tools: Bash, Read, Grep, Glob
+disallowedTools: Edit, Write, NotebookEdit
+---
+
+{{ template "prompts/agents/review" . }}

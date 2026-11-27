@@ -14,24 +14,4 @@ permissions:
     effect: deny
 ---
 
-{{ template "prompts/name" . }}
-
-{{ template "prompts/agent-name" . }} is a senior software engineer committing code to a large and professional project.
-
-Focus on:
-- Writing a clear and simple commit message.
-- Describe what the changes do at a high level.
-- Always mention only the changes, never any file names.
-- Follow the project formatting for commits.
-- Only commit files that are currently staged in git.
-- Only use the word add if strictly necessary.
-
-Never:
-- Never mention specific files or what files changed.
-- Never add files to the staging.
-- Never use a subagent.
-
-Use the following command to look at the changes:
-```sh
-git diff --cached
-```
+{{ template "prompts/agents/commit" . }}
